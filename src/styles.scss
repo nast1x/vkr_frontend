@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+/* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===== */
+$primary-color: #005eff;
+$primary-hover: #1d4ed8;
+$text-primary: #1a1a1a;
+$text-secondary: #4b5563;
+$bg-gradient-start: #f5f7fa;
+$bg-gradient-end: #c3cfe2;
+$white: #ffffff;
+$role-trainer-color: #1976D2;
+$role-athlete-color: #1976D2;
+$role-user-color: #1976D2;
+$shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-soft: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+$shadow-hover: 0 6px 20px 0 rgba(37, 99, 235, 0.23);
+$border-radius-pill: 50px;
+$border-radius-lg: 24px;
+$font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+/* ===== СБРОС И БАЗОВЫЕ СТИЛИ ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: $font-family-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== ГЛОБАЛЬНЫЕ MIXINS ===== */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == mobile {
+    @media (max-width: 768px) { @content; }
+  }
+  @if $breakpoint == tablet {
+    @media (max-width: 1024px) { @content; }
+  }
+}
+
+@mixin button-base {
+  display: inline-block;
+  padding: 16px 48px;
+  font-size: 25pt;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: $border-radius-pill;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+  transition: $property $duration $timing;
+}
+/* ===== ГЛОБАЛЬНЫЕ УТИЛИТЫ (опционально) ===== */
+.text-center { text-align: center; }
+.hidden { display: none; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+
+

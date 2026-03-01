@@ -1,0 +1,43 @@
+<img src="/assets/images/boy-swimming.png" alt="Jogging" class="fixed-logo-left">
+<img src="/assets/images/boy-swimming.png" alt="Jogging" class="fixed-logo-right">
+<div class="choose_role-container">
+
+  <!-- Шапка -->
+  <div class="choose_role-header">
+    <button class="choose_role-back" (click)="goBack()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <h1 class="choose_role-title">Регистрация</h1>
+  </div>
+
+  <!-- Список ролей -->
+  <div class="choose_role-options">
+    <div
+      class="choose_role-option"
+      *ngFor="let role of roles"
+      [class.active]="selectedRole === role.id"
+      (click)="selectRole(role.id)"
+    >
+      <div class="choose_role-option-icon">
+        <img [src]="role.icon" [alt]="role.title" class="role-icon">
+      </div>
+      <div class="choose_role-option-content">
+        <h3 class="choose_role-option-title">{{ role.title }}</h3>
+        <p class="choose_role-option-subtitle">{{ role.subtitle }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кнопки -->
+  <button class="choose_role-btn-primary" (click)="onRegister()" [disabled]="!selectedRole">
+    Продолжить
+  </button>
+
+  <p class="choose_role-login-text">Уже есть аккаунт?</p>
+
+  <button class="choose_role-btn-secondary" (click)="onLogin()">
+    Авторизоваться
+  </button>
+</div>

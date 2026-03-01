@@ -1,0 +1,91 @@
+@use '../../../styles.scss' as *; // Импорт глобальных переменных и миксинов
+
+// Сброс для host-элемента компонента
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.home-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  overflow: hidden;
+  text-align: center;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.hero-title {
+  font-size: 72pt;
+  font-weight: 800;
+  color: $text-primary;
+  line-height: 1.1;
+  margin: 0;
+
+  @include respond-to(mobile) {
+    font-size: 2.5rem;
+  }
+
+  .hero-highlight {
+    color: $primary-color;
+    display: inline-block;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba($primary-color, 0.2);
+      z-index: -1;
+      border-radius: 4px;
+    }
+  }
+}
+
+.hero-subtitle {
+  margin-top: 20px;
+  font-size: 20pt;
+  color: $text-secondary;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero-btn {
+  @include button-base; // Используем глобальный миксин
+  margin-top: 20px;
+}
+
+.secondary-btn {
+  background-color: $primary-color;
+  color: white;
+  box-shadow: $shadow-soft;
+
+  &:hover {
+    background-color: $primary-hover;
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
