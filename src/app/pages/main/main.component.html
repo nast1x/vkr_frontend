@@ -1,0 +1,153 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="main-content">
+
+  <!-- Герой-секция с описанием -->
+  <section class="main-hero">
+    <div class="main-hero-container">
+      <h1 class="main-hero-title">Добро пожаловать</h1>
+      <p class="main-hero-subtitle">
+        Единая платформа для учёта спортивных достижений студентов и тренеров
+      </p>
+
+      <div class="main-features">
+        <div class="main-feature-card">
+          <div class="main-feature-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 10C9 10 10.5 12 12 12C13.5 12 15 10 15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="main-feature-title">Вузы</h3>
+          <p class="main-feature-text">Просмотрите информацию о всех участвующих вузах и их спортивных программах</p>
+        </div>
+
+        <div class="main-feature-card">
+          <div class="main-feature-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11684 19.0078 7.005C19.0078 7.89316 18.7122 8.75608 18.1676 9.45768C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="main-feature-title">Спортсмены и тренеры</h3>
+          <p class="main-feature-text">Получите доступ к данным спортсменов и тренеров, их достижениям и статистике</p>
+        </div>
+
+        <div class="main-feature-card">
+          <div class="main-feature-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M18 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="main-feature-title">Статистика</h3>
+          <p class="main-feature-text">Анализируйте спортивные результаты и отслеживайте прогресс в реальном времени</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Блок с новостями и лучшими результатами -->
+  <section class="main-info">
+    <div class="main-info-container">
+
+      <!-- Новостной блок -->
+      <div class="main-info-card">
+        <h2 class="main-info-title">Новости</h2>
+
+        <div class="main-news-list">
+          <div class="main-news-item">
+            <div class="main-news-item-date">
+              <span class="main-news-day">10</span>
+              <span class="main-news-month">Февраля</span>
+            </div>
+            <div class="main-news-item-content">
+              <h4 class="main-news-item-title">Завершились соревнования по плаванию</h4>
+              <p class="main-news-item-description">Подведены итоги зимнего этапа чемпионата</p>
+            </div>
+          </div>
+
+          <div class="main-news-item">
+            <div class="main-news-item-date">
+              <span class="main-news-day">25</span>
+              <span class="main-news-month">Января</span>
+            </div>
+            <div class="main-news-item-content">
+              <h4 class="main-news-item-title">Турнир по настольному теннису</h4>
+              <p class="main-news-item-description">Победители получили путёвки на областной этап</p>
+            </div>
+          </div>
+
+          <div class="main-news-item">
+            <div class="main-news-item-date">
+              <span class="main-news-day">15</span>
+              <span class="main-news-month">Января</span>
+            </div>
+            <div class="main-news-item-content">
+              <h4 class="main-news-item-title">Открытие спортивного сезона</h4>
+              <p class="main-news-item-description">Начался приём заявок на участие в соревнованиях</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="main-info-all-btn" (click)="onViewAllNews()">
+          Все новости
+        </button>
+      </div>
+
+      <!-- Лучшие результаты -->
+      <div class="main-info-card">
+        <h2 class="main-info-title">Лучшие результаты</h2>
+
+        <div class="main-best-results">
+          <div class="main-best-item">
+            <div class="main-best-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 8V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 11L12 14L15 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="main-best-content">
+              <span class="main-best-label">Лучший вуз</span>
+              <h3 class="main-best-value">МГУ им. Ломоносова</h3>
+              <p class="main-best-subtitle">125 побед в этом сезоне</p>
+            </div>
+          </div>
+
+          <div class="main-best-divider"></div>
+
+          <div class="main-best-item">
+            <div class="main-best-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                <path d="M17 21V19C17 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 14C14.2091 14 16 12.2091 16 10C16 7.79086 14.2091 6 12 6C9.79086 6 8 7.79086 8 10C8 12.2091 9.79086 14 12 14Z" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 21V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="main-best-content">
+              <span class="main-best-label">Лучший спортсмен</span>
+              <h3 class="main-best-value">Иванов Алексей</h3>
+              <p class="main-best-subtitle">18 золотых медалей</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="main-info-all-btn" (click)="onViewAllResults()">
+          Все результаты
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+

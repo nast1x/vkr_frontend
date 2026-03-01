@@ -1,0 +1,125 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="profile-content">
+
+  <div class="profile-container">
+
+    <!-- Карточка профиля -->
+    <div class="profile-card">
+
+      <!-- Фото и основная информация -->
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <img [src]="user.avatar" [alt]="user.fullName" class="profile-avatar-img">
+        </div>
+
+        <div class="profile-info">
+          <h1 class="profile-name">{{ user.fullName }}</h1>
+          <p class="profile-role">{{ user.role }}</p>
+          <div class="profile-meta">
+            <span class="profile-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              {{ user.age }} лет
+            </span>
+            <span class="profile-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              {{ user.university }}
+            </span>
+          </div>
+        </div>
+
+        <button class="profile-edit-btn" (click)="onEdit()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Редактировать
+        </button>
+      </div>
+
+      <!-- Детальная информация -->
+      <div class="profile-details">
+
+        <!-- Место обучения -->
+        <div class="profile-detail-item">
+          <div class="profile-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 10C9 10 10.5 12 12 12C13.5 12 15 10 15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="profile-detail-content">
+            <span class="profile-detail-label">Место обучения</span>
+            <h3 class="profile-detail-value">{{ user.university }}</h3>
+            <p class="profile-detail-subtitle">{{ user.faculty }} • {{ user.course }} курс</p>
+          </div>
+        </div>
+
+        <!-- Тренер -->
+        <div class="profile-detail-item">
+          <div class="profile-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11684 19.0078 7.005C19.0078 7.89316 18.7122 8.75608 18.1676 9.45768C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="profile-detail-content">
+            <span class="profile-detail-label">Тренер</span>
+            <h3 class="profile-detail-value">{{ user.coach }}</h3>
+          </div>
+        </div>
+
+        <!-- Вид спорта -->
+        <div class="profile-detail-item">
+          <div class="profile-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="profile-detail-content">
+            <span class="profile-detail-label">Вид спорта</span>
+            <h3 class="profile-detail-value">{{ user.sport }}</h3>
+            <p class="profile-detail-subtitle">{{ user.category }}</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Лучшие результаты (личные рекорды) -->
+      <div class="profile-results">
+        <h2 class="profile-results-title">Лучшие результаты</h2>
+
+        <div class="profile-results-list">
+          <div class="profile-result-item" *ngFor="let result of user.records">
+            <div class="profile-result-discipline">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span class="profile-result-name">{{ result.discipline }}</span>
+            </div>
+            <div class="profile-result-value">{{ result.time }}</div>
+            <div class="profile-result-date">{{ result.date }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+

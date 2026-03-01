@@ -35,6 +35,7 @@ body {
   font-family: $font-family-base;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* ===== ГЛОБАЛЬНЫЕ MIXINS ===== */

@@ -1,0 +1,28 @@
+<header class="main-header">
+  <div class="main-header-container">
+    <div class="main-logo">
+      <!-- Можно сделать ссылку на главную -->
+      <a routerLink="/main"  class="main-logo-text">Спорт — это мы</a>
+    </div>
+
+    <nav class="main-nav">
+      <a class="main-nav-link" routerLink="/universities" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Вузы</a>
+      <a class="main-nav-link" routerLink="/team" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Коллектив</a>
+      <a class="main-nav-link" routerLink="/competitions" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Соревнования</a>
+      <a class="main-nav-link" routerLink="/competitions_location" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Спортивные объекты</a>
+      <a class="main-nav-link" routerLink="/results" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Результаты</a>
+      <a class="main-nav-link" routerLink="/statistics" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Статистика</a>
+      <a class="main-nav-link" routerLink="/favorite" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">Избранное</a>
+    </nav>
+
+    <div class="main-header-actions">
+      <button class="main-btn-profile" (click)="onProfile()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Профиль</span>
+      </button>
+    </div>
+  </div>
+</header>

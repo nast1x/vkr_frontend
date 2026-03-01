@@ -1,0 +1,91 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="universities-content">
+
+  <div class="universities-container">
+
+    <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
+    <aside class="universities-sidebar">
+      <div class="filter-block">
+        <h3 class="filter-title">Фильтры</h3>
+
+        <div class="filter-group">
+          <label class="filter-label">Город</label>
+          <select class="filter-select" [(ngModel)]="selectedCity" (change)="applyFilters()">
+            <option value="">Все города</option>
+            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          </select>
+        </div>
+
+        <!-- Можно добавить больше фильтров в будущем, например, Вид спорта -->
+        <!--
+        <div class="filter-group">
+          <label class="filter-label">Вид спорта</label>
+          <select class="filter-select">
+            <option value="">Все виды</option>
+            ...
+          </select>
+        </div>
+        -->
+
+        <button class="filter-reset-btn" (click)="resetFilters()">
+          Сбросить фильтры
+        </button>
+      </div>
+    </aside>
+
+    <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список вузов -->
+    <section class="universities-list-section">
+      <h1 class="universities-title">Участвующие вузы</h1>
+
+      <div class="universities-grid">
+        <div class="university-card" *ngFor="let uni of filteredUniversities">
+          <div class="university-header">
+            <div class="university-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 10C9 10 10.5 12 12 12C13.5 12 15 10 15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="university-city">{{ uni.city }}</span>
+          </div>
+
+          <h2 class="university-name">{{ uni.name }}</h2>
+
+          <div class="university-stats">
+            <div class="stat-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ uni.athletes }} спортсменов</span>
+            </div>
+            <div class="stat-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span>{{ uni.coaches }} тренеров</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Сообщение, если ничего не найдено -->
+      <div *ngIf="filteredUniversities.length === 0" class="no-results">
+        <p>По выбранным фильтрам вузы не найдены.</p>
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
+    <aside class="universities-decor">
+      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
+    </aside>
+
+  </div>
+</main>
+

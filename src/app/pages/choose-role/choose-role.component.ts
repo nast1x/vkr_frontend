@@ -38,7 +38,7 @@ export class ChooseRoleComponent {
   }
 
   onLogin() {
-
+    this.router.navigate(['/login']);
   }
 
   onRegister() {
@@ -47,9 +47,10 @@ export class ChooseRoleComponent {
       return;
     }
     console.log('Регистрация с ролью:', this.selectedRole);
+    this.router.navigate(['/register']);
   }
 
   goBack() {
-    window.history.back();
+    this.router.navigate(['/home']);
   }
 }
