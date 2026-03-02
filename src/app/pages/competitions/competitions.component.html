@@ -1,0 +1,108 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="competitions-content">
+
+  <div class="competitions-container">
+
+    <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
+    <aside class="competitions-sidebar">
+      <div class="filter-block">
+        <h3 class="filter-title">Фильтры</h3>
+
+        <!-- Город проведения -->
+        <div class="filter-group">
+          <label class="filter-label">Город проведения</label>
+          <select class="filter-select" [(ngModel)]="selectedCity" (change)="applyFilters()">
+            <option value="">Все города</option>
+            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          </select>
+        </div>
+
+        <!-- Тип соревнований -->
+        <div class="filter-group">
+          <label class="filter-label">Тип соревнований</label>
+          <select class="filter-select" [(ngModel)]="selectedType" (change)="applyFilters()">
+            <option value="">Все типы</option>
+            <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
+          </select>
+        </div>
+
+        <!-- Статус (опционально) -->
+        <div class="filter-group">
+          <label class="filter-label">Статус</label>
+          <select class="filter-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+            <option value="">Все</option>
+            <option value="upcoming">Ожидаемые</option>
+            <option value="ongoing">Текущие</option>
+            <option value="completed">Завершённые</option>
+          </select>
+        </div>
+
+        <!-- Кнопка сброса -->
+        <button class="filter-reset-btn" (click)="resetFilters()">
+          Сбросить фильтры
+        </button>
+      </div>
+    </aside>
+
+    <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список соревнований -->
+    <section class="competitions-list-section">
+      <h1 class="competitions-title">Соревнования</h1>
+
+      <!-- Сетка соревнований -->
+      <div class="competitions-grid">
+        <div
+          class="competition-card"
+          *ngFor="let comp of filteredCompetitions"
+          (click)="onViewDetails(comp.id)"
+        >
+          <div class="competition-header">
+            <span class="competition-type-badge" [class]="comp.type">
+              {{ getTypeLabel(comp.type) }}
+            </span>
+            <span class="competition-status-badge" [class]="comp.status">
+              {{ getStatusLabel(comp.status) }}
+            </span>
+          </div>
+
+          <h2 class="competition-name">{{ comp.name }}</h2>
+
+          <div class="competition-info">
+            <div class="info-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span>{{ comp.city }}</span>
+            </div>
+            <div class="info-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>{{ comp.startDate }} — {{ comp.endDate }}</span>
+            </div>
+          </div>
+
+          <button class="competition-details-btn">
+            Подробнее
+          </button>
+        </div>
+      </div>
+
+      <!-- Сообщение, если ничего не найдено -->
+      <div *ngIf="filteredCompetitions.length === 0" class="no-results">
+        <p>По выбранным фильтрам соревнования не найдены.</p>
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
+    <aside class="competitions-decor">
+      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
+    </aside>
+
+  </div>
+</main>
+

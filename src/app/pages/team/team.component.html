@@ -1,0 +1,99 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="team-content">
+
+  <div class="team-container">
+
+    <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
+    <aside class="team-sidebar">
+      <div class="filter-block">
+        <h3 class="filter-title">Фильтры</h3>
+
+        <!-- Город -->
+        <div class="filter-group">
+          <label class="filter-label">Город</label>
+          <select class="filter-select" [(ngModel)]="selectedCity" (change)="applyFilters()">
+            <option value="">Все города</option>
+            <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+          </select>
+        </div>
+
+        <!-- Тип: Спортсмен / Тренер -->
+        <div class="filter-group">
+          <label class="filter-label">Тип участника</label>
+          <div class="filter-checkbox-group">
+            <label class="filter-checkbox">
+              <input type="checkbox" [(ngModel)]="showAthletes" (change)="applyFilters()">
+              <span class="checkbox-mark"></span>
+              Спортсмены
+            </label>
+            <label class="filter-checkbox">
+              <input type="checkbox" [(ngModel)]="showCoaches" (change)="applyFilters()">
+              <span class="checkbox-mark"></span>
+              Тренеры
+            </label>
+          </div>
+        </div>
+
+        <!-- Кнопка сброса -->
+        <button class="filter-reset-btn" (click)="resetFilters()">
+          Сбросить фильтры
+        </button>
+      </div>
+    </aside>
+
+    <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список участников -->
+    <section class="team-list-section">
+      <h1 class="team-title">Наш коллектив</h1>
+
+
+      <!-- Сетка участников -->
+      <div class="team-grid">
+        <div
+          class="team-member-card"
+          *ngFor="let member of filteredMembers"
+          (click)="onViewProfile(member.id)"
+        >
+          <div class="member-avatar">
+            <img [src]="member.avatar" [alt]="member.fullName" class="member-avatar-img">
+          </div>
+
+          <div class="member-info">
+            <h3 class="member-name">{{ member.fullName }}</h3>
+            <p class="member-university">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ member.university }}
+            </p>
+            <p class="member-city">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              {{ member.city }}
+            </p>
+            <p class="member-type" [class.athlete]="member.type === 'athlete'" [class.coach]="member.type === 'coach'">
+              {{ member.type === 'athlete' ? 'Спортсмен' : 'Тренер' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сообщение, если ничего не найдено -->
+      <div *ngIf="filteredMembers.length === 0" class="no-results">
+        <p>По выбранным фильтрам участники не найдены.</p>
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
+    <aside class="team-decor">
+      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
+    </aside>
+
+  </div>
+</main>
+

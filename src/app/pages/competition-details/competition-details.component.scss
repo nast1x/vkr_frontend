@@ -1,0 +1,437 @@
+@use '../../../styles.scss' as *;
+
+// ===== ПЕРЕМЕННЫЕ =====
+$main-header-height: 70px;
+$main-border: #E0E0E0;
+
+// ===== HOST =====
+:host {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family-base;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// ===== КОНТЕНТ =====
+.competition-details-content {
+  padding-top: $main-header-height;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.competition-details-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+// ===== КАРТОЧКА СОРЕВНОВАНИЯ =====
+.competition-details-card {
+  background: $white;
+  border-radius: 20px;
+  border: 2px solid $main-border;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+// ===== ШАПКА СОРЕВНОВАНИЯ =====
+.competition-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 32px;
+  border-bottom: 2px solid $main-border;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.competition-title-section {
+  flex: 1;
+}
+
+.competition-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0 0 16px 0;
+}
+
+.competition-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.competition-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: $text-secondary;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+.competition-status-badge {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+
+  &.upcoming {
+    background: rgba(#2196F3, 0.1);
+    color: #2196F3;
+  }
+
+  &.ongoing {
+    background: rgba(#4CAF50, 0.1);
+    color: #4CAF50;
+  }
+
+  &.completed {
+    background: rgba($text-secondary, 0.1);
+    color: $text-secondary;
+  }
+}
+
+// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
+.competition-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.competition-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  @include transition;
+
+  &:hover {
+    background: #f0f1f2;
+  }
+
+  &.clickable {
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      border-color: $primary-color;
+      background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+    }
+  }
+}
+
+.competition-detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  border-radius: 12px;
+  color: $primary-color;
+  flex-shrink: 0;
+}
+
+.competition-detail-content {
+  flex: 1;
+}
+
+.competition-detail-label {
+  display: block;
+  font-size: 13px;
+  color: $text-secondary;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.competition-detail-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 4px 0;
+}
+
+.competition-detail-subtitle {
+  font-size: 14px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.competition-detail-image {
+  flex-shrink: 0;
+}
+
+.venue-photo {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid $main-border;
+}
+
+.competition-detail-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: $text-secondary;
+  flex-shrink: 0;
+}
+
+// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+.competition-results {
+  margin-bottom: 40px;
+}
+
+.competition-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.competition-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.competition-result-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.result-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: $white;
+  color: $text-secondary;
+  border: 2px solid $main-border;
+  flex-shrink: 0;
+
+  &.gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.silver {
+    background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.bronze {
+    background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
+    color: $white;
+    border-color: transparent;
+  }
+}
+
+.result-athlete {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.result-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $primary-color;
+}
+
+.result-athlete-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-athlete-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.result-university {
+  font-size: 13px;
+  color: $text-secondary;
+}
+
+.result-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: $primary-color;
+  min-width: 100px;
+  text-align: right;
+}
+
+// ===== ПРОТОКОЛЫ =====
+.competition-protocols {
+  margin-bottom: 40px;
+}
+
+.protocols-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.protocol-item {
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  overflow: hidden;
+}
+
+.protocol-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+  border-bottom: 2px solid $main-border;
+}
+
+.protocol-discipline {
+  font-size: 18px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.protocol-type {
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.protocol-results {
+  padding: 8px 0;
+}
+
+.protocol-result-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: rgba($primary-color, 0.05);
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+.protocol-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $text-secondary;
+  flex-shrink: 0;
+}
+
+.protocol-athlete-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.protocol-athlete-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.protocol-university {
+  font-size: 12px;
+  color: $text-secondary;
+}
+
+.protocol-result {
+  font-size: 16px;
+  font-weight: 700;
+  color: $primary-color;
+  min-width: 90px;
+  text-align: right;
+}
+
+// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+.fixed-logo-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(-25%);
+}
+
+.fixed-logo-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(25%) scaleX(-1);
+}

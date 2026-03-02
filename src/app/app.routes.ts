@@ -7,6 +7,9 @@ import {MainComponent} from "./pages/main/main.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {HeaderComponent} from "./pages/header/header.component";
 import {UniversitiesComponent} from "./pages/universities/universities.component";
+import {TeamComponent} from "./pages/team/team.component";
+import {CompetitionsComponent} from "./pages/competitions/competitions.component";
+import {CompetitionDetailsComponent} from "./pages/competition-details/competition-details.component";
 
 
 export const routes: Routes = [
@@ -19,5 +22,8 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'header', component: HeaderComponent },
   { path: 'universities', component: UniversitiesComponent },
+  { path: 'team', component: TeamComponent },
+  { path: 'competitions', component: CompetitionsComponent },
+  { path: 'competition-details', component: CompetitionDetailsComponent },
   { path: '**', redirectTo: '' }
 ];

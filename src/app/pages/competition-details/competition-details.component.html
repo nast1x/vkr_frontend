@@ -1,0 +1,154 @@
+<!-- Шапка сайта -->
+<app-header></app-header>
+
+<!-- Основной контент -->
+<main class="competition-details-content">
+
+  <div class="competition-details-container">
+
+    <!-- Карточка соревнования -->
+    <div class="competition-details-card">
+
+      <!-- Заголовок и основная информация -->
+      <div class="competition-header">
+        <div class="competition-title-section">
+          <h1 class="competition-name">{{ competition.name }}</h1>
+          <div class="competition-meta">
+            <span class="competition-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              {{ competition.city }}
+            </span>
+            <span class="competition-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              {{ competition.startDate }} — {{ competition.endDate }}
+            </span>
+          </div>
+        </div>
+
+        <div class="competition-status-badge" [class]="competition.status">
+          {{ getStatusLabel(competition.status) }}
+        </div>
+      </div>
+
+      <!-- Детальная информация -->
+      <div class="competition-details">
+
+        <!-- Место проведения (кликабельное) -->
+        <div class="competition-detail-item clickable" (click)="onVenueClick()">
+          <div class="competition-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 10C9 10 10.5 12 12 12C13.5 12 15 10 15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="competition-detail-content">
+            <span class="competition-detail-label">Место проведения</span>
+            <h3 class="competition-detail-value">{{ competition.venue.name }}</h3>
+            <p class="competition-detail-subtitle">{{ competition.venue.address }}</p>
+          </div>
+          <div class="competition-detail-image">
+            <img [src]="competition.venue.photo" [alt]="competition.venue.name" class="venue-photo">
+          </div>
+          <div class="competition-detail-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Вид спорта (не кликабельный) -->
+        <div class="competition-detail-item">
+          <div class="competition-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="competition-detail-content">
+            <span class="competition-detail-label">Вид спорта</span>
+            <h3 class="competition-detail-value">{{ competition.sport }}</h3>
+            <p class="competition-detail-subtitle">{{ competition.category }}</p>
+          </div>
+        </div>
+
+        <!-- Тип соревнований -->
+        <div class="competition-detail-item">
+          <div class="competition-detail-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="competition-detail-content">
+            <span class="competition-detail-label">Тип соревнований</span>
+            <h3 class="competition-detail-value">{{ getTypeLabel(competition.type) }}</h3>
+            <p class="competition-detail-subtitle">Организатор: {{ competition.organizer }}</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Лучшие результаты соревнований -->
+      <div class="competition-results">
+        <h2 class="competition-section-title">🏆 Лучшие результаты</h2>
+
+        <div class="competition-results-list">
+          <div class="competition-result-item" *ngFor="let result of competition.bestResults; let i = index">
+            <div class="result-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+              {{ i + 1 }}
+            </div>
+            <div class="result-athlete" (click)="onAthleteClick(result.athleteId)">
+              <img [src]="result.athleteAvatar" [alt]="result.athleteName" class="result-avatar">
+              <div class="result-athlete-info">
+                <span class="result-athlete-name">{{ result.athleteName }}</span>
+                <span class="result-university">{{ result.university }}</span>
+              </div>
+            </div>
+            <div class="result-value">{{ result.result }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Протоколы соревнований -->
+      <div class="competition-protocols">
+        <h2 class="competition-section-title">📋 Протоколы соревнований</h2>
+
+        <div class="protocols-list">
+          <div class="protocol-item" *ngFor="let protocol of competition.protocols">
+            <div class="protocol-header">
+              <h3 class="protocol-discipline">{{ protocol.discipline }}</h3>
+              <span class="protocol-type">{{ protocol.type }}</span>
+            </div>
+
+            <div class="protocol-results">
+              <div
+                class="protocol-result-row"
+                *ngFor="let entry of protocol.results; let i = index"
+                (click)="onAthleteClick(entry.athleteId)"
+              >
+                <div class="protocol-rank">{{ i + 1 }}</div>
+                <div class="protocol-athlete-info">
+                  <span class="protocol-athlete-name">{{ entry.athleteName }}</span>
+                  <span class="protocol-university">{{ entry.university }}</span>
+                </div>
+                <div class="protocol-result">{{ entry.result }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
