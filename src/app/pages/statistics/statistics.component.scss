@@ -1,0 +1,507 @@
+@use '../../../styles.scss' as *;
+
+// ===== ПЕРЕМЕННЫЕ =====
+$main-header-height: 70px;
+$main-border: #E0E0E0;
+
+// ===== HOST =====
+:host {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family-base;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// ===== КОНТЕНТ =====
+.statistics-content {
+  padding-top: $main-header-height;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.statistics-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+// ===== КАРТОЧКА СТАТИСТИКИ =====
+.statistics-card {
+  background: $white;
+  border-radius: 20px;
+  border: 2px solid $main-border;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+// ===== ШАПКА =====
+.statistics-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid $main-border;
+}
+
+.statistics-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0 0 8px 0;
+}
+
+.statistics-subtitle {
+  font-size: 15px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+// ===== ОБЩАЯ СТАТИСТИКА =====
+.statistics-overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+  border-radius: 16px;
+  border: 2px solid $main-border;
+}
+
+.overview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.overview-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  border-radius: 50%;
+  color: $primary-color;
+}
+
+.overview-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.overview-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.overview-label {
+  font-size: 13px;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.overview-divider {
+  width: 1px;
+  background: $main-border;
+}
+
+// ===== СЕКЦИИ =====
+.statistics-section {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 2px solid $main-border;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+// ===== РЕЙТИНГ ВУЗОВ =====
+.universities-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-item {
+  display: grid;
+  grid-template-columns: 50px 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.ranking-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: $white;
+  color: $text-secondary;
+  border: 2px solid $main-border;
+
+  &.gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.silver {
+    background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.bronze {
+    background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
+    color: $white;
+    border-color: transparent;
+  }
+}
+
+.ranking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ranking-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0;
+}
+
+.ranking-city {
+  font-size: 13px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.ranking-medals {
+  display: flex;
+  gap: 12px;
+}
+
+.medal {
+  font-size: 14px;
+  font-weight: 600;
+
+  &.gold { color: #FFD700; }
+  &.silver { color: #C0C0C0; }
+  &.bronze { color: #CD7F32; }
+}
+
+.ranking-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.total-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.total-label {
+  font-size: 11px;
+  color: $text-secondary;
+  text-transform: uppercase;
+}
+
+// ===== РЕЙТИНГ СПОРТСМЕНОВ =====
+.athletes-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.athlete-item {
+  display: grid;
+  grid-template-columns: 50px 60px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.athlete-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: $white;
+  color: $text-secondary;
+  border: 2px solid $main-border;
+
+  &.gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.silver {
+    background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
+    color: $white;
+    border-color: transparent;
+  }
+
+  &.bronze {
+    background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
+    color: $white;
+    border-color: transparent;
+  }
+}
+
+.athlete-avatar-container {
+  cursor: pointer;
+}
+
+.athlete-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $primary-color;
+}
+
+.athlete-info {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &:hover {
+    .athlete-name {
+      color: $primary-color;
+    }
+  }
+}
+
+.athlete-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0;
+  @include transition;
+}
+
+.athlete-university {
+  font-size: 13px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.athlete-sport {
+  font-size: 12px;
+  color: $primary-color;
+  font-weight: 500;
+  margin: 0;
+}
+
+.athlete-achievements {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $text-secondary;
+
+  svg {
+    color: $primary-color;
+  }
+}
+
+// ===== СТАТИСТИКА ПО ВИДАМ СПОРТА =====
+.sports-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sport-stat-item {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+}
+
+.sport-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sport-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.sport-athletes {
+  font-size: 13px;
+  color: $text-secondary;
+}
+
+.sport-stat-bar {
+  height: 8px;
+  background: $white;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid $main-border;
+}
+
+.sport-stat-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+  border-radius: 4px;
+  @include transition;
+}
+
+.sport-stat-details {
+  display: flex;
+  gap: 24px;
+}
+
+.stat-detail {
+  font-size: 13px;
+  color: $text-secondary;
+}
+
+// ===== СТАТИСТИКА ПО ГОРОДАМ =====
+.cities-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.city-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+}
+
+.city-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.city-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0;
+}
+
+.city-details {
+  font-size: 13px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.city-stat-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.value-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.value-label {
+  font-size: 11px;
+  color: $text-secondary;
+  text-transform: uppercase;
+}
+
+// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+.fixed-logo-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(-25%);
+}
+
+.fixed-logo-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(25%) scaleX(-1);
+}

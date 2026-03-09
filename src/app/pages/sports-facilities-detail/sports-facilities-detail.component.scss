@@ -1,0 +1,464 @@
+@use '../../../styles.scss' as *;
+
+// ===== ПЕРЕМЕННЫЕ =====
+$main-header-height: 70px;
+$main-border: #E0E0E0;
+
+// ===== HOST =====
+:host {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family-base;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// ===== КОНТЕНТ =====
+.facility-details-content {
+  padding-top: $main-header-height;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.facility-details-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+// ===== КАРТОЧКА ОБЪЕКТА =====
+.facility-details-card {
+  background: $white;
+  border-radius: 20px;
+  border: 2px solid $main-border;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+// ===== ШАПКА ОБЪЕКТА =====
+.facility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 32px;
+  border-bottom: 2px solid $main-border;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.facility-title-section {
+  flex: 1;
+}
+
+.facility-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0 0 16px 0;
+}
+
+.facility-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.facility-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: $text-secondary;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+.facility-status-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.facility-type-badge {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba($primary-color, 0.1);
+  color: $primary-color;
+
+  &.open {
+    background: rgba(#4CAF50, 0.1);
+    color: #4CAF50;
+  }
+
+  &.closed {
+    background: rgba(#FF9800, 0.1);
+    color: #FF9800;
+  }
+
+  &.indoor {
+    background: rgba(#2196F3, 0.1);
+    color: #2196F3;
+  }
+
+  &.outdoor {
+    background: rgba(#4CAF50, 0.1);
+    color: #4CAF50;
+  }
+}
+
+.facility-usage-badge {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.training {
+    background: rgba(#9C27B0, 0.1);
+    color: #9C27B0;
+  }
+
+  &.competitions {
+    background: rgba(#F44336, 0.1);
+    color: #F44336;
+  }
+
+  &.both {
+    background: rgba(#2196F3, 0.1);
+    color: #2196F3;
+  }
+}
+
+// ===== ФОТО И ОПИСАНИЕ =====
+.facility-description-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid $main-border;
+}
+
+.facility-image-container {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid $main-border;
+}
+
+.facility-main-photo {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.facility-description-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.facility-description-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.facility-description-text {
+  font-size: 15px;
+  color: $text-secondary;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.facility-address {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: $text-secondary;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
+.facility-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.facility-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  @include transition;
+
+  &:hover {
+    background: #f0f1f2;
+  }
+}
+
+.facility-detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  border-radius: 12px;
+  color: $primary-color;
+  flex-shrink: 0;
+}
+
+.facility-detail-content {
+  flex: 1;
+}
+
+.facility-detail-label {
+  display: block;
+  font-size: 13px;
+  color: $text-secondary;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.facility-detail-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 4px 0;
+}
+
+.facility-detail-subtitle {
+  font-size: 14px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.facility-sports-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sport-tag {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  color: $primary-color;
+  border-radius: 20px;
+}
+
+// ===== СОРЕВНОВАНИЯ =====
+.facility-competitions {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 2px solid $main-border;
+}
+
+.facility-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.competitions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.competition-link-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+    transform: translateX(4px);
+  }
+}
+
+.competition-link-info {
+  flex: 1;
+}
+
+.competition-link-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 4px 0;
+}
+
+.competition-link-date {
+  font-size: 13px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.competition-link-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: $text-secondary;
+  flex-shrink: 0;
+  @include transition;
+
+  .competition-link-item:hover & {
+    color: $primary-color;
+  }
+}
+
+// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+.facility-records {
+  margin-bottom: 40px;
+}
+
+.facility-records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.facility-record-item {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.record-discipline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+.record-discipline-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.record-athlete {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.record-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $primary-color;
+}
+
+.record-athlete-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.record-athlete-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.record-university {
+  font-size: 12px;
+  color: $text-secondary;
+}
+
+.record-result {
+  font-size: 17px;
+  font-weight: 700;
+  color: $primary-color;
+  text-align: right;
+}
+
+.record-date {
+  font-size: 13px;
+  color: $text-secondary;
+  text-align: right;
+}
+
+// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+.fixed-logo-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(-25%);
+}
+
+.fixed-logo-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(25%) scaleX(-1);
+}

@@ -10,6 +10,10 @@ import {UniversitiesComponent} from "./pages/universities/universities.component
 import {TeamComponent} from "./pages/team/team.component";
 import {CompetitionsComponent} from "./pages/competitions/competitions.component";
 import {CompetitionDetailsComponent} from "./pages/competition-details/competition-details.component";
+import {SportsFacilitiesComponent} from "./pages/sports-facilities/sports-facilities.component";
+import {SportsFacilitiesDetailComponent} from "./pages/sports-facilities-detail/sports-facilities-detail.component";
+import {StatisticsComponent} from "./pages/statistics/statistics.component";
+import {FavoriteComponent} from "./pages/favorite/favorite.component";
 
 
 export const routes: Routes = [
@@ -25,5 +29,9 @@ export const routes: Routes = [
   { path: 'team', component: TeamComponent },
   { path: 'competitions', component: CompetitionsComponent },
   { path: 'competition-details', component: CompetitionDetailsComponent },
+  { path: 'sports-facilities', component: SportsFacilitiesComponent },
+  { path: 'sports-facilities-detail', component: SportsFacilitiesDetailComponent },
+  { path: 'statistics', component: StatisticsComponent },
+  { path: 'favorite', component: FavoriteComponent },
   { path: '**', redirectTo: '' }
 ];

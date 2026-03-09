@@ -1,0 +1,396 @@
+@use '../../../styles.scss' as *;
+
+// ===== ПЕРЕМЕННЫЕ =====
+$main-header-height: 70px;
+$main-border: #E0E0E0;
+
+// ===== HOST =====
+:host {
+  display: block;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family-base;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// ===== КОНТЕНТ =====
+.favorite-content {
+  padding-top: $main-header-height;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.favorite-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+// ===== КАРТОЧКА ИЗБРАННОГО =====
+.favorite-card {
+  background: $white;
+  border-radius: 20px;
+  border: 2px solid $main-border;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+// ===== ШАПКА =====
+.favorite-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid $main-border;
+}
+
+.favorite-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0 0 8px 0;
+}
+
+.favorite-subtitle {
+  font-size: 15px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+// ===== ВКЛАДКИ =====
+.favorite-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.favorite-tab {
+  padding: 10px 28px;
+  font-size: 15px;
+  font-weight: 500;
+  background: $white;
+  border: 2px solid $main-border;
+  border-radius: 10px;
+  color: $text-primary;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+    border-color: transparent;
+    color: $white;
+  }
+}
+
+// ===== СЕКЦИИ =====
+.favorite-section {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 2px solid $main-border;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.section-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  color: $primary-color;
+  border-radius: 20px;
+}
+
+// ===== СЕТКА ИЗБРАННОГО =====
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+// ===== КАРТОЧКА СПОРТСМЕНА =====
+.favorite-athlete-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+}
+
+.athlete-avatar-container {
+  cursor: pointer;
+}
+
+.athlete-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $primary-color;
+}
+
+.athlete-info {
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &:hover {
+    .athlete-name {
+      color: $primary-color;
+    }
+  }
+}
+
+.athlete-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0;
+  @include transition;
+}
+
+.athlete-university {
+  font-size: 12px;
+  color: $text-secondary;
+  margin: 0;
+}
+
+.athlete-sport {
+  font-size: 12px;
+  color: $primary-color;
+  font-weight: 500;
+  margin: 0;
+}
+
+// ===== КАРТОЧКА СОРЕВНОВАНИЯ =====
+.favorite-competition-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+}
+
+.competition-info {
+  flex: 1;
+  cursor: pointer;
+
+  &:hover {
+    .competition-name {
+      color: $primary-color;
+    }
+  }
+}
+
+.competition-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 8px 0;
+  @include transition;
+}
+
+.competition-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.competition-city,
+.competition-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: $text-secondary;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+// ===== КАРТОЧКА ОБЪЕКТА =====
+.favorite-facility-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+}
+
+.facility-image-container {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.facility-photo {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid $main-border;
+}
+
+.facility-info {
+  flex: 1;
+  cursor: pointer;
+
+  &:hover {
+    .facility-name {
+      color: $primary-color;
+    }
+  }
+}
+
+.facility-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 4px 0;
+  @include transition;
+}
+
+.facility-city,
+.facility-sport {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: $text-secondary;
+  margin: 0;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+}
+
+// ===== КНОПКА УДАЛЕНИЯ =====
+.remove-favorite-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 2px solid $text-secondary;
+  border-radius: 8px;
+  color: $text-secondary;
+  cursor: pointer;
+  @include transition;
+  flex-shrink: 0;
+
+  &:hover {
+    background: #F44336;
+    border-color: #F44336;
+    color: $white;
+    transform: scale(1.1);
+  }
+}
+
+// ===== НЕТ ИЗБРАННОГО =====
+.no-favorites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed $main-border;
+
+  svg {
+    color: $text-secondary;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 16px;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+.fixed-logo-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(-25%);
+}
+
+.fixed-logo-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  max-width: 30vw;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translateX(25%) scaleX(-1);
+}

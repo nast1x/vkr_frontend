@@ -96,27 +96,6 @@
 
       </div>
 
-      <!-- Лучшие результаты соревнований -->
-      <div class="competition-results">
-        <h2 class="competition-section-title">🏆 Лучшие результаты</h2>
-
-        <div class="competition-results-list">
-          <div class="competition-result-item" *ngFor="let result of competition.bestResults; let i = index">
-            <div class="result-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
-              {{ i + 1 }}
-            </div>
-            <div class="result-athlete" (click)="onAthleteClick(result.athleteId)">
-              <img [src]="result.athleteAvatar" [alt]="result.athleteName" class="result-avatar">
-              <div class="result-athlete-info">
-                <span class="result-athlete-name">{{ result.athleteName }}</span>
-                <span class="result-university">{{ result.university }}</span>
-              </div>
-            </div>
-            <div class="result-value">{{ result.result }}</div>
-          </div>
-        </div>
-      </div>
-
       <!-- Протоколы соревнований -->
       <div class="competition-protocols">
         <h2 class="competition-section-title">📋 Протоколы соревнований</h2>
