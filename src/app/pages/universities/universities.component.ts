@@ -1,55 +1,61 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {HeaderComponent} from "../header/header.component";
-import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import { HeaderComponent } from "../header/header.component";
+import { FormsModule } from "@angular/forms";
+import { NgForOf, NgIf } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { API_URLS } from '../../config/api.config';
 
 interface University {
-  id: number;
-  name: string;
+  idUniversity: number;
+  shortName: string;
   city: string;
-  athletes: number;
-  coaches: number;
+  athletesCount: number;
+  coachesCount: number;
 }
 
 @Component({
   selector: 'app-universities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, NgForOf],
+  imports: [HeaderComponent, FormsModule, NgForOf, NgIf],
   templateUrl: './universities.component.html',
   styleUrl: './universities.component.scss'
 })
-
-export class UniversitiesComponent {
+export class UniversitiesComponent implements OnInit {
   selectedCity: string = '';
-  cities: string[] = []; // Будет заполнено уникальными городами
+  cities: string[] = [];
   universities: University[] = [];
   filteredUniversities: University[] = [];
+  isLoading: boolean = true;
+  error: string | null = null;
 
-  constructor(private router: Router) {
-    this.loadMockData();
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    this.loadUniversities();
   }
 
-  // Загрузка данных-заглушек
-  loadMockData(): void {
-    this.universities = [
-      { id: 1, name: 'МГУ им. М.В. Ломоносова', city: 'Москва', athletes: 145, coaches: 28 },
-      { id: 2, name: 'СПбГУ', city: 'Санкт-Петербург', athletes: 112, coaches: 22 },
-      { id: 3, name: 'НГУ', city: 'Новосибирск', athletes: 85, coaches: 15 },
-      { id: 4, name: 'КФУ', city: 'Казань', athletes: 98, coaches: 19 },
-      { id: 5, name: 'УрФУ', city: 'Екатеринбург', athletes: 76, coaches: 14 },
-      { id: 6, name: 'МГТУ им. Баумана', city: 'Москва', athletes: 130, coaches: 25 },
-      { id: 7, name: 'ТГУ', city: 'Томск', athletes: 64, coaches: 12 },
-      { id: 8, name: 'ДВФУ', city: 'Владивосток', athletes: 55, coaches: 10 },
-      { id: 9, name: 'ЮФУ', city: 'Ростов-на-Дону', athletes: 70, coaches: 13 },
-      { id: 10, name: 'Самарский университет', city: 'Самара', athletes: 60, coaches: 11 },
-    ];
+  loadUniversities(): void {
+    this.isLoading = true;
+    this.error = null;
 
-    // Извлекаем уникальные города для фильтра
-    this.cities = Array.from(new Set(this.universities.map(u => u.city))).sort();
-
-    // Инициализируем отфильтрованный список всеми вузами
-    this.filteredUniversities = this.universities;
+    this.http.get<University[]>(API_URLS.UNIVERSITY_STATS)
+      .subscribe({
+        next: (data) => {
+          this.universities = data;
+          this.cities = Array.from(new Set(this.universities.map(u => u.city))).sort();
+          this.filteredUniversities = this.universities;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки данных:', err);
+          this.error = 'Не удалось загрузить данные. Проверьте подключение к серверу.';
+          this.isLoading = false;
+        }
+      });
   }
 
   applyFilters(): void {
@@ -68,8 +74,6 @@ export class UniversitiesComponent {
   }
 
   onViewDetails(id: number): void {
-    // Переход на страницу конкретного вуза (пока заглушка)
     console.log('View university details:', id);
-    // this.router.navigate(['/universities', id]);
   }
 }

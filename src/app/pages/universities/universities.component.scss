@@ -34,13 +34,18 @@ $decor-width: 300px;
   display: grid;
   grid-template-columns: $sidebar-width 1fr $decor-width;
   gap: 32px;
-  align-items: start;
+  align-items: start; // Изменено на start, чтобы элементы не растягивались по высоте
 }
 
 // ===== САЙДБАР (ФИЛЬТРЫ) =====
 .universities-sidebar {
   position: sticky;
-  top: $main-header-height + 24px; // Отступ от шапки
+  top: $main-header-height + 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  // Добавляем высоту, чтобы задать опорную точку для выравнивания
+  height: 100%;
 }
 
 .filter-block {
@@ -49,6 +54,10 @@ $decor-width: 300px;
   border-radius: 16px;
   border: 2px solid $main-border;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 66.4px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
 }
 
 .filter-title {
@@ -100,6 +109,7 @@ $decor-width: 300px;
   color: $text-secondary;
   cursor: pointer;
   @include transition;
+  margin-top: auto; // Кнопка прижимается к низу блока
 
   &:hover {
     border-color: $primary-color;
@@ -110,14 +120,16 @@ $decor-width: 300px;
 
 // ===== СПИСОК ВУЗОВ =====
 .universities-list-section {
-  // Центральная колонка занимает все доступное место
+  display: flex;
+  flex-direction: column;
+  gap: 24px; // Отступ между заголовком и сеткой
 }
 
 .universities-title {
   font-size: 32px;
   font-weight: 700;
   color: $text-primary;
-  margin-bottom: 32px;
+  margin: 0;
   text-align: center;
 }
 
@@ -125,6 +137,7 @@ $decor-width: 300px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
+  margin-top: 0;
 }
 
 .university-card {
@@ -136,6 +149,10 @@ $decor-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  // Критически важно: задаем высоту карточки, равную высоте блока фильтров
+  // Используем относительную единицу, которая будет выравниваться по высоте ближайшего grid-элемента
+  height: 100%;
+  min-height: 280px; // Минимальная высота, равная высоте блока фильтров
 
   &:hover {
     transform: translateY(-6px);
@@ -175,7 +192,8 @@ $decor-width: 300px;
   color: $text-primary;
   margin: 0;
   line-height: 1.4;
-  flex: 1; // Чтобы название занимало место и прижимало кнопки вниз
+  // Позволяем названию занимать доступное пространство
+  flex: 1;
 }
 
 .university-stats {
@@ -210,7 +228,7 @@ $decor-width: 300px;
   border-radius: 10px;
   cursor: pointer;
   @include transition;
-  margin-top: auto; // Прижимает кнопку к низу карточки
+  margin-top: auto; // Кнопка прижимается к низу карточки
 
   &:hover {
     transform: translateY(-2px);
@@ -226,6 +244,11 @@ $decor-width: 300px;
   background: $white;
   border-radius: 16px;
   border: 2px dashed $main-border;
+  // Для сообщения "не найдено" тоже задаем минимальную высоту, чтобы сетка не схлопывалась
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 // ===== ДЕКОР СПРАВА =====
@@ -241,11 +264,74 @@ $decor-width: 300px;
   height: auto;
   max-height: 600px;
   object-fit: contain;
-  // Можно добавить легкую анимацию или тень
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ (как везде) =====
+// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: $white;
+  border-radius: 16px;
+  border: 2px solid $main-border;
+  grid-column: 1 / -1;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-state {
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba($primary-color, 0.2);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    font-size: 16px;
+    color: $text-secondary;
+  }
+}
+
+.error-state {
+  p {
+    font-size: 16px;
+    color: #d32f2f;
+    margin-bottom: 20px;
+  }
+
+  .retry-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
 .fixed-logo-left {
   position: fixed;
   bottom: 0;
