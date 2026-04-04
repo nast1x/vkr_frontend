@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
-import {HeaderComponent} from "../header/header.component";
-import {NgForOf, NgIf} from "@angular/common";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { HeaderComponent } from "../header/header.component";
+import { NgForOf, NgIf } from "@angular/common";
+import { ActivatedRoute, Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { API_URLS } from '../../config/api.config';
+
 interface Competition {
   id: number;
   name: string;
@@ -21,128 +24,72 @@ interface Record {
 interface SportsFacility {
   id: number;
   name: string;
-  type: 'open' | 'closed' | 'indoor' | 'outdoor';
-  typeDescription: string;
-  usage: 'training' | 'competitions' | 'both';
-  usageDescription: string;
   city: string;
-  sport: string;
-  sportsList: string[];
+  address: string;
   photo: string;
   description: string;
-  address: string;
+  sportsList: string[];
   competitions: Competition[];
   records: Record[];
 }
+
 @Component({
   selector: 'app-sports-facilities-detail',
   standalone: true,
-  imports: [
-    HeaderComponent,
-    NgForOf,
-    NgIf
-  ],
+  imports: [HeaderComponent, NgForOf, NgIf],
   templateUrl: './sports-facilities-detail.component.html',
   styleUrl: './sports-facilities-detail.component.scss'
 })
-export class SportsFacilitiesDetailComponent {
+export class SportsFacilitiesDetailComponent implements OnInit {
   facility!: SportsFacility;
+  isLoading: boolean = true;
+  error: string | null = null;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.loadMockData();
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    this.loadFacility();
   }
 
-  loadMockData(): void {
+  loadFacility(): void {
+    this.isLoading = true;
+    this.error = null;
+
     const facilityId = this.route.snapshot.paramMap.get('id');
-    console.log('Loading facility:', facilityId);
 
-    // Заглушка данных
-    this.facility = {
-      id: 1,
-      name: 'СК "Олимпийский"',
-      type: 'closed',
-      typeDescription: 'Крытое помещение с климат-контролем',
-      usage: 'both',
-      usageDescription: 'Проводятся как тренировки, так и соревнования',
-      city: 'Москва',
-      sport: 'Плавание',
-      sportsList: ['Плавание', 'Водное поло', 'Синхронное плавание', 'Прыжки в воду'],
-      photo: '/assets/images/facility-1.png',
-      description: 'Современный плавательный комплекс с 50-метровым бассейном на 8 дорожек. Оборудован системой электронного хронометража и трибунами на 500 мест. Соответствует всем международным стандартам для проведения соревнований любого уровня.',
-      address: 'г. Москва, ул. Олимпийская, д. 1',
-      competitions: [
-        { id: 1, name: 'Чемпионат города по плаванию 2024', date: '15-17.03.2024' },
-        { id: 2, name: 'Кубок вузов по плаванию', date: '10-12.02.2024' },
-        { id: 3, name: 'Первенство Москвы среди юниоров', date: '20-22.01.2024' },
-      ],
-      records: [
-        {
-          athleteId: 1,
-          athleteName: 'Иванов Алексей Петрович',
-          athleteAvatar: '/assets/images/avatar-placeholder.png',
-          university: 'МГУ им. Ломоносова',
-          discipline: '50м вольный стиль',
-          result: '25,8 с',
-          date: '15.03.2024'
-        },
-        {
-          athleteId: 2,
-          athleteName: 'Петров Сергей Владимирович',
-          athleteAvatar: '/assets/images/avatar-placeholder.png',
-          university: 'МГТУ им. Баумана',
-          discipline: '100м вольный стиль',
-          result: '56,3 с',
-          date: '15.03.2024'
-        },
-        {
-          athleteId: 3,
-          athleteName: 'Смирнов Дмитрий Олегович',
-          athleteAvatar: '/assets/images/avatar-placeholder.png',
-          university: 'СПбГУ',
-          discipline: '200м брасс',
-          result: '2:15,4 мин',
-          date: '16.03.2024'
-        },
-        {
-          athleteId: 4,
-          athleteName: 'Козлов Андрей Николаевич',
-          athleteAvatar: '/assets/images/avatar-placeholder.png',
-          university: 'НГУ',
-          discipline: '100м на спине',
-          result: '1:02,5 мин',
-          date: '17.03.2024'
-        },
-      ]
-    };
-  }
+    if (!facilityId) {
+      this.error = 'ID объекта не указан';
+      this.isLoading = false;
+      return;
+    }
 
-  getTypeLabel(type: string): string {
-    const labels: { [key: string]: string } = {
-      'open': 'Открытый',
-      'closed': 'Закрытый',
-      'indoor': 'Крытый',
-      'outdoor': 'Открытый корт'
-    };
-    return labels[type] || type;
-  }
-
-  getUsageLabel(usage: string): string {
-    const labels: { [key: string]: string } = {
-      'training': 'Тренировки',
-      'competitions': 'Соревнования',
-      'both': 'Тренировки и соревнования'
-    };
-    return labels[usage] || usage;
+    this.http.get<SportsFacility>(`${API_URLS.SPORT_FACILITIES}/${facilityId}`)
+      .subscribe({
+        next: (data) => {
+          this.facility = data;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Ошибка загрузки данных:', err);
+          this.error = 'Не удалось загрузить данные об объекте';
+          this.isLoading = false;
+        }
+      });
   }
 
   onCompetitionClick(competitionId: number): void {
-    this.router.navigate(['/competitions', competitionId]);
+    this.router.navigate(['/competition-details', competitionId]);
   }
 
   onAthleteClick(athleteId: number): void {
     this.router.navigate(['/profile', athleteId]);
+  }
+
+  onBack(): void {
+    this.router.navigate(['/sports-facilities']);
   }
 }

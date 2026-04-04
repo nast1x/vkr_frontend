@@ -3,11 +3,30 @@
 
 <!-- Основной контент -->
 <main class="competition-details-content">
-
   <div class="competition-details-container">
 
+    <!-- Кнопка "Назад" -->
+    <button class="back-btn" (click)="onBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Назад к списку
+    </button>
+
+    <!-- Индикатор загрузки -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Загрузка данных...</p>
+    </div>
+
+    <!-- Сообщение об ошибке -->
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadCompetition()">Попробовать снова</button>
+    </div>
+
     <!-- Карточка соревнования -->
-    <div class="competition-details-card">
+    <div class="competition-details-card" *ngIf="!isLoading && !error && competition">
 
       <!-- Заголовок и основная информация -->
       <div class="competition-header">
@@ -26,21 +45,26 @@
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                 <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              {{ competition.startDate }} — {{ competition.endDate }}
+              {{ formatDate(competition.startDate) }} — {{ competition.endDate ? formatDate(competition.endDate) : 'ТД' }}
+            </span>
+            <span class="competition-meta-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M14.5 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V7.5L14.5 2Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              {{ competition.sportType }}
             </span>
           </div>
         </div>
-
-        <div class="competition-status-badge" [class]="competition.status">
-          {{ getStatusLabel(competition.status) }}
+        <div class="competition-status-badge" [class]="getStatusValue()">
+          {{ getStatusLabel(getStatusValue()) }}
         </div>
       </div>
 
       <!-- Детальная информация -->
       <div class="competition-details">
 
-        <!-- Место проведения (кликабельное) -->
-        <div class="competition-detail-item clickable" (click)="onVenueClick()">
+        <!-- Место проведения -->
+        <div class="competition-detail-item clickable" *ngIf="competition.venue" (click)="onVenueClick(competition.venue.id)">
           <div class="competition-detail-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -53,29 +77,10 @@
             <h3 class="competition-detail-value">{{ competition.venue.name }}</h3>
             <p class="competition-detail-subtitle">{{ competition.venue.address }}</p>
           </div>
-          <div class="competition-detail-image">
-            <img [src]="competition.venue.photo" [alt]="competition.venue.name" class="venue-photo">
-          </div>
           <div class="competition-detail-arrow">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-          </div>
-        </div>
-
-        <!-- Вид спорта (не кликабельный) -->
-        <div class="competition-detail-item">
-          <div class="competition-detail-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="competition-detail-content">
-            <span class="competition-detail-label">Вид спорта</span>
-            <h3 class="competition-detail-value">{{ competition.sport }}</h3>
-            <p class="competition-detail-subtitle">{{ competition.category }}</p>
           </div>
         </div>
 
@@ -89,31 +94,54 @@
           </div>
           <div class="competition-detail-content">
             <span class="competition-detail-label">Тип соревнований</span>
-            <h3 class="competition-detail-value">{{ getTypeLabel(competition.type) }}</h3>
-            <p class="competition-detail-subtitle">Организатор: {{ competition.organizer }}</p>
+            <h3 class="competition-detail-value">{{ getLevelLabel(competition.competitionLevel) }}</h3>
+            <p class="competition-detail-subtitle" *ngIf="competition.organizer">Организатор: {{ competition.organizer }}</p>
           </div>
         </div>
+      </div>
 
+      <!-- Лучшие результаты -->
+      <div class="competition-results" *ngIf="competition.bestResults && competition.bestResults.length > 0">
+        <h2 class="competition-section-title">🏆 Лучшие результаты</h2>
+        <div class="competition-results-list">
+          <div class="competition-result-item" *ngFor="let result of competition.bestResults">
+            <!-- Вместо ранга - значок победителя -->
+            <div class="result-rank gold">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="result-athlete" (click)="onAthleteClick(result.athleteId)">
+              <img [src]="result.athleteAvatar || '/assets/images/avatar-placeholder.png'" [alt]="result.athleteName" class="result-avatar">
+              <div class="result-athlete-info">
+                <span class="result-athlete-name">{{ result.athleteName }}</span>
+                <span class="result-university">{{ result.university }}</span>
+              </div>
+            </div>
+            <!-- Дисциплина выделена отдельно -->
+            <div class="result-discipline">
+              <span class="discipline-label">Дисциплина</span>
+              <span class="discipline-value">{{ result.discipline }}</span>
+            </div>
+            <div class="result-value">{{ result.result }}</div>
+          </div>
+        </div>
       </div>
 
       <!-- Протоколы соревнований -->
-      <div class="competition-protocols">
+      <div class="competition-protocols" *ngIf="competition.protocols && competition.protocols.length > 0">
         <h2 class="competition-section-title">📋 Протоколы соревнований</h2>
-
         <div class="protocols-list">
           <div class="protocol-item" *ngFor="let protocol of competition.protocols">
             <div class="protocol-header">
               <h3 class="protocol-discipline">{{ protocol.discipline }}</h3>
-              <span class="protocol-type">{{ protocol.type }}</span>
+              <span class="protocol-type">{{ protocol.type === 'Male' ? 'Мужчины' : protocol.type === 'Female' ? 'Женщины' : protocol.type }}</span>
             </div>
-
             <div class="protocol-results">
-              <div
-                class="protocol-result-row"
-                *ngFor="let entry of protocol.results; let i = index"
-                (click)="onAthleteClick(entry.athleteId)"
-              >
-                <div class="protocol-rank">{{ i + 1 }}</div>
+              <div class="protocol-result-row"
+                   *ngFor="let entry of protocol.results"
+                   (click)="onAthleteClick(entry.athleteId)">
+                <div class="protocol-rank">{{ entry.rankPlace }}</div>
                 <div class="protocol-athlete-info">
                   <span class="protocol-athlete-name">{{ entry.athleteName }}</span>
                   <span class="protocol-university">{{ entry.university }}</span>
@@ -126,8 +154,5 @@
       </div>
 
     </div>
-
   </div>
-
 </main>
-

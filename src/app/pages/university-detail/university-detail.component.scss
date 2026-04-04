@@ -19,13 +19,13 @@ $main-border: #E0E0E0;
 }
 
 // ===== КОНТЕНТ =====
-.facility-details-content {
+.university-details-content {
   padding-top: $main-header-height;
   min-height: 100vh;
   padding-bottom: 80px;
 }
 
-.facility-details-container {
+.university-details-container {
   max-width: 1000px;
   margin: 0 auto;
   padding: 40px 24px;
@@ -54,8 +54,8 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== КАРТОЧКА ОБЪЕКТА =====
-.facility-details-card {
+// ===== КАРТОЧКА УНИВЕРСИТЕТА =====
+.university-details-card {
   background: $white;
   border-radius: 20px;
   border: 2px solid $main-border;
@@ -63,8 +63,8 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА ОБЪЕКТА =====
-.facility-header {
+// ===== ШАПКА УНИВЕРСИТЕТА =====
+.university-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -75,24 +75,24 @@ $main-border: #E0E0E0;
   gap: 16px;
 }
 
-.facility-title-section {
+.university-title-section {
   flex: 1;
 }
 
-.facility-name {
+.university-name {
   font-size: 32px;
   font-weight: 700;
   color: $text-primary;
   margin: 0 0 16px 0;
 }
 
-.facility-meta {
+.university-meta {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
 }
 
-.facility-meta-item {
+.university-meta-item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -105,8 +105,32 @@ $main-border: #E0E0E0;
   }
 }
 
+.university-rating-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  border-radius: 12px;
+  border: 2px solid $primary-color;
+  flex-shrink: 0;
+}
+
+.rating-place {
+  font-size: 28px;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.rating-label {
+  font-size: 11px;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 // ===== ФОТО И ОПИСАНИЕ =====
-.facility-description-section {
+.university-description-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
@@ -115,68 +139,116 @@ $main-border: #E0E0E0;
   border-bottom: 2px solid $main-border;
 }
 
-.facility-image-container {
+.university-image-container {
   border-radius: 12px;
   overflow: hidden;
   border: 2px solid $main-border;
 }
 
-.facility-main-photo {
+.university-main-photo {
   width: 100%;
   height: 300px;
   object-fit: cover;
 }
 
-.facility-description-content {
+.university-description-content {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.facility-description-title {
+.university-description-title {
   font-size: 20px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
 }
 
-.facility-description-text {
+.university-description-text {
   font-size: 15px;
   color: $text-secondary;
   line-height: 1.8;
   margin: 0;
 }
 
-.facility-address {
+.university-stats-block {
+  display: flex;
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.stat-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: $text-secondary;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
+  gap: 12px;
+  color: $primary-color;
 
   svg {
-    color: $primary-color;
     flex-shrink: 0;
   }
 }
 
-// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
-.facility-details {
+.stat-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: $text-secondary;
+  text-transform: uppercase;
+}
+
+.stat-divider {
+  width: 1px;
+  background: $main-border;
+}
+
+// ===== СЕКЦИИ =====
+.university-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 24px;
+}
+
+// ===== ТРЕНЕРЫ С РАСКРЫВАЮЩИМИСЯ СПИСКАМИ =====
+.university-coaches {
   margin-bottom: 40px;
 }
 
-.facility-detail-item {
+.coaches-list {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coach-item {
   background: #f8f9fa;
   border-radius: 12px;
+  border: 2px solid $main-border;
+  overflow: hidden;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+}
+
+.coach-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  cursor: pointer;
   @include transition;
 
   &:hover {
@@ -184,185 +256,101 @@ $main-border: #E0E0E0;
   }
 }
 
-.facility-detail-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.coach-avatar-container {
+  flex-shrink: 0;
+}
+
+.coach-avatar {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
-  border-radius: 12px;
-  color: $primary-color;
-  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $primary-color;
 }
 
-.facility-detail-content {
+.coach-info {
   flex: 1;
-}
-
-.facility-detail-label {
-  display: block;
-  font-size: 13px;
-  color: $text-secondary;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.facility-sports-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.sport-tag {
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
-  color: $primary-color;
-  border-radius: 20px;
-}
-
-// ===== СОРЕВНОВАНИЯ =====
-.facility-competitions {
-  margin-bottom: 40px;
-  padding-bottom: 40px;
-  border-bottom: 2px solid $main-border;
-}
-
-.facility-section-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: $text-primary;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.competitions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.competition-link-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px solid $main-border;
-  cursor: pointer;
-  @include transition;
-
-  &:hover {
-    border-color: $primary-color;
-    background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
-    transform: translateX(4px);
-  }
-}
-
-.competition-link-info {
-  flex: 1;
-}
-
-.competition-link-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: $text-primary;
-  margin: 0 0 4px 0;
-}
-
-.competition-link-date {
-  font-size: 13px;
-  color: $text-secondary;
-  margin: 0;
-}
-
-.competition-link-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  color: $text-secondary;
-  flex-shrink: 0;
-  @include transition;
-
-  .competition-link-item:hover & {
-    color: $primary-color;
-  }
-}
-
-// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
-.facility-records {
-  margin-bottom: 40px;
-}
-
-.facility-records-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.facility-record-item {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px solid $main-border;
-  @include transition;
-
-  &:hover {
-    border-color: $primary-color;
-    transform: translateX(4px);
-  }
-}
-
-.record-discipline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  svg {
-    color: $primary-color;
-    flex-shrink: 0;
-  }
-}
-
-.record-discipline-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.record-discipline-name {
-  font-size: 15px;
+.coach-name {
+  font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  margin: 0;
 }
 
-.record-discipline-date {
-  font-size: 12px;
+.coach-specialization {
+  font-size: 13px;
   color: $text-secondary;
+  margin: 0;
 }
 
-.record-athlete {
+.coach-athletes-count {
   display: flex;
   align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  @include transition;
+  gap: 6px;
+  font-size: 12px;
+  color: $primary-color;
+  font-weight: 500;
+  margin: 0;
 
-  &:hover {
-    opacity: 0.8;
+  svg {
+    color: $primary-color;
   }
 }
 
-.record-avatar {
+.coach-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: $text-secondary;
+  @include transition;
+
+  svg {
+    @include transition;
+  }
+
+  &.expanded svg {
+    transform: rotate(180deg);
+  }
+}
+
+// ===== СПИСОК СПОРТСМЕНОВ ВНУТРИ ТРЕНЕРА =====
+.coach-athletes-list {
+  padding: 16px 20px;
+  border-top: 1px solid $main-border;
+  background: rgba($primary-color, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.athlete-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: $white;
+  border-radius: 10px;
+  border: 2px solid $main-border;
+  @include transition;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.athlete-avatar-container {
+  cursor: pointer;
+}
+
+.athlete-avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -370,28 +358,81 @@ $main-border: #E0E0E0;
   border: 2px solid $primary-color;
 }
 
-.record-athlete-info {
+.athlete-info {
+  flex: 1;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  &:hover {
+    .athlete-name {
+      color: $primary-color;
+    }
+  }
 }
 
-.record-athlete-name {
+.athlete-name {
   font-size: 15px;
   font-weight: 600;
   color: $text-primary;
+  margin: 0;
+  @include transition;
 }
 
-.record-university {
+.athlete-sport {
   font-size: 12px;
   color: $text-secondary;
+  margin: 0;
 }
 
-.record-result {
-  font-size: 17px;
-  font-weight: 700;
+.athlete-details-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  @include transition;
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+  }
+}
+
+// ===== КНОПКА "ПОДРОБНЕЕ О ТРЕНЕРЕ" =====
+.coach-details-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid $primary-color;
+  border-top: 1px solid $main-border;
+  border-radius: 0;
   color: $primary-color;
-  text-align: right;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
+  }
+}
+
+// ===== СООБЩЕНИЯ О ПУСТЫХ СПИСКАХ =====
+.no-coaches,
+.no-athletes {
+  text-align: center;
+  padding: 40px 20px;
+  color: $text-secondary;
+  font-size: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed $main-border;
 }
 
 // ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====

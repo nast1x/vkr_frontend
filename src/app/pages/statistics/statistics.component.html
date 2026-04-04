@@ -3,183 +3,197 @@
 
 <!-- Основной контент -->
 <main class="statistics-content">
-
   <div class="statistics-container">
+    <!-- ЛЕВАЯ КОЛОНКА: Пустая (для единообразия) -->
+    <aside class="statistics-sidebar"></aside>
 
-    <!-- Карточка статистики -->
-    <div class="statistics-card">
+    <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Статистика -->
+    <section class="statistics-list-section">
+      <h1 class="statistics-title">Статистика платформы</h1>
+      <p class="statistics-subtitle">Актуальные данные на {{ currentDate }}</p>
 
-      <!-- Заголовок -->
-      <div class="statistics-header">
-        <h1 class="statistics-title">Статистика платформы</h1>
-        <p class="statistics-subtitle">Актуальные данные на {{ currentDate }}</p>
+      <!-- Индикатор загрузки -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка данных...</p>
       </div>
 
-      <!-- Общая статистика -->
-      <div class="statistics-overview">
-        <div class="overview-item">
-          <div class="overview-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="overview-content">
-            <span class="overview-value">{{ stats.totalAthletes }}</span>
-            <span class="overview-label">Спортсменов</span>
-          </div>
-        </div>
-
-        <div class="overview-divider"></div>
-
-        <div class="overview-item">
-          <div class="overview-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="overview-content">
-            <span class="overview-value">{{ stats.totalCoaches }}</span>
-            <span class="overview-label">Тренеров</span>
-          </div>
-        </div>
-
-        <div class="overview-divider"></div>
-
-        <div class="overview-item">
-          <div class="overview-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="overview-content">
-            <span class="overview-value">{{ stats.totalUniversities }}</span>
-            <span class="overview-label">Вузов</span>
-          </div>
-        </div>
-
-        <div class="overview-divider"></div>
-
-        <div class="overview-item">
-          <div class="overview-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="overview-content">
-            <span class="overview-value">{{ stats.totalCompetitions }}</span>
-            <span class="overview-label">Соревнований</span>
-          </div>
-        </div>
+      <!-- Сообщение об ошибке -->
+      <div *ngIf="error" class="error-state">
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="loadStatistics()">Попробовать снова</button>
       </div>
 
-      <!-- Лучшие вузы -->
-      <div class="statistics-section">
-        <h2 class="section-title">🏆 Лучшие вузы по медалям</h2>
-
-        <div class="universities-ranking">
-          <div class="ranking-item" *ngFor="let uni of stats.topUniversities; let i = index">
-            <div class="ranking-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
-              {{ i + 1 }}
+      <!-- Карточка статистики -->
+      <div class="statistics-card" *ngIf="!isLoading && !error && stats">
+        <!-- Общая статистика - 2 колонки -->
+        <div class="statistics-overview">
+          <!-- Колонка 1: Спортсмены и тренеры -->
+          <div class="overview-column">
+            <div class="overview-item">
+              <div class="overview-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="overview-content">
+                <span class="overview-value">{{ stats.generalStats.totalAthletes }}</span>
+                <span class="overview-label">Спортсменов</span>
+              </div>
             </div>
-            <div class="ranking-info">
-              <h3 class="ranking-name">{{ uni.name }}</h3>
-              <p class="ranking-city">{{ uni.city }}</p>
-            </div>
-            <div class="ranking-medals">
-              <span class="medal gold">🥇 {{ uni.gold }}</span>
-              <span class="medal silver">🥈 {{ uni.silver }}</span>
-              <span class="medal bronze">🥉 {{ uni.bronze }}</span>
-            </div>
-            <div class="ranking-total">
-              <span class="total-value">{{ uni.total }}</span>
-              <span class="total-label">всего</span>
+            <div class="overview-item">
+              <div class="overview-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="overview-content">
+                <span class="overview-value">{{ stats.generalStats.totalCoaches }}</span>
+                <span class="overview-label">Тренеров</span>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Лучшие спортсмены -->
-      <div class="statistics-section">
-        <h2 class="section-title">⭐ Лучшие спортсмены сезона</h2>
-
-        <div class="athletes-ranking">
-          <div class="athlete-item" *ngFor="let athlete of stats.topAthletes; let i = index">
-            <div class="athlete-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
-              {{ i + 1 }}
+          <!-- Разделитель -->
+          <div class="overview-divider-vertical"></div>
+          <!-- Колонка 2: Вузы и соревнования -->
+          <div class="overview-column">
+            <div class="overview-item">
+              <div class="overview-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="overview-content">
+                <span class="overview-value">{{ stats.generalStats.totalUniversities }}</span>
+                <span class="overview-label">Вузов</span>
+              </div>
             </div>
-            <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
-              <img [src]="athlete.avatar" [alt]="athlete.name" class="athlete-avatar">
-            </div>
-            <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
-              <h3 class="athlete-name">{{ athlete.name }}</h3>
-              <p class="athlete-university">{{ athlete.university }}</p>
-              <p class="athlete-sport">{{ athlete.sport }}</p>
-            </div>
-            <div class="athlete-achievements">
-              <span class="achievement-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <div class="overview-item">
+              <div class="overview-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                   <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
-                {{ athlete.medals }} медалей
-              </span>
-              <span class="achievement-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                  <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                {{ athlete.competitions }} соревнований
-              </span>
+              </div>
+              <div class="overview-content">
+                <span class="overview-value">{{ stats.generalStats.totalCompetitions }}</span>
+                <span class="overview-label">Соревнований</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Лучшие вузы -->
+        <div class="statistics-section">
+          <h2 class="section-title">🏆 Лучшие вузы по медалям</h2>
+          <div class="universities-ranking">
+            <div class="ranking-item" *ngFor="let uni of stats.topUniversities; let i = index">
+              <div class="ranking-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+                {{ i + 1 }}
+              </div>
+              <div class="ranking-info">
+                <h3 class="ranking-name">{{ uni.name }}</h3>
+                <p class="ranking-city">{{ uni.city }}</p>
+              </div>
+              <div class="ranking-medals">
+                <span class="medal gold">🥇 {{ uni.gold }}</span>
+                <span class="medal silver">🥈 {{ uni.silver }}</span>
+                <span class="medal bronze">🥉 {{ uni.bronze }}</span>
+              </div>
+              <div class="ranking-total">
+                <span class="total-value">{{ uni.total }}</span>
+                <span class="total-label">всего</span>
+              </div>
+              <button class="ranking-details-btn" (click)="onUniversityClick(uni.id || 0)">
+                Подробнее
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Лучшие спортсмены -->
+        <div class="statistics-section">
+          <h2 class="section-title">⭐ Лучшие спортсмены сезона</h2>
+          <div class="athletes-ranking">
+            <div class="athlete-item" *ngFor="let athlete of stats.topAthletes; let i = index">
+              <div class="athlete-rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+                {{ i + 1 }}
+              </div>
+              <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
+                <img [src]="athlete.avatar" [alt]="athlete.name" class="athlete-avatar">
+              </div>
+              <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
+                <h3 class="athlete-name">{{ athlete.name }}</h3>
+                <p class="athlete-university">{{ athlete.university }}</p>
+                <p class="athlete-sport">{{ athlete.sport }}</p>
+              </div>
+              <div class="athlete-achievements">
+                <span class="achievement-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ athlete.medals }} медалей
+                </span>
+                <span class="achievement-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  {{ athlete.competitions }} соревнований
+                </span>
+              </div>
+              <button class="athlete-details-btn" (click)="onAthleteClick(athlete.id)">
+                Подробнее
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Статистика по видам спорта -->
+        <div class="statistics-section">
+          <h2 class="section-title">📊 Статистика по видам спорта</h2>
+          <div class="sports-stats">
+            <div class="sport-stat-item" *ngFor="let sport of stats.sportsStatistics">
+              <div class="sport-stat-header">
+                <span class="sport-name">{{ sport.name }}</span>
+                <span class="sport-athletes">{{ sport.athletes }} спортсменов</span>
+              </div>
+              <div class="sport-stat-bar">
+                <div class="sport-stat-fill" [style.width.%]="sport.percentage"></div>
+              </div>
+              <div class="sport-stat-details">
+                <span class="stat-detail">🏆 {{ sport.competitions }} соревнований</span>
+                <span class="stat-detail">📍 {{ sport.facilities }} объектов</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Статистика по городам -->
+        <div class="statistics-section">
+          <h2 class="section-title">🌍 Активность по городам</h2>
+          <div class="cities-stats">
+            <div class="city-stat-item" *ngFor="let city of stats.cityStatistics">
+              <div class="city-stat-info">
+                <h3 class="city-name">{{ city.name }}</h3>
+                <p class="city-details">{{ city.athletes }} спортсменов • {{ city.competitions }} соревнований</p>
+              </div>
+              <div class="city-stat-value">
+                <span class="value-number">{{ city.total }}</span>
+                <span class="value-label">участников</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Статистика по видам спорта -->
-      <div class="statistics-section">
-        <h2 class="section-title">📊 Статистика по видам спорта</h2>
-
-        <div class="sports-stats">
-          <div class="sport-stat-item" *ngFor="let sport of stats.sportsStatistics">
-            <div class="sport-stat-header">
-              <span class="sport-name">{{ sport.name }}</span>
-              <span class="sport-athletes">{{ sport.athletes }} спортсменов</span>
-            </div>
-            <div class="sport-stat-bar">
-              <div class="sport-stat-fill" [style.width.%]="sport.percentage"></div>
-            </div>
-            <div class="sport-stat-details">
-              <span class="stat-detail">🏆 {{ sport.competitions }} соревнований</span>
-              <span class="stat-detail">📍 {{ sport.facilities }} объектов</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Статистика по городам -->
-      <div class="statistics-section">
-        <h2 class="section-title">🌍 Активность по городам</h2>
-
-        <div class="cities-stats">
-          <div class="city-stat-item" *ngFor="let city of stats.cityStatistics">
-            <div class="city-stat-info">
-              <h3 class="city-name">{{ city.name }}</h3>
-              <p class="city-details">{{ city.athletes }} спортсменов • {{ city.competitions }} соревнований</p>
-            </div>
-            <div class="city-stat-value">
-              <span class="value-number">{{ city.total }}</span>
-              <span class="value-label">участников</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
+    <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
+    <aside class="statistics-decor">
+      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
+    </aside>
   </div>
-
 </main>
-

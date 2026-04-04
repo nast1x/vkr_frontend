@@ -14,6 +14,6 @@ export class HeaderComponent {
   constructor(private router: Router) {}
 
   onProfile(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profile/me']);
   }
 }

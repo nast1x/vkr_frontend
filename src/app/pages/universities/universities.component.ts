@@ -74,6 +74,6 @@ export class UniversitiesComponent implements OnInit {
   }
 
   onViewDetails(id: number): void {
-    console.log('View university details:', id);
+    this.router.navigate(['/universities-details', id]);
   }
 }

@@ -3,14 +3,11 @@
 
 <!-- Основной контент -->
 <main class="sports-facilities-content">
-
   <div class="sports-facilities-container">
-
     <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
     <aside class="sports-facilities-sidebar">
       <div class="filter-block">
         <h3 class="filter-title">Фильтры</h3>
-
         <!-- Город -->
         <div class="filter-group">
           <label class="filter-label">Город</label>
@@ -19,16 +16,6 @@
             <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
           </select>
         </div>
-
-        <!-- Тип объекта -->
-        <div class="filter-group">
-          <label class="filter-label">Тип объекта</label>
-          <select class="filter-select" [(ngModel)]="selectedType" (change)="applyFilters()">
-            <option value="">Все типы</option>
-            <option *ngFor="let type of facilityTypes" [value]="type.value">{{ type.label }}</option>
-          </select>
-        </div>
-
         <!-- Кнопка сброса -->
         <button class="filter-reset-btn" (click)="resetFilters()">
           Сбросить фильтры
@@ -40,23 +27,29 @@
     <section class="sports-facilities-list-section">
       <h1 class="sports-facilities-title">Спортивные объекты</h1>
 
+      <!-- Индикатор загрузки -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка данных...</p>
+      </div>
+
+      <!-- Сообщение об ошибке -->
+      <div *ngIf="error" class="error-state">
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="loadFacilities()">Попробовать снова</button>
+      </div>
+
       <!-- Сетка объектов -->
-      <div class="sports-facilities-grid">
+      <div class="sports-facilities-grid" *ngIf="!isLoading && !error">
         <div
           class="facility-card"
           *ngFor="let facility of filteredFacilities"
-          (click)="onViewDetails(facility.id)"
         >
           <div class="facility-image-container">
-            <img [src]="facility.photo" [alt]="facility.name" class="facility-photo">
-            <span class="facility-type-badge" [class]="facility.type">
-              {{ getTypeLabel(facility.type) }}
-            </span>
+            <img [src]="facility.imageLink" [alt]="facility.name" class="facility-photo">
           </div>
-
           <div class="facility-info">
             <h2 class="facility-name">{{ facility.name }}</h2>
-
             <div class="facility-meta">
               <div class="meta-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -65,27 +58,25 @@
                 </svg>
                 <span>{{ facility.city }}</span>
               </div>
-              <div class="meta-item">
+              <div class="meta-item" *ngIf="facility.sportTypes && facility.sportTypes.trim()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                   <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>{{ facility.sport }}</span>
+                <span>{{ facility.sportTypes }}</span>
               </div>
             </div>
-
             <p class="facility-description">{{ facility.description }}</p>
+            <button class="facility-details-btn" (click)="onViewDetails(facility.idSportFacility)">
+              Подробнее
+            </button>
           </div>
-
-          <button class="facility-details-btn">
-            Подробнее
-          </button>
         </div>
-      </div>
 
-      <!-- Сообщение, если ничего не найдено -->
-      <div *ngIf="filteredFacilities.length === 0" class="no-results">
-        <p>По выбранным фильтрам объекты не найдены.</p>
+        <!-- Сообщение, если ничего не найдено -->
+        <div *ngIf="filteredFacilities.length === 0" class="no-results">
+          <p>По выбранным фильтрам объекты не найдены.</p>
+        </div>
       </div>
     </section>
 
@@ -93,7 +84,5 @@
     <aside class="sports-facilities-decor">
       <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
     </aside>
-
   </div>
 </main>
-

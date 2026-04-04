@@ -3,11 +3,30 @@
 
 <!-- Основной контент -->
 <main class="facility-details-content">
-
   <div class="facility-details-container">
 
+    <!-- Кнопка "Назад" -->
+    <button class="back-btn" (click)="onBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Назад к списку
+    </button>
+
+    <!-- Индикатор загрузки -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Загрузка данных...</p>
+    </div>
+
+    <!-- Сообщение об ошибке -->
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadFacility()">Попробовать снова</button>
+    </div>
+
     <!-- Карточка объекта -->
-    <div class="facility-details-card">
+    <div class="facility-details-card" *ngIf="!isLoading && !error && facility">
 
       <!-- Заголовок и основная информация -->
       <div class="facility-header">
@@ -26,25 +45,16 @@
                 <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              {{ facility.sport }}
+              Спортивный объект
             </span>
           </div>
-        </div>
-
-        <div class="facility-status-badges">
-          <span class="facility-type-badge" [class]="facility.type">
-            {{ getTypeLabel(facility.type) }}
-          </span>
-          <span class="facility-usage-badge" [class]="facility.usage">
-            {{ getUsageLabel(facility.usage) }}
-          </span>
         </div>
       </div>
 
       <!-- Фото и описание -->
       <div class="facility-description-section">
         <div class="facility-image-container">
-          <img ngSrc="facility.photo" [alt]="facility.name" class="facility-main-photo">
+          <img [src]="facility.photo" [alt]="facility.name" class="facility-main-photo">
         </div>
         <div class="facility-description-content">
           <h2 class="facility-description-title">Описание</h2>
@@ -61,7 +71,6 @@
 
       <!-- Детальная информация -->
       <div class="facility-details">
-
         <!-- Виды спорта -->
         <div class="facility-detail-item">
           <div class="facility-detail-icon">
@@ -78,43 +87,11 @@
             </div>
           </div>
         </div>
-
-        <!-- Тип объекта -->
-        <div class="facility-detail-item">
-          <div class="facility-detail-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="facility-detail-content">
-            <span class="facility-detail-label">Тип объекта</span>
-            <h3 class="facility-detail-value">{{ getTypeLabel(facility.type) }}</h3>
-            <p class="facility-detail-subtitle">{{ facility.typeDescription }}</p>
-          </div>
-        </div>
-
-        <!-- Использование -->
-        <div class="facility-detail-item">
-          <div class="facility-detail-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="facility-detail-content">
-            <span class="facility-detail-label">Использование</span>
-            <h3 class="facility-detail-value">{{ getUsageLabel(facility.usage) }}</h3>
-            <p class="facility-detail-subtitle">{{ facility.usageDescription }}</p>
-          </div>
-        </div>
-
       </div>
 
       <!-- Проведённые соревнования -->
       <div class="facility-competitions" *ngIf="facility.competitions && facility.competitions.length > 0">
-        <h2 class="facility-section-title">🏆 Проведённые соревнования</h2>
-
+        <h2 class="facility-section-title">🏆 Соревнования на объекте</h2>
         <div class="competitions-list">
           <div
             class="competition-link-item"
@@ -135,9 +112,8 @@
       </div>
 
       <!-- Лучшие результаты на объекте -->
-      <div class="facility-records">
+      <div class="facility-records" *ngIf="facility.records && facility.records.length > 0">
         <h2 class="facility-section-title">⏱️ Лучшие результаты на объекте</h2>
-
         <div class="facility-records-list">
           <div class="facility-record-item" *ngFor="let record of facility.records">
             <div class="record-discipline">
@@ -145,7 +121,10 @@
                 <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <span class="record-discipline-name">{{ record.discipline }}</span>
+              <div class="record-discipline-info">
+                <span class="record-discipline-name">{{ record.discipline }}</span>
+                <span class="record-discipline-date">{{ record.date }}</span>
+              </div>
             </div>
             <div class="record-athlete" (click)="onAthleteClick(record.athleteId)">
               <img [src]="record.athleteAvatar" [alt]="record.athleteName" class="record-avatar">
@@ -155,14 +134,10 @@
               </div>
             </div>
             <div class="record-result">{{ record.result }}</div>
-            <div class="record-date">{{ record.date }}</div>
           </div>
         </div>
       </div>
 
     </div>
-
   </div>
-
 </main>
-

@@ -4,6 +4,140 @@
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid $main-border;
+  border-radius: 10px;
+  color: $text-secondary;
+  cursor: pointer;
+  @include transition;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+    background: rgba($primary-color, 0.05);
+  }
+}
+
+// ===== ОБНОВИТЬ .loading-state И .error-state =====
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: $white;
+  border-radius: 16px;
+  border: 2px solid $main-border;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ===== ДОБАВИТЬ СТИЛЬ ДЛЯ ДИСЦИПЛИНЫ В ЛУЧШИХ РЕЗУЛЬТАТАХ =====
+.result-discipline {
+  font-size: 12px;
+  color: $primary-color;
+  font-weight: 500;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid $main-border;
+  border-radius: 10px;
+  color: $text-secondary;
+  cursor: pointer;
+  @include transition;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+    background: rgba($primary-color, 0.05);
+  }
+}
+
+// ===== ОБНОВИТЬ .loading-state И .error-state =====
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: $white;
+  border-radius: 16px;
+  border: 2px solid $main-border;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-state {
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba($primary-color, 0.2);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    font-size: 16px;
+    color: $text-secondary;
+  }
+}
+
+.error-state {
+  p {
+    font-size: 16px;
+    color: #d32f2f;
+    margin-bottom: 20px;
+  }
+
+  .retry-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 // ===== HOST =====
 :host {
   display: block;
@@ -218,7 +352,8 @@ $main-border: #E0E0E0;
 }
 
 .competition-result-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50px 1fr 180px 100px;  // Добавлена колонка для дисциплины
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
@@ -239,8 +374,6 @@ $main-border: #E0E0E0;
   justify-content: center;
   width: 40px;
   height: 40px;
-  font-size: 18px;
-  font-weight: 700;
   border-radius: 50%;
   background: $white;
   color: $text-secondary;
@@ -252,22 +385,9 @@ $main-border: #E0E0E0;
     color: $white;
     border-color: transparent;
   }
-
-  &.silver {
-    background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
-    color: $white;
-    border-color: transparent;
-  }
-
-  &.bronze {
-    background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
-    color: $white;
-    border-color: transparent;
-  }
 }
 
 .result-athlete {
-  flex: 1;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -304,11 +424,37 @@ $main-border: #E0E0E0;
   color: $text-secondary;
 }
 
+// ===== НОВЫЙ СТИЛЬ ДЛЯ ДИСЦИПЛИНЫ =====
+.result-discipline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+  border-radius: 8px;
+  border: 1px solid rgba($primary-color, 0.2);
+}
+
+.discipline-label {
+  font-size: 10px;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.discipline-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: $primary-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .result-value {
   font-size: 18px;
   font-weight: 700;
   color: $primary-color;
-  min-width: 100px;
   text-align: right;
 }
 

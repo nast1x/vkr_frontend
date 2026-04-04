@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgForOf, NgIf } from "@angular/common";
 import { HeaderComponent } from "../header/header.component";
 import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
+import {API_CONFIG, API_URLS} from '../../config/api.config';
 
 interface TeamMember {
   userId: number;
@@ -23,6 +23,7 @@ interface TeamMember {
   styleUrl: './team.component.scss'
 })
 export class TeamComponent implements OnInit {
+  readonly DEFAULT_AVATAR = '/assets/images/avatar-placeholder.png';
   selectedCity: string = '';
   cities: string[] = [];
   showAthletes: boolean = true;
@@ -107,4 +108,19 @@ export class TeamComponent implements OnInit {
   onViewProfile(id: number): void {
     this.router.navigate(['/profile', id]);
   }
+
+// Метод для обработки ошибки
+  handleImageError(event: any) {
+    event.target.src = this.DEFAULT_AVATAR;
+  }
+
+// Метод для формирования URL
+  getMemberAvatar(imageLink: string | null): string {
+    if (!imageLink) {
+      return this.DEFAULT_AVATAR;
+    }
+    return this.API_CONFIG.BASE_URL + imageLink;
+  }
+
+  protected readonly API_CONFIG = API_CONFIG;
 }

@@ -3,14 +3,11 @@
 
 <!-- Основной контент -->
 <main class="competitions-content">
-
   <div class="competitions-container">
-
     <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
     <aside class="competitions-sidebar">
       <div class="filter-block">
         <h3 class="filter-title">Фильтры</h3>
-
         <!-- Город проведения -->
         <div class="filter-group">
           <label class="filter-label">Город проведения</label>
@@ -19,7 +16,6 @@
             <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
           </select>
         </div>
-
         <!-- Тип соревнований -->
         <div class="filter-group">
           <label class="filter-label">Тип соревнований</label>
@@ -28,7 +24,6 @@
             <option *ngFor="let type of competitionTypes" [value]="type.value">{{ type.label }}</option>
           </select>
         </div>
-
         <!-- Статус (опционально) -->
         <div class="filter-group">
           <label class="filter-label">Статус</label>
@@ -39,7 +34,6 @@
             <option value="completed">Завершённые</option>
           </select>
         </div>
-
         <!-- Кнопка сброса -->
         <button class="filter-reset-btn" (click)="resetFilters()">
           Сбросить фильтры
@@ -51,24 +45,33 @@
     <section class="competitions-list-section">
       <h1 class="competitions-title">Соревнования</h1>
 
+      <!-- Индикатор загрузки -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка данных...</p>
+      </div>
+
+      <!-- Сообщение об ошибке -->
+      <div *ngIf="error" class="error-state">
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="loadCompetitions()">Попробовать снова</button>
+      </div>
+
       <!-- Сетка соревнований -->
-      <div class="competitions-grid">
+      <div class="competitions-grid" *ngIf="!isLoading && !error">
         <div
           class="competition-card"
           *ngFor="let comp of filteredCompetitions"
-          (click)="onViewDetails(comp.id)"
         >
           <div class="competition-header">
-            <span class="competition-type-badge" [class]="comp.type">
-              {{ getTypeLabel(comp.type) }}
+            <span class="competition-type-badge" [class]="getLevelValue(comp.competitionLevel)">
+              {{ getLevelLabel(comp.competitionLevel) }}
             </span>
-            <span class="competition-status-badge" [class]="comp.status">
-              {{ getStatusLabel(comp.status) }}
+            <span class="competition-status-badge" [class]="getStatusValue(comp)">
+              {{ getStatusLabel(getStatusValue(comp)) }}
             </span>
           </div>
-
           <h2 class="competition-name">{{ comp.name }}</h2>
-
           <div class="competition-info">
             <div class="info-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -82,19 +85,24 @@
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                 <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <span>{{ comp.startDate }} — {{ comp.endDate }}</span>
+              <span>{{ formatDate(comp.startDate) }} — {{ comp.endDate ? formatDate(comp.endDate) : 'ТД' }}</span>
+            </div>
+            <div class="info-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M14.5 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V7.5L14.5 2Z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span>{{ comp.sportType }}</span>
             </div>
           </div>
-
-          <button class="competition-details-btn">
+          <button class="competition-details-btn" (click)="onViewDetails(comp.idCompetition)">
             Подробнее
           </button>
         </div>
-      </div>
 
-      <!-- Сообщение, если ничего не найдено -->
-      <div *ngIf="filteredCompetitions.length === 0" class="no-results">
-        <p>По выбранным фильтрам соревнования не найдены.</p>
+        <!-- Сообщение, если ничего не найдено -->
+        <div *ngIf="filteredCompetitions.length === 0" class="no-results">
+          <p>По выбранным фильтрам соревнования не найдены.</p>
+        </div>
       </div>
     </section>
 
@@ -102,7 +110,5 @@
     <aside class="competitions-decor">
       <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
     </aside>
-
   </div>
 </main>
-

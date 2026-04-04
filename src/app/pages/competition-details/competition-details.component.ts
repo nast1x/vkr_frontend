@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {HeaderComponent} from "../header/header.component";
-import {NgForOf} from "@angular/common";
+import { HeaderComponent } from "../header/header.component";
+import { NgForOf, NgIf } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { API_URLS } from '../../config/api.config';
 
 interface Venue {
+  id: number;
   name: string;
   address: string;
   photo: string;
@@ -14,6 +17,7 @@ interface BestResult {
   athleteName: string;
   athleteAvatar: string;
   university: string;
+  discipline: string;
   result: string;
 }
 
@@ -22,6 +26,7 @@ interface ProtocolEntry {
   athleteName: string;
   university: string;
   result: string;
+  rankPlace: number;
 }
 
 interface Protocol {
@@ -31,107 +36,79 @@ interface Protocol {
 }
 
 interface Competition {
-  id: number;
+  idCompetition: number;
   name: string;
   city: string;
   startDate: string;
-  endDate: string;
-  status: 'upcoming' | 'ongoing' | 'completed';
+  endDate: string | null;
+  competitionLevel: string;
+  sportType: string;
   venue: Venue;
-  sport: string;
-  category: string;
-  type: 'university' | 'city' | 'regional' | 'russian';
   organizer: string;
   bestResults: BestResult[];
   protocols: Protocol[];
 }
+
 @Component({
   selector: 'app-competition-details',
   standalone: true,
-  imports: [
-    HeaderComponent,
-    NgForOf
-  ],
+  imports: [HeaderComponent, NgForOf, NgIf],
   templateUrl: './competition-details.component.html',
   styleUrl: './competition-details.component.scss'
 })
-export class CompetitionDetailsComponent {
-  competition: Competition = {} as Competition;
+export class CompetitionDetailsComponent implements OnInit {
+  competition!: Competition;
+  isLoading: boolean = true;
+  error: string | null = null;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.loadMockData();
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    this.loadCompetition();
   }
 
-  loadMockData(): void {
-    const competitionId = this.route.snapshot.paramMap.get('id');
-    console.log('Loading competition:', competitionId);
+  loadCompetition(): void {
+    this.isLoading = true;
+    this.error = null;
 
-    // Заглушка данных
-    this.competition = {
-      id: 1,
-      name: 'Чемпионат города по плаванию 2024',
-      city: 'Москва',
-      startDate: '15.03.2024',
-      endDate: '17.03.2024',
-      status: 'completed',
-      venue: {
-        name: 'СК "Олимпийский"',
-        address: 'г. Москва, ул. Олимпийская, д. 1',
-        photo: '/assets/images/venue-placeholder.png'
-      },
-      sport: 'Плавание',
-      category: 'Стандартная программа',
-      type: 'city',
-      organizer: 'Департамент спорта г. Москвы',
-      bestResults: [
-        { athleteId: 1, athleteName: 'Иванов Алексей Петрович', athleteAvatar: '/assets/images/avatar-placeholder.png', university: 'МГУ им. Ломоносова', result: '25,8 с' },
-        { athleteId: 2, athleteName: 'Петров Сергей Владимирович', athleteAvatar: '/assets/images/avatar-placeholder.png', university: 'МГТУ им. Баумана', result: '26,1 с' },
-        { athleteId: 3, athleteName: 'Смирнов Дмитрий Олегович', athleteAvatar: '/assets/images/avatar-placeholder.png', university: 'СПбГУ', result: '26,5 с' },
-      ],
-      protocols: [
-        {
-          discipline: 'Бег 60м',
-          type: 'Мужчины',
-          results: [
-            { athleteId: 1, athleteName: 'Иванов Алексей Петрович', university: 'МГУ им. Ломоносова', result: '7,2 с' },
-            { athleteId: 2, athleteName: 'Петров Сергей Владимирович', university: 'МГТУ им. Баумана', result: '7,4 с' },
-            { athleteId: 3, athleteName: 'Смирнов Дмитрий Олегович', university: 'СПбГУ', result: '7,5 с' },
-            { athleteId: 4, athleteName: 'Козлов Андрей Николаевич', university: 'НГУ', result: '7,7 с' },
-            { athleteId: 5, athleteName: 'Морозов Иван Сергеевич', university: 'УрФУ', result: '7,9 с' },
-          ]
+    const competitionId = this.route.snapshot.paramMap.get('id');
+
+    if (!competitionId) {
+      this.error = 'ID соревнования не указан';
+      this.isLoading = false;
+      return;
+    }
+
+    this.http.get<Competition>(`${API_URLS.COMPETITIONS}/${competitionId}`)
+      .subscribe({
+        next: (data) => {
+          this.competition = data;
+          this.isLoading = false;
         },
-        {
-          discipline: 'Бег 100м',
-          type: 'Мужчины',
-          results: [
-            { athleteId: 1, athleteName: 'Иванов Алексей Петрович', university: 'МГУ им. Ломоносова', result: '11,2 с' },
-            { athleteId: 6, athleteName: 'Васильев Максим Евгеньевич', university: 'КФУ', result: '11,5 с' },
-            { athleteId: 7, athleteName: 'Фёдоров Павел Александрович', university: 'ТГУ', result: '11,7 с' },
-          ]
-        },
-        {
-          discipline: 'Плавание 50м вольный стиль',
-          type: 'Мужчины',
-          results: [
-            { athleteId: 1, athleteName: 'Иванов Алексей Петрович', university: 'МГУ им. Ломоносова', result: '25,8 с' },
-            { athleteId: 2, athleteName: 'Петров Сергей Владимирович', university: 'МГТУ им. Баумана', result: '26,1 с' },
-            { athleteId: 3, athleteName: 'Смирнов Дмитрий Олегович', university: 'СПбГУ', result: '26,5 с' },
-          ]
-        },
-        {
-          discipline: 'Плавание 100м вольный стиль',
-          type: 'Женщины',
-          results: [
-            { athleteId: 8, athleteName: 'Смирнова Анна Игоревна', university: 'СПбГУ', result: '58,3 с' },
-            { athleteId: 9, athleteName: 'Соколова Елена Андреевна', university: 'КФУ', result: '59,1 с' },
-            { athleteId: 10, athleteName: 'Новикова Ольга Павловна', university: 'ТГУ', result: '59,8 с' },
-          ]
-        },
-      ]
-    };
+        error: (err) => {
+          console.error('Ошибка загрузки данных:', err);
+          this.error = 'Не удалось загрузить данные о соревновании';
+          this.isLoading = false;
+        }
+      });
+  }
+
+  getStatusValue(): 'upcoming' | 'ongoing' | 'completed' {
+    const today = new Date();
+    const startDate = new Date(this.competition.startDate);
+    const endDate = this.competition.endDate ? new Date(this.competition.endDate) : null;
+
+    if (endDate && endDate < today) {
+      return 'completed';
+    } else if (startDate <= today && (!endDate || endDate >= today)) {
+      return 'ongoing';
+    } else {
+      return 'upcoming';
+    }
   }
 
   getStatusLabel(status: string): string {
@@ -143,24 +120,35 @@ export class CompetitionDetailsComponent {
     return labels[status] || status;
   }
 
-  getTypeLabel(type: string): string {
-    const labels: { [key: string]: string } = {
-      'university': 'Вузовские',
-      'city': 'Городские',
-      'regional': 'Региональные',
-      'russian': 'Российские'
+  getLevelLabel(level: string): string {
+    const mapping: { [key: string]: string } = {
+      'University Level': 'Вузовские',
+      'City Level': 'Городские',
+      'Regional Level': 'Региональные',
+      'All-Russian Level': 'Российские',
+      'International Level': 'Международные'
     };
-    return labels[type] || type;
+    return mapping[level] || level;
   }
 
-  onVenueClick(): void {
-    // Переход на страницу места проведения (если будет)
-    console.log('Venue clicked:', this.competition.venue.name);
-    // this.router.navigate(['/venues', this.competition.venue.id]);
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  onVenueClick(id: number): void {
+    this.router.navigate(['/sports-facilities-detail', id]);
   }
 
   onAthleteClick(athleteId: number): void {
-    // Переход на профиль спортсмена
     this.router.navigate(['/profile', athleteId]);
+  }
+
+  onBack(): void {
+    this.router.navigate(['/competitions']);
   }
 }

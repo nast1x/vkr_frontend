@@ -110,14 +110,16 @@ $decor-width: 300px;
 
 // ===== СПИСОК ОБЪЕКТОВ =====
 .sports-facilities-list-section {
-  // Центральная колонка
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .sports-facilities-title {
   font-size: 32px;
   font-weight: 700;
   color: $text-primary;
-  margin-bottom: 32px;
+  margin: 0;
   text-align: center;
 }
 
@@ -132,11 +134,11 @@ $decor-width: 300px;
   background: $white;
   border-radius: 16px;
   border: 2px solid $main-border;
-  cursor: pointer;
   @include transition;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  // cursor: pointer; <-- УДАЛЕНО (карточка не кликабельна)
 
   &:hover {
     transform: translateY(-6px);
@@ -159,36 +161,6 @@ $decor-width: 300px;
 
   .facility-card:hover & {
     transform: scale(1.05);
-  }
-}
-
-.facility-type-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba($white, 0.95);
-  backdrop-filter: blur(4px);
-
-  &.open {
-    color: #4CAF50;
-  }
-
-  &.closed {
-    color: #FF9800;
-  }
-
-  &.indoor {
-    color: #2196F3;
-  }
-
-  &.outdoor {
-    color: #4CAF50;
   }
 }
 
@@ -238,6 +210,7 @@ $decor-width: 300px;
   overflow: hidden;
 }
 
+// ===== КНОПКА "ПОДРОБНЕЕ" =====
 .facility-details-btn {
   width: 100%;
   padding: 12px;
@@ -246,7 +219,7 @@ $decor-width: 300px;
   background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
   color: $white;
   border: none;
-  border-radius: 0 0 14px 14px;
+  border-radius: 10px;  // Было: 0 0 14px 14px
   cursor: pointer;
   @include transition;
   margin-top: auto;
@@ -265,6 +238,11 @@ $decor-width: 300px;
   background: $white;
   border-radius: 16px;
   border: 2px dashed $main-border;
+  grid-column: 1 / -1;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 // ===== ДЕКОР СПРАВА =====
@@ -281,6 +259,70 @@ $decor-width: 300px;
   max-height: 600px;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+}
+
+// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: $white;
+  border-radius: 16px;
+  border: 2px solid $main-border;
+  grid-column: 1 / -1;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-state {
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba($primary-color, 0.2);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    font-size: 16px;
+    color: $text-secondary;
+  }
+}
+
+.error-state {
+  p {
+    font-size: 16px;
+    color: #d32f2f;
+    margin-bottom: 20px;
+  }
+
+  .retry-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    @include transition;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
