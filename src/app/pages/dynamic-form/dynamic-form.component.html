@@ -1,0 +1,38 @@
+<div class="modern-form-container">
+  <div class="form-header">
+    <h3>{{ formTitle }}</h3>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="modern-form">
+    @for (field of fields; track field.name) {
+      <div class="form-group">
+        <label class="control-label">
+          {{ field.label }}
+          @if (field.required) { <span class="required-star">*</span> }
+        </label>
+        @if (field.type === 'text' || field.type === 'number' || field.type === 'date') {
+          <input [type]="field.type" [formControlName]="field.name" class="form-input" />
+        }
+        @if (field.type === 'textarea') {
+          <textarea [formControlName]="field.name" class="form-input" rows="4"></textarea>
+        }
+        @if (field.type === 'select') {
+          <select [formControlName]="field.name" class="form-input form-select">
+            <option value="" disabled>Выберите значение</option>
+            @for (opt of field.options; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        }
+        @if (form.get(field.name)?.invalid && form.get(field.name)?.touched) {
+          <div class="error-text">Поле заполнено некорректно</div>
+        }
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="submit" class="btn-modern btn-submit">Сохранить</button>
+      <button type="button" class="btn-modern btn-cancel" (click)="cancel.emit()">Отмена</button>
+    </div>
+  </form>
+</div>
