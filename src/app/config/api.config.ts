@@ -14,6 +14,7 @@ export const API_CONFIG = {
 
     // ===== СТАРЫЕ ЭНДПОИНТЫ (не изменены) =====
     UNIVERSITY_STATS: '/api/ref/university/stats',
+    UNIVERSITY: '/api/ref/university',
     TEAM: '/api/users/team',
     COMPETITIONS: '/api/competitions/list',
     SPORT_FACILITIES: '/api/ref/sport-facilities/list',
@@ -36,6 +37,7 @@ export const API_URLS = {
 
   // ===== СТАРЫЕ ЭНДПОИНТЫ (не изменены) =====
   UNIVERSITY_STATS: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.UNIVERSITY_STATS}`,
+  UNIVERSITY: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.UNIVERSITY}`,
   TEAM: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEAM}`,
   COMPETITIONS: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.COMPETITIONS}`,
   SPORT_FACILITIES: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SPORT_FACILITIES}`,

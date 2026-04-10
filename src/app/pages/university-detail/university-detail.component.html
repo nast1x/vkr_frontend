@@ -1,155 +1,174 @@
-<!-- Шапка сайта -->
 <app-header></app-header>
 
-<!-- Основной контент -->
+@if (showEditForm) {
+  <div class="admin-modal-overlay">
+    <div class="admin-modal-content">
+      <app-dynamic-form
+        [fields]="editFields"
+        [initialData]="university"
+        [formTitle]="'Редактирование:' + university.name"
+        (formSubmit)="onEditSubmit($event)"
+        (cancel)="showEditForm = false">
+      </app-dynamic-form>
+    </div>
+  </div>
+}
+
 <main class="university-details-content">
   <div class="university-details-container">
 
-    <!-- Кнопка "Назад" -->
-    <button class="back-btn" (click)="onBack()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Назад к списку
-    </button>
+    <div class="top-actions-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <button class="back-btn" (click)="onBack()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Назад к списку
+      </button>
 
-    <!-- Индикатор загрузки -->
-    <div *ngIf="isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Загрузка данных...</p>
+      @if (isAdmin) {
+        <button class="btn-admin-edit" (click)="showEditForm = true">
+          Редактировать
+        </button>
+      }
     </div>
 
-    <!-- Сообщение об ошибке -->
-    <div *ngIf="error" class="error-state">
-      <p>{{ error }}</p>
-      <button class="retry-btn" (click)="loadUniversity()">Попробовать снова</button>
-    </div>
-
-    <!-- Карточка университета -->
-    <div class="university-details-card" *ngIf="!isLoading && !error && university">
-
-      <!-- Заголовок и основная информация -->
-      <div class="university-header">
-        <div class="university-title-section">
-          <h1 class="university-name">{{ university.name }}</h1>
-          <div class="university-meta">
-            <span class="university-meta-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              {{ university.shortName }}
-            </span>
-            <span class="university-meta-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              {{ university.city }}
-            </span>
-          </div>
-        </div>
-        <div class="university-rating-badge">
-          <span class="rating-place">#{{ university.ratingPlace }}</span>
-          <span class="rating-label">в рейтинге</span>
-        </div>
+    @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Загрузка данных...</p>
       </div>
+    }
 
-      <!-- Фото и описание -->
-      <div class="university-description-section">
-        <div class="university-image-container">
-          <img [src]="getPhoto(university.photo)" [alt]="university.name" class="university-main-photo">
-        </div>
-        <div class="university-description-content">
-          <h2 class="university-description-title">О университете</h2>
-          <p class="university-description-text">{{ university.description }}</p>
-          <div class="university-stats-block">
-            <div class="stat-item">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="stat-content">
-                <span class="stat-value">{{ university.totalAthletes }}</span>
-                <span class="stat-label">Спортсменов</span>
-              </div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              <div class="stat-content">
-                <span class="stat-value">{{ university.totalCoaches }}</span>
-                <span class="stat-label">Тренеров</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    @if (error) {
+      <div class="error-state">
+        <p>{{ error }}</p>
+        <button class="retry-btn" (click)="loadUniversity()">Попробовать снова</button>
       </div>
+    }
 
-      <!-- Тренеры университета с раскрывающимися списками спортсменов -->
-      <div class="university-coaches" *ngIf="university.coaches && university.coaches.length > 0">
-        <h2 class="university-section-title">👨‍🏫 Тренеры и спортсмены</h2>
-        <div class="coaches-list">
-          <div class="coach-item" *ngFor="let coach of university.coaches">
-            <!-- Заголовок тренера (кликабельный) -->
-            <div class="coach-header" (click)="toggleCoach(coach.id)">
-              <div class="coach-avatar-container">
-                <img [src]="getAvatar(coach.avatar)" [alt]="coach.fullName" class="coach-avatar">
-              </div>
-              <div class="coach-info">
-                <h3 class="coach-name">{{ coach.fullName }}</h3>
-                <p class="coach-specialization">{{ coach.specialization }}</p>
-                <p class="coach-athletes-count">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ coach.athletes?.length || 0 }} спортсменов
-                </p>
-              </div>
-              <div class="coach-toggle-icon" [class.expanded]="expandedCoachId === coach.id">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    @if (!isLoading && !error && university) {
+      <div class="university-details-card">
+        <div class="university-header">
+          <div class="university-title-section">
+            <h1 class="university-name">{{ university.name }}</h1>
+            <div class="university-meta">
+              <span class="university-meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </div>
+                {{ university.shortName }}
+              </span>
+              <span class="university-meta-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                {{ university.city }}
+              </span>
             </div>
-
-            <!-- Раскрывающийся список спортсменов -->
-            <div class="coach-athletes-list" *ngIf="expandedCoachId === coach.id">
-              <div class="athlete-item" *ngFor="let athlete of coach.athletes">
-                <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
-                  <img [src]="getAvatar(athlete.avatar)" [alt]="athlete.fullName" class="athlete-avatar">
-                </div>
-                <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
-                  <h3 class="athlete-name">{{ athlete.fullName }}</h3>
-                  <p class="athlete-sport">{{ athlete.sport }}</p>
-                </div>
-                <button class="athlete-details-btn" (click)="onAthleteClick(athlete.id)">
-                  Подробнее
-                </button>
-              </div>
-              <!-- Если спортсменов нет -->
-              <div *ngIf="!coach.athletes || coach.athletes.length === 0" class="no-athletes">
-                <p>У этого тренера пока нет спортсменов в системе</p>
-              </div>
-            </div>
-
-            <!-- Кнопка "Подробнее" о тренере (всегда видна) -->
-            <button class="coach-details-btn" (click)="onCoachClick(coach.id)">
-              Подробнее о тренере
-            </button>
+          </div>
+          <div class="university-rating-badge">
+            <span class="rating-place">#{{ university.ratingPlace }}</span>
+            <span class="rating-label">в рейтинге</span>
           </div>
         </div>
-      </div>
 
-      <!-- Если тренеров нет -->
-      <div class="university-coaches" *ngIf="!university.coaches || university.coaches.length === 0">
-        <p class="no-coaches">В этом университете пока нет тренеров в системе</p>
-      </div>
+        <div class="university-description-section">
+          <div class="university-image-container">
+            <img [src]="getPhoto(university.photo)" [alt]="university.name" class="university-main-photo">
+          </div>
+          <div class="university-description-content">
+            <h2 class="university-description-title">О университете</h2>
+            <p class="university-description-text">{{ university.description }}</p>
+            <div class="university-stats-block">
+              <div class="stat-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="stat-content">
+                  <span class="stat-value">{{ university.totalAthletes }}</span>
+                  <span class="stat-label">Спортсменов</span>
+                </div>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <div class="stat-content">
+                  <span class="stat-value">{{ university.totalCoaches }}</span>
+                  <span class="stat-label">Тренеров</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    </div>
+        <div class="university-coaches">
+          @if (university.coaches && university.coaches.length > 0) {
+            <h2 class="university-section-title">👨‍🏫 Тренеры и спортсмены</h2>
+            <div class="coaches-list">
+              @for (coach of university.coaches; track coach.id) {
+                <div class="coach-item">
+                  <div class="coach-header" (click)="toggleCoach(coach.id)">
+                    <div class="coach-avatar-container">
+                      <img [src]="getAvatar(coach.avatar)" [alt]="coach.fullName" class="coach-avatar">
+                    </div>
+                    <div class="coach-info">
+                      <h3 class="coach-name">{{ coach.fullName }}</h3>
+                      <p class="coach-specialization">{{ coach.specialization }}</p>
+                      <p class="coach-athletes-count">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                          <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        {{ coach.athletes?.length || 0 }} спортсменов
+                      </p>
+                    </div>
+                    <div class="coach-toggle-icon" [class.expanded]="expandedCoachId === coach.id">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  @if (expandedCoachId === coach.id) {
+                    <div class="coach-athletes-list">
+                      @for (athlete of coach.athletes; track athlete.id) {
+                        <div class="athlete-item">
+                          <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
+                            <img [src]="getAvatar(athlete.avatar)" [alt]="athlete.fullName" class="athlete-avatar">
+                          </div>
+                          <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
+                            <h3 class="athlete-name">{{ athlete.fullName }}</h3>
+                            <p class="athlete-sport">{{ athlete.sport }}</p>
+                          </div>
+                          <button class="athlete-details-btn" (click)="onAthleteClick(athlete.id)">
+                            Подробнее
+                          </button>
+                        </div>
+                      } @empty {
+                        <div class="no-athletes">
+                          <p>У этого тренера пока нет спортсменов в системе</p>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <button class="coach-details-btn" (click)="onCoachClick(coach.id)">
+                    Подробнее о тренере
+                  </button>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-coaches">В этом университете пока нет тренеров в системе</p>
+          }
+        </div>
+      </div>
+    }
   </div>
 </main>

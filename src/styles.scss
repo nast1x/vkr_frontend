@@ -81,6 +81,64 @@ body {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+/* ===== МОДАЛЬНОЕ ОКНО АДМИНА (СОВРЕМЕННЫЙ СТИЛЬ) ===== */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 
+  .admin-modal-content {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px;
+    animation: slideUp 0.3s ease;
+
+    /* Делаем тень формы более выразительной на темном фоне оверлея */
+    .modern-form-container {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+/* Кнопка редактирования (Админ) */
+.btn-admin-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: $white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(#ff9800, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(#ff9800, 0.4);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 

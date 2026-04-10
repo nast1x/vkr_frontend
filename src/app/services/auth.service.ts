@@ -9,7 +9,7 @@ export interface User {
   fullName: string;
   email: string;
   avatar: string | null;
-  role: 'Athlete' | 'Coach';
+  role: 'Athlete' | 'Coach' | 'Admin';
   age: number;
   birthDate: string;
   gender: 'Male' | 'Female';

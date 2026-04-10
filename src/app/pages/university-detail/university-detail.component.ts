@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from "../header/header.component";
-import { NgForOf, NgIf } from "@angular/common";
-import { ActivatedRoute, Router } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
+import {Component, OnInit} from '@angular/core';
+import {HeaderComponent} from "../header/header.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {API_URLS} from '../../config/api.config';
+import {DynamicFormComponent, FormField} from "../dynamic-form/dynamic-form.component";
+import {AuthService} from "../../services/auth.service";
 
 interface Athlete {
   id: number;
@@ -36,7 +37,7 @@ interface UniversityDetail {
 @Component({
   selector: 'app-university-detail',
   standalone: true,
-  imports: [HeaderComponent, NgForOf, NgIf],
+  imports: [HeaderComponent, DynamicFormComponent],
   templateUrl: './university-detail.component.html',
   styleUrl: './university-detail.component.scss'
 })
@@ -45,16 +46,29 @@ export class UniversityDetailComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
   expandedCoachId: number | null = null;
+  isAdmin: boolean = false;
+  showEditForm: boolean = false;
+  editFields: FormField[] = [
+    {name: 'name', label: 'Полное название ВУЗа', type: 'text', required: true},
+    {name: 'shortName', label: 'Аббревиатура', type: 'text', required: true},
+    {name: 'city', label: 'Город', type: 'text', required: true},
+    {name: 'description', label: 'Описание', type: 'textarea'}
+  ];
   placeholderAvatar = '/assets/images/avatar-placeholder.png';
   placeholderPhoto = 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1000';
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.isAdmin = user?.role === 'Admin';
+    });
     this.loadUniversity();
   }
 
@@ -111,4 +125,16 @@ export class UniversityDetailComponent implements OnInit {
   getPhoto(photo: string | null): string {
     return photo || this.placeholderPhoto;
   }
+
+  onEditSubmit(formData: any): void {
+    const universityId = this.route.snapshot.paramMap.get('id');
+    this.http.put(`${API_URLS.UNIVERSITY}/${universityId}`, formData).subscribe({
+      next: () => {
+        this.showEditForm = false;
+        this.loadUniversity(); // Перезагружаем данные
+      },
+      error: (err) => alert('Ошибка при сохранении: ' + err.message)
+    });
+  }
+
 }
