@@ -1,19 +1,18 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 export interface FormField {
   name: string;
   label: string;
-  type: 'text' | 'number' | 'date' | 'select' | 'textarea';
-  options?: { value: any; label: string }[]; // Для select
+  type: 'text' | 'number' | 'date' | 'select' | 'textarea' | 'password';
+  options?: { value: any; label: string }[];
   required?: boolean;
 }
 
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -37,10 +36,13 @@ export class DynamicFormComponent implements OnInit {
       const value = this.initialData ? this.initialData[field.name] : '';
       const validators = field.required ? [Validators.required] : [];
 
-      group[field.name] = [value, { validators: validators, updateOn: 'blur' }];
+      // Создаем обычный массив для FormBuilder
+      group[field.name] = [value, validators];
     });
 
-    this.form = this.fb.group(group);
+    // Применяем updateOn: 'blur' ко всей FormGroup разом.
+    // Теперь форма будет реагировать и перерисовываться только при потере фокуса с инпута.
+    this.form = this.fb.group(group, { updateOn: 'blur' });
   }
 
   onSubmit() {
@@ -49,9 +51,5 @@ export class DynamicFormComponent implements OnInit {
     } else {
       this.form.markAllAsTouched();
     }
-  }
-
-  trackByFieldName(index: number, field: FormField): string {
-    return field.name;
   }
 }

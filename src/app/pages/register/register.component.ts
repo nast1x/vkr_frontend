@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
-import {NgForOf, NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, NgIf, NgForOf],
+  imports: [FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

@@ -23,10 +23,10 @@ interface Coach {
 
 interface UniversityDetail {
   id: number;
+  imageLink: string | null;
   name: string;
   shortName: string;
   city: string;
-  photo: string | null;
   description: string;
   totalAthletes: number;
   totalCoaches: number;
@@ -52,7 +52,8 @@ export class UniversityDetailComponent implements OnInit {
     {name: 'name', label: 'Полное название ВУЗа', type: 'text', required: true},
     {name: 'shortName', label: 'Аббревиатура', type: 'text', required: true},
     {name: 'city', label: 'Город', type: 'text', required: true},
-    {name: 'description', label: 'Описание', type: 'textarea'}
+    {name: 'description', label: 'Описание', type: 'textarea'},
+    { name: 'imageLink', label: 'Ссылка на фото', type: 'text' }
   ];
   placeholderAvatar = '/assets/images/avatar-placeholder.png';
   placeholderPhoto = 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1000';
@@ -71,6 +72,7 @@ export class UniversityDetailComponent implements OnInit {
     });
     this.loadUniversity();
   }
+
 
   loadUniversity(): void {
     this.isLoading = true;

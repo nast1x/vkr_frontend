@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { Router } from '@angular/router';
-import { NgForOf, NgIf } from "@angular/common";
+
 import { HeaderComponent } from "../header/header.component";
 import { HttpClient } from "@angular/common/http";
 import {API_CONFIG, API_URLS} from '../../config/api.config';
@@ -18,7 +18,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [FormsModule, NgForOf, NgIf, HeaderComponent],
+  imports: [FormsModule, HeaderComponent],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss'
 })

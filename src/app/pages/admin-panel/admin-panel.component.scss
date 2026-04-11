@@ -1,0 +1,189 @@
+@use '../../../styles.scss' as *;
+
+.admin-content {
+  padding-top: 100px;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.admin-header {
+  margin-bottom: 32px;
+
+  .admin-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 8px 0;
+  }
+
+  .admin-subtitle {
+    color: $text-secondary;
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  .tab-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    background: rgba($white, 0.5);
+    color: $text-secondary;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      background: $primary-color;
+      color: $white;
+      box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    }
+
+    &:hover:not(.active) {
+      background: rgba($white, 0.9);
+      color: $text-primary;
+    }
+  }
+}
+
+.admin-card {
+  background: $white;
+  border-radius: 20px;
+  border: 2px solid #E0E0E0;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      color: $text-primary;
+    }
+
+    .btn-create {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(#4caf50, 0.4);
+      }
+    }
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  th {
+    color: $text-secondary;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #f8f9fa;
+
+    &:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+    &:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+  }
+
+  tbody tr {
+    transition: background 0.2s;
+    &:hover { background: #fafafa; }
+  }
+
+  .badge-code {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: monospace;
+  }
+
+  .primary-text {
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .secondary-text {
+    color: $text-secondary;
+    font-size: 14px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+
+    .btn-icon {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background 0.2s;
+
+      &.edit:hover { background: rgba(#2196F3, 0.1); }
+      &.delete:hover { background: rgba(#f44336, 0.1); }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: $text-secondary;
+    font-style: italic;
+  }
+}
+
+// Состояния загрузки
+.loading-state, .error-state {
+  text-align: center;
+  padding: 40px;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid rgba($primary-color, 0.2);
+  border-top-color: $primary-color;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

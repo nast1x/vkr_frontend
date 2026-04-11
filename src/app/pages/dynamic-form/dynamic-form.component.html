@@ -10,7 +10,8 @@
           {{ field.label }}
           @if (field.required) { <span class="required-star">*</span> }
         </label>
-        @if (field.type === 'text' || field.type === 'number' || field.type === 'date') {
+
+        @if (field.type === 'text' || field.type === 'number' || field.type === 'date' || field.type === 'password') {
           <input [type]="field.type" [formControlName]="field.name" class="form-input" />
         }
         @if (field.type === 'textarea') {
@@ -24,7 +25,8 @@
             }
           </select>
         }
-        @if (form.get(field.name)?.invalid && form.get(field.name)?.touched) {
+
+        @if (form.controls[field.name].invalid && form.controls[field.name].touched) {
           <div class="error-text">Поле заполнено некорректно</div>
         }
       </div>

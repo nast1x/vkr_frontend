@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 
 // 1. Создаём тип для роли
@@ -15,7 +15,7 @@ interface Role {
 @Component({
   selector: 'app-choose-role',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './choose-role.component.html',
   styleUrl: './choose-role.component.scss'
 })

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { NgForOf, NgIf } from "@angular/common";
+
 import { HeaderComponent } from "../header/header.component";
 import { Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
@@ -21,10 +21,8 @@ interface Competition {
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf,
-    NgIf,
     HeaderComponent
-  ],
+],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })

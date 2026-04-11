@@ -66,12 +66,44 @@ $main-border: #E0E0E0;
 // ===== ШАПКА ПРОФИЛЯ =====
 // ===== ДОБАВИТЬ ПОСЛЕ .profile-edit-btn =====
 
+.profile-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  color: #fff;
+  border: 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(103, 58, 183, 0.4);
+  }
+}
+
 // Контейнер для кнопок действий
 .profile-actions {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex-shrink: 0;
+  flex-direction: column; // Кнопки будут идти друг под другом
+  gap: 10px;
+  margin-left: auto; // Прижмет блок с кнопками к правому краю
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: row; // На телефоне выстроятся в ряд
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
 }
 
 .profile-edit-btn {
@@ -224,10 +256,6 @@ $main-border: #E0E0E0;
   flex-direction: column;
   gap: 12px;
   flex-shrink: 0;
-}
-
-.profile-edit-btn {
-  // ... существующие стили ...
 }
 
 // ===== НОВАЯ КНОПКА: ВЫЙТИ =====
@@ -595,4 +623,32 @@ $main-border: #E0E0E0;
   z-index: 1000;
   pointer-events: none;
   transform: translateX(25%) scaleX(-1);
+}
+
+.profile-password-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  // Бирюзово-синий градиент (Teal/Cyan) для акцента на безопасности
+  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-color 0%, #1565C0 100%);
+    color: $white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
 }

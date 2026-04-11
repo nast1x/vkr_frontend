@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FormsModule } from "@angular/forms";
-import { NgForOf, NgIf } from "@angular/common";
+
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
 
@@ -19,7 +19,7 @@ interface SportsFacility {
 @Component({
   selector: 'app-sports-facilities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, NgForOf, NgIf],
+  imports: [HeaderComponent, FormsModule],
   templateUrl: './sports-facilities.component.html',
   styleUrl: './sports-facilities.component.scss'
 })
@@ -44,7 +44,7 @@ export class SportsFacilitiesComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.http.get<SportsFacility[]>(API_URLS.SPORT_FACILITIES)
+    this.http.get<SportsFacility[]>(API_URLS.SPORT_FACILITIES_LIST)
       .subscribe({
         next: (data) => {
           this.facilities = data;

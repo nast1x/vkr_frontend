@@ -20,8 +20,8 @@ import { SportsFacilitiesComponent } from './pages/sports-facilities/sports-faci
 import { SportsFacilitiesDetailComponent } from './pages/sports-facilities-detail/sports-facilities-detail.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
+import {AdminPanelComponent} from "./pages/admin-panel/admin-panel.component";
 
-// ⚠️ HeaderComponent НЕ должен быть в маршрутах — это компонент для шаблонов!
 
 export const routes: Routes = [
   // Публичные маршруты (доступны всем)
@@ -42,6 +42,7 @@ export const routes: Routes = [
   { path: 'sports-facilities-detail/:id', component: SportsFacilitiesDetailComponent, canActivate: [authGuard] },
   { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
   { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] },
+  { path: 'admin-panel', component: AdminPanelComponent, canActivate: [authGuard] },
 
   // Редирект для неизвестных путей
   { path: '**', redirectTo: '' }

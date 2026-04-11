@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
-import {NgForOf, NgIf} from "@angular/common";
+
 
 interface FavoriteAthlete {
   id: number;
@@ -35,10 +35,8 @@ interface Favorites {
   selector: 'app-favorite',
   standalone: true,
   imports: [
-    HeaderComponent,
-    NgIf,
-    NgForOf
-  ],
+    HeaderComponent
+],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.scss'
 })

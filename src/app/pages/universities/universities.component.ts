@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FormsModule } from "@angular/forms";
-import { NgForOf, NgIf } from "@angular/common";
+
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
 
@@ -17,7 +17,7 @@ interface University {
 @Component({
   selector: 'app-universities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, NgForOf, NgIf],
+  imports: [HeaderComponent, FormsModule],
   templateUrl: './universities.component.html',
   styleUrl: './universities.component.scss'
 })

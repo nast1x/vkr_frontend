@@ -76,7 +76,7 @@
 
         <div class="university-description-section">
           <div class="university-image-container">
-            <img [src]="getPhoto(university.photo)" [alt]="university.name" class="university-main-photo">
+            <img [src]="getPhoto(university.imageLink)" [alt]="university.name" class="university-main-photo">
           </div>
           <div class="university-description-content">
             <h2 class="university-description-title">О университете</h2>
@@ -114,9 +114,6 @@
               @for (coach of university.coaches; track coach.id) {
                 <div class="coach-item">
                   <div class="coach-header" (click)="toggleCoach(coach.id)">
-                    <div class="coach-avatar-container">
-                      <img [src]="getAvatar(coach.avatar)" [alt]="coach.fullName" class="coach-avatar">
-                    </div>
                     <div class="coach-info">
                       <h3 class="coach-name">{{ coach.fullName }}</h3>
                       <p class="coach-specialization">{{ coach.specialization }}</p>
@@ -125,7 +122,7 @@
                           <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                           <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        {{ coach.athletes?.length || 0 }} спортсменов
+                        {{ coach.athletes.length || 0 }} спортсменов
                       </p>
                     </div>
                     <div class="coach-toggle-icon" [class.expanded]="expandedCoachId === coach.id">
@@ -139,9 +136,6 @@
                     <div class="coach-athletes-list">
                       @for (athlete of coach.athletes; track athlete.id) {
                         <div class="athlete-item">
-                          <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
-                            <img [src]="getAvatar(athlete.avatar)" [alt]="athlete.fullName" class="athlete-avatar">
-                          </div>
                           <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
                             <h3 class="athlete-name">{{ athlete.fullName }}</h3>
                             <p class="athlete-sport">{{ athlete.sport }}</p>
@@ -157,7 +151,6 @@
                       }
                     </div>
                   }
-
                   <button class="coach-details-btn" (click)="onCoachClick(coach.id)">
                     Подробнее о тренере
                   </button>

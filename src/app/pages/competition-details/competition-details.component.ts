@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
-import { NgForOf, NgIf } from "@angular/common";
+
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
 
@@ -52,7 +52,7 @@ interface Competition {
 @Component({
   selector: 'app-competition-details',
   standalone: true,
-  imports: [HeaderComponent, NgForOf, NgIf],
+  imports: [HeaderComponent],
   templateUrl: './competition-details.component.html',
   styleUrl: './competition-details.component.scss'
 })
