@@ -1,13 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {FormField} from "../../models/form.model";
 
-export interface FormField {
-  name: string;
-  label: string;
-  type: 'text' | 'number' | 'date' | 'select' | 'textarea' | 'password';
-  options?: { value: any; label: string }[];
-  required?: boolean;
-}
+
 
 @Component({
   selector: 'app-dynamic-form',

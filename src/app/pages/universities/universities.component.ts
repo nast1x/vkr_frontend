@@ -1,31 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HeaderComponent } from "../header/header.component";
-import { FormsModule } from "@angular/forms";
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { ErrorStateComponent } from '../../shared/components/error-state/error-state.component';
-import { PageDecorComponent } from '../../shared/components/page-decor/page-decor.component';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {HeaderComponent} from "../header/header.component";
+import {FormsModule} from "@angular/forms";
+import {LoaderComponent} from '../../shared/components/loader/loader.component';
+import {ErrorStateComponent} from '../../shared/components/error-state/error-state.component';
+import {PageDecorComponent} from '../../shared/components/page-decor/page-decor.component';
 
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
-import {NgOptimizedImage} from "@angular/common";
-
-interface University {
-  idUniversity: number;
-  shortName: string;
-  city: string;
-  athletesCount: number;
-  coachesCount: number;
-}
+import {HttpClient} from "@angular/common/http";
+import {API_URLS} from '../../config/api.config';
+import {University} from "../../models/university.model";
+import {UniversityService} from "../../services/university.service";
 
 @Component({
   selector: 'app-universities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, NgOptimizedImage, LoaderComponent, ErrorStateComponent, PageDecorComponent],
+  imports: [HeaderComponent, FormsModule, LoaderComponent, ErrorStateComponent, PageDecorComponent],
   templateUrl: './universities.component.html',
   styleUrl: './universities.component.scss'
 })
 export class UniversitiesComponent implements OnInit {
+  private universityService = inject(UniversityService);
   selectedCity: string = '';
   cities: string[] = [];
   universities: University[] = [];
@@ -36,7 +30,8 @@ export class UniversitiesComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadUniversities();
@@ -46,20 +41,18 @@ export class UniversitiesComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.http.get<University[]>(API_URLS.UNIVERSITY_STATS)
-      .subscribe({
-        next: (data) => {
-          this.universities = data;
-          this.cities = Array.from(new Set(this.universities.map(u => u.city))).sort();
-          this.filteredUniversities = this.universities;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Ошибка загрузки данных:', err);
-          this.error = 'Не удалось загрузить данные. Проверьте подключение к серверу.';
-          this.isLoading = false;
-        }
-      });
+    this.universityService.getUniversities().subscribe({
+      next: (data) => {
+        this.universities = data;
+        this.cities = Array.from(new Set(this.universities.map(u => u.city))).sort();
+        this.filteredUniversities = this.universities;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Не удалось загрузить данные. Проверьте подключение к серверу.';
+        this.isLoading = false;
+      }
+    });
   }
 
   applyFilters(): void {

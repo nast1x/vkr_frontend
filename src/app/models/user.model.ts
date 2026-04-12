@@ -1,4 +1,3 @@
-// src/app/models/user.model.ts
 export interface User {
   id: number;
   fullName: string;
@@ -41,4 +40,45 @@ export interface ApiError {
   status: number;
   message: string;
   timestamp: string;
+}
+
+export interface UserRecord {
+  competitionId: number;
+  competitionName: string;
+  date: string;
+  discipline: string;
+  result: string;
+}
+
+export interface Trainee {
+  id: number;
+  fullName: string;
+  avatar: string;
+  sport: string;
+}
+
+export interface UserSport {
+  sportName: string;
+  rankName: string;
+  dateReceived: Date;
+}
+
+export interface UserProfile {
+  id: number;
+  fullName: string;
+  avatar: string;
+  role: 'Athlete' | 'Coach' | 'Admin';
+  age: number;
+  birthDate: string;
+  gender: 'Male' | 'Female';
+  email: string;
+  university: string;
+  universityId: number;
+  faculty: string;
+  course: number;
+  coachId: number | null;
+  coachName: string | null;
+  sport: UserSport[];
+  records: UserRecord[];
+  trainees: Trainee[];
 }

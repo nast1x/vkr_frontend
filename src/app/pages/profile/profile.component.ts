@@ -1,52 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
 import {HttpClient} from "@angular/common/http";
 import {API_CONFIG, API_URLS} from '../../config/api.config';
 import {AuthService} from "../../services/auth.service";
-import {DynamicFormComponent, FormField} from "../dynamic-form/dynamic-form.component";
+import {DynamicFormComponent} from "../dynamic-form/dynamic-form.component";
 import {NotificationService} from '../../services/notification.service';
-
-interface Record {
-  competitionId: number;
-  competitionName: string;
-  date: string;
-  discipline: string;
-  result: string;
-}
-
-interface Trainee {
-  id: number;
-  fullName: string;
-  avatar: string;
-  sport: string;
-}
-
-interface UserSport {
-  sportName: string;
-  rankName: string;
-  dateReceived: Date;
-}
-
-interface UserProfile {
-  id: number;
-  fullName: string;
-  avatar: string;
-  role: 'Athlete' | 'Coach' | 'Admin'; // Добавили Admin
-  age: number;
-  birthDate: string;
-  gender: 'Male' | 'Female';
-  email: string;
-  university: string;
-  universityId: number;
-  faculty: string;
-  course: number;
-  coachId: number | null;
-  coachName: string | null;
-  sport: UserSport[];
-  records: Record[];
-  trainees: Trainee[];
-}
+import {UserProfile} from "../../models/user.model";
+import {UserService} from "../../services/user.service";
+import { PROFILE_EDIT_FIELDS, PROFILE_PASSWORD_FIELDS } from './profile.config';
 
 @Component({
   selector: 'app-profile',
@@ -56,6 +18,12 @@ interface UserProfile {
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+
+  readonly editFields = PROFILE_EDIT_FIELDS;
+  readonly passwordFields = PROFILE_PASSWORD_FIELDS;
+
   user!: UserProfile;
   isLoading: boolean = true;
   error: string | null = null;
@@ -69,30 +37,10 @@ export class ProfileComponent implements OnInit {
   showEditForm: boolean = false;
   editData: any = {};
 
-  editFields: FormField[] = [
-    {name: 'lastName', label: 'Фамилия', type: 'text', required: true},
-    {name: 'firstName', label: 'Имя', type: 'text', required: true},
-    {name: 'middleName', label: 'Отчество', type: 'text'},
-    {name: 'birthDate', label: 'Дата рождения', type: 'date'},
-    {
-      name: 'gender', label: 'Пол', type: 'select', required: true, options: [
-        {value: 'Male', label: 'Мужской'},
-        {value: 'Female', label: 'Женский'}
-      ]
-    }
-  ];
-
-  passwordFields: FormField[] = [
-    {name: 'oldPassword', label: 'Текущий пароль', type: 'password', required: true},
-    {name: 'password', label: 'Новый пароль', type: 'password', required: true},
-    {name: 'confirmPassword', label: 'Повторите новый пароль', type: 'password', required: true}
-  ];
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private authService: AuthService,
     private notification: NotificationService
   ) {
   }
@@ -114,30 +62,20 @@ export class ProfileComponent implements OnInit {
   }
 
   loadProfile(): void {
-    this.isLoading = true;
-    this.error = null;
-
     const userId = this.route.snapshot.paramMap.get('id');
+    if (!userId) return;
 
-    if (!userId) {
-      this.error = 'ID пользователя не указан';
-      this.isLoading = false;
-      return;
-    }
-
-    this.http.get<UserProfile>(`${API_URLS.PROFILE}/${userId}`)
-      .subscribe({
-        next: (data) => {
-          this.user = data;
-          this.checkOwnership(); // Проверяем права после загрузки профиля
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Ошибка загрузки данных:', err);
-          this.error = 'Не удалось загрузить данные профиля';
-          this.isLoading = false;
-        }
-      });
+    this.userService.getProfile(userId).subscribe({
+      next: (data) => {
+        this.user = data;
+        this.checkOwnership();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.error = 'Не удалось загрузить данные профиля';
+        this.isLoading = false;
+      }
+    });
   }
 
   // Метод для определения, находимся ли мы в своем профиле
@@ -167,22 +105,13 @@ export class ProfileComponent implements OnInit {
 
   // Отправка данных
   onEditSubmit(formData: any): void {
-    // В API_URLS у нас нет прямого роута на /api/users, поэтому сформируем его:
-    const updateUrl = `${API_CONFIG.BASE_URL}/api/users/${this.user.id}`;
-
-    this.http.put(updateUrl, formData).subscribe({
+    this.userService.updateProfile(this.user.id, formData).subscribe({
       next: () => {
         this.showEditForm = false;
-        this.loadProfile(); // Обновляем данные на странице
-
-        // Если пользователь отредактировал сам себя, обновляем глобальное состояние (шапку и т.д.)
-        if (this.isOwnProfile) {
-          this.authService.refreshUserProfile();
-        }
+        this.loadProfile();
+        if (this.isOwnProfile) this.authService.refreshUserProfile();
       },
-      error: (err) => {
-        this.notification.showError('Ошибка при сохранении: ' + err.message);
-      }
+      error: (err) => this.notification.showError('Ошибка: ' + err.message)
     });
   }
 
@@ -222,31 +151,20 @@ export class ProfileComponent implements OnInit {
   }
 
   onPasswordSubmit(formData: any): void {
-    // 1. Проверяем, совпадают ли новые пароли
     if (formData.password !== formData.confirmPassword) {
-      this.notification.showError('Новые пароли не совпадают!')
+      this.notification.showError('Пароли не совпадают!');
       return;
     }
 
-    // 2. Формируем URL
-    const updateUrl = `${API_CONFIG.BASE_URL}/api/users/${this.user.id}`;
-
-    // 3. Собираем полезную нагрузку (confirmPassword на бэк не отправляем)
-    const payload = {
+    this.userService.changePassword(this.user.id, {
       oldPassword: formData.oldPassword,
       password: formData.password
-    };
-
-    this.http.put(updateUrl, payload).subscribe({
+    }).subscribe({
       next: () => {
         this.showPasswordForm = false;
-        this.notification.showSuccess('Пароль успешно изменен!');
+        this.notification.showSuccess('Пароль изменен');
       },
-      error: (err) => {
-        // Если бэкенд выбросил ошибку (например, неверный старый пароль)
-        const errorMsg = err.error?.message || 'Ошибка при смене пароля. Проверьте текущий пароль.';
-        this.notification.showError(errorMsg)
-      }
+      error: (err) => this.notification.showError('Ошибка смены пароля')
     });
   }
 
@@ -255,29 +173,22 @@ export class ProfileComponent implements OnInit {
     const file = event.target.files[0];
     if (!file) return;
 
-
     const formData = new FormData();
     formData.append('file', file);
 
     this.isLoading = true;
-
-    // Используем withCredentials: true, так как бэкенд читает токен из куки
-    this.http.post<UserProfile>(`${API_CONFIG.BASE_URL}/api/users/profile/photo`, formData, {withCredentials: true})
-      .subscribe({
-        next: (updatedProfile) => {
-          this.user = updatedProfile; // Бэкенд возвращает обновленный профиль, сразу обновляем UI
-
-          // Обновляем состояние в AuthService, чтобы аватарка поменялась и в шапке сайта (header)
-          this.authService.refreshUserProfile();
-
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Ошибка при загрузке фото:', err);
-          this.notification.showError('Не удалось загрузить фотографию.');
-          this.isLoading = false;
-        }
-      });
+    this.userService.uploadProfilePhoto(formData).subscribe({
+      next: (updatedProfile) => {
+        this.user = updatedProfile;
+        this.authService.refreshUserProfile();
+        this.isLoading = false;
+        this.notification.showSuccess('Фото изменено  ');
+      },
+      error: () => {
+        this.notification.showError('Не удалось загрузить фото');
+        this.isLoading = false;
+      }
+    });
   }
 
   handleImageError(event: any) {

@@ -1,53 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HeaderComponent } from "../header/header.component";
-
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
-
-interface Venue {
-  id: number;
-  name: string;
-  address: string;
-  photo: string;
-}
-
-interface BestResult {
-  athleteId: number;
-  athleteName: string;
-  athleteAvatar: string;
-  university: string;
-  discipline: string;
-  result: string;
-}
-
-interface ProtocolEntry {
-  athleteId: number;
-  athleteName: string;
-  university: string;
-  result: string;
-  rankPlace: number;
-}
-
-interface Protocol {
-  discipline: string;
-  type: string;
-  results: ProtocolEntry[];
-}
-
-interface Competition {
-  idCompetition: number;
-  name: string;
-  city: string;
-  startDate: string;
-  endDate: string | null;
-  competitionLevel: string;
-  sportType: string;
-  venue: Venue;
-  organizer: string;
-  bestResults: BestResult[];
-  protocols: Protocol[];
-}
+import {Component, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HeaderComponent} from "../header/header.component";
+import {Competition} from "../../models/competition.model";
+import {CompetitionService} from "../../services/competition.service";
 
 @Component({
   selector: 'app-competition-details',
@@ -57,18 +12,22 @@ interface Competition {
   styleUrl: './competition-details.component.scss'
 })
 export class CompetitionDetailsComponent implements OnInit {
+  private competitionService = inject(CompetitionService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   competition!: Competition;
+
   isLoading: boolean = true;
   error: string | null = null;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
-
   ngOnInit(): void {
-    this.loadCompetition();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadCompetition();
+    } else {
+      this.error = 'ID соревнования не указан';
+      this.isLoading = false;
+    }
   }
 
   loadCompetition(): void {
@@ -83,18 +42,16 @@ export class CompetitionDetailsComponent implements OnInit {
       return;
     }
 
-    this.http.get<Competition>(`${API_URLS.COMPETITIONS}/${competitionId}`)
-      .subscribe({
-        next: (data) => {
-          this.competition = data;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Ошибка загрузки данных:', err);
-          this.error = 'Не удалось загрузить данные о соревновании';
-          this.isLoading = false;
-        }
-      });
+    this.competitionService.getCompetitionById(competitionId).subscribe({
+      next: (data) => {
+        this.competition = data;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.error = 'Не удалось загрузить данные о соревновании';
+        this.isLoading = false;
+      }
+    });
   }
 
   getStatusValue(): 'upcoming' | 'ongoing' | 'completed' {

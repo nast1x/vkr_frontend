@@ -4,8 +4,9 @@ import { HeaderComponent } from "../header/header.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
-import { DynamicFormComponent, FormField } from "../dynamic-form/dynamic-form.component";
+import { DynamicFormComponent } from "../dynamic-form/dynamic-form.component";
 import { AuthService } from "../../services/auth.service";
+import {FormField} from "../../models/form.model";
 
 interface Competition {
   id: number;
