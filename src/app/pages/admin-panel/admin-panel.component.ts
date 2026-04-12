@@ -32,21 +32,35 @@ interface SportRank {
   name: string;
   description: string;
 }
+
 interface EducationPlace {
-  idEducationPlace: number;
+  idEducationPlace: number | null; // Теперь может быть null
   userId: number;
-  userName: string;           // Добавлено
-  universityId: number;
-  universityShortName: string; // Добавлено
+  userName: string;
+  roleId: number;
+  userRole: string;           // ДОБАВЛЕНО
+  universityId: number | null;
+  universityShortName: string;
   universityName?: string;
-  majorId: number;
-  majorCode: string;          // Добавлено
+  majorId: number | null;
+  majorCode: string;
   majorName?: string;
-  courseYear: number | null;  // Разрешаем null
+  courseYear: number | null;
 }
 
+interface Achievement {
+  idAchievement: number;
+  userId: number;
+  userName: string;
+  userRole: string;
+  sportRankId: number;
+  sportRankName: string;
+  sportTypeId: number;
+  sportTypeName: string;
+  dateReceived: string;
+}
 
-type AdminTab = 'majors' | 'universities' | 'sport-types' | 'sport-ranks' | 'education-places';
+type AdminTab = 'majors' | 'universities' | 'sport-types' | 'sport-ranks' | 'education-places' | 'achievements';
 
 @Component({
   selector: 'app-admin-panel',
@@ -64,6 +78,7 @@ export class AdminPanelComponent implements OnInit {
   sportTypes: SportType[] = [];
   sportRanks: SportRank[] = [];
   educationPlaces: EducationPlace[] = [];
+  achievements: Achievement[] = [];
 
   isLoading: boolean = true;
   error: string | null = null;
@@ -71,6 +86,13 @@ export class AdminPanelComponent implements OnInit {
   // Управление модальным окном
   showForm: boolean = false;
   editingData: any = null;
+
+  readonly ROLES = [
+    { value: 1, label: 'Admin' },
+    { value: 2, label: 'User' },
+    { value: 3, label: 'Coach' },
+    { value : 4, label: 'Athlete' }
+  ];
 
   majorFormFields: FormField[] = [
     { name: 'name', label: 'Название специальности', type: 'text', required: true },
@@ -98,9 +120,17 @@ export class AdminPanelComponent implements OnInit {
 
   educationPlaceFormFields: FormField[] = [
     { name: 'userId', label: 'ID Пользователя', type: 'number', required: true },
+    { name: 'roleId', label: 'Роль пользователя', type: 'select', options: this.ROLES, required: true },
     { name: 'universityId', label: 'ID ВУЗа', type: 'number', required: true },
     { name: 'majorId', label: 'ID Специальности', type: 'number', required: true },
     { name: 'courseYear', label: 'Курс (от 0 до 6)', type: 'number', required: true }
+  ];
+
+  achievementFormFields: FormField[] = [
+    { name: 'userId', label: 'ID Пользователя', type: 'number', required: true },
+    { name: 'sportTypeId', label: 'ID Вида спорта', type: 'number', required: true },
+    { name: 'sportRankId', label: 'ID Разряда', type: 'number', required: true },
+    { name: 'dateReceived', label: 'Дата получения', type: 'date', required: true }
   ];
 
   constructor(
@@ -126,19 +156,30 @@ export class AdminPanelComponent implements OnInit {
     if (this.activeTab === 'universities') return this.universityFormFields;
     if (this.activeTab === 'sport-types') return this.sportTypeFormFields;
     if (this.activeTab === 'sport-ranks') return this.sportRankFormFields;
+    if (this.activeTab === 'achievements') return this.achievementFormFields;
     return this.educationPlaceFormFields;
   }
 
   get currentFormTitle(): string {
-    const isEdit = !!this.editingData;
+    // Проверяем наличие именно ID записи, а не просто editingData
+    let id = null;
+    if (this.activeTab === 'majors') id = this.editingData?.idMajor;
+    else if (this.activeTab === 'universities') id = this.editingData?.idUniversity;
+    else if (this.activeTab === 'sport-types') id = this.editingData?.idSportType;
+    else if (this.activeTab === 'sport-ranks') id = this.editingData?.idSportRank;
+    else if (this.activeTab === 'achievements') id = this.editingData?.idAchievement;
+    else if (this.activeTab === 'education-places') id = this.editingData?.idEducationPlace;
+
+    const isEdit = !!id;
+
     if (this.activeTab === 'majors') return isEdit ? 'Редактировать специальность' : 'Новая специальность';
     if (this.activeTab === 'universities') return isEdit ? 'Редактировать ВУЗ' : 'Новый ВУЗ';
     if (this.activeTab === 'sport-types') return isEdit ? 'Редактировать вид спорта' : 'Новый вид спорта';
     if (this.activeTab === 'sport-ranks') return isEdit ? 'Редактировать разряд' : 'Новый разряд';
+    if (this.activeTab === 'achievements') return isEdit ? 'Редактировать достижение' : 'Новое достижение';
 
-    // Для мест обучения выводим имя пользователя в заголовок
     if (this.activeTab === 'education-places') {
-      return isEdit ? `Редактировать обучение: ${this.editingData.userName}` : 'Добавить место обучения';
+      return isEdit ? `Редактировать обучение: ${this.editingData?.userName}` : `Добавить место обучения: ${this.editingData?.userName || ''}`;
     }
     return 'Редактирование';
   }
@@ -178,6 +219,11 @@ export class AdminPanelComponent implements OnInit {
         next: (data) => { this.sportRanks = data; this.isLoading = false; },
         error: () => { this.error = 'Не удалось загрузить разряды'; this.isLoading = false; }
       });
+    } else if (this.activeTab === 'achievements') {
+      this.http.get<Achievement[]>(API_URLS.ACHIEVEMENT).subscribe({
+        next: (data) => { this.achievements = data; this.isLoading = false; },
+        error: () => { this.error = 'Не удалось загрузить достижения'; this.isLoading = false; }
+      });
     }
   }
 
@@ -203,9 +249,14 @@ export class AdminPanelComponent implements OnInit {
       url = `${API_URLS.EDUCATION_PLACE}/${id}`; name = 'место обучения';
     } else if (this.activeTab === 'sport-ranks') {
       url = `${API_URLS.SPORT_RANK}/${id}`; name = 'разряд';
-    }
-    else {
+    } else if (this.activeTab === 'sport-types'){
       url = `${API_URLS.SPORT_TYPE}/${id}`; name = 'вид спорта';
+    } else {
+      url = `${API_URLS.ACHIEVEMENT}/${id}`; name = 'достижение';
+    }
+    if (!id && this.activeTab === 'education-places') {
+      this.notification.showError('У этого пользователя еще нет места обучения.');
+      return;
     }
     if (confirm(`Вы уверены, что хотите удалить ${name}?`)) {
       this.http.delete(url).subscribe({
@@ -219,45 +270,64 @@ export class AdminPanelComponent implements OnInit {
   }
 
   onFormSubmit(formData: any): void {
-    const isEdit = !!this.editingData;
     let id = null;
     let url = '';
+
+    // Определяем URL и пытаемся получить ID существующей записи
     if (this.activeTab === 'majors') {
-      id = isEdit ? this.editingData.idMajor : null;
+      id = this.editingData?.idMajor;
       url = API_URLS.MAJOR;
     } else if (this.activeTab === 'universities') {
-      id = isEdit ? this.editingData.idUniversity : null;
+      id = this.editingData?.idUniversity;
       url = API_URLS.UNIVERSITY;
     } else if (this.activeTab === 'education-places') {
-      // Поддержка обоих вариантов ID (в зависимости от DTO бэкенда)
-      id = isEdit ? (this.editingData.idEducationPlace || this.editingData.id) : null;
+      // Ищем именно ID записи об обучении. Если его нет — это будет POST.
+      id = this.editingData?.idEducationPlace;
       url = API_URLS.EDUCATION_PLACE;
+    } else if (this.activeTab === 'achievements') {
+      id = this.editingData?.idAchievement;
+      url = API_URLS.ACHIEVEMENT;
     } else if (this.activeTab === 'sport-ranks') {
-      id = isEdit ? this.editingData.idSportRank : null;
+      id = this.editingData?.idSportRank;
       url = API_URLS.SPORT_RANK;
-    }
-    else {
-      id = isEdit ? this.editingData.idSportType : null;
+    } else if (this.activeTab === 'sport-types') {
+      id = this.editingData?.idSportType;
       url = API_URLS.SPORT_TYPE;
     }
-    if (isEdit) {
-      this.http.put(`${url}/${id}`, formData).subscribe({
-        next: () => {
-          this.showForm = false;
-          this.loadData();
-          this.notification.showSuccess('Успешно обновлено!');
-        },
-        error: () => this.notification.showError('Ошибка при обновлении. Проверьте введенные данные.')
-      });
-    } else {
-      this.http.post(url, formData).subscribe({
-        next: () => {
-          this.showForm = false;
-          this.loadData();
-          this.notification.showSuccess('Успешно добавлено!');
-        },
-        error: () => this.notification.showError('Ошибка при создании. Проверьте уникальность данных.')
+
+    // Если ID найден, значит мы обновляем существующую запись (PUT).
+    // Если ID нет (даже если есть предзаполненный userId) — создаем новую (POST).
+    const isEdit = !!id;
+    const isEducationTab = this.activeTab === 'education-places';
+
+    // Обновление роли пользователя (выполняется параллельно с сохранением места обучения)
+    if (isEducationTab && formData.roleId) {
+      const roleUrl = API_URLS.USER_ROLE(formData.userId);
+      this.http.patch(roleUrl, null, { params: { roleId: formData.roleId } }).subscribe({
+        error: () => this.notification.showError('Не удалось обновить роль пользователя. Возможно, нет прав или роль уже установлена.')
       });
     }
+
+    // Основной запрос для сохранения сущности
+    const request = isEdit
+      ? this.http.put(`${url}/${id}`, formData)
+      : this.http.post(url, formData);
+
+    request.subscribe({
+      next: () => {
+        this.showForm = false;
+        // Перезагружаем данные, чтобы подтянулась и новая роль, и новое место обучения
+        this.loadData();
+        this.notification.showSuccess(isEdit ? 'Успешно обновлено!' : 'Успешно добавлено!');
+      },
+      error: () => {
+        this.notification.showError(
+          isEdit
+            ? 'Ошибка при обновлении. Проверьте введенные данные.'
+            : 'Ошибка при создании. Проверьте правильность и уникальность данных.'
+        );
+      }
+    });
   }
+
 }

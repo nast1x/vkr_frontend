@@ -2,8 +2,8 @@
 <app-header></app-header>
 
 <!-- Основной контент -->
-<main class="competitions-content">
-  <div class="competitions-container">
+<main class="page-content">
+  <div class="page-container">
     <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
 
     <aside class="general-sidebar">
@@ -47,28 +47,21 @@
     </aside>
 
     <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список соревнований -->
-    <section class="competitions-list-section">
-      <h1 class="competitions-title">Соревнования</h1>
+    <section class="page-list-section">
+      <h1 class="page-title">Соревнования</h1>
 
       <!-- Индикатор загрузки -->
       @if (isLoading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Загрузка данных...</p>
-        </div>
+        <app-loader />
       }
 
-      <!-- Сообщение об ошибке -->
       @if (error) {
-        <div class="error-state">
-          <p>{{ error }}</p>
-          <button class="retry-btn" (click)="loadCompetitions()">Попробовать снова</button>
-        </div>
+        <app-error-state [message]="error" (retry)="loadCompetitions()" />
       }
 
       <!-- Сетка соревнований -->
       @if (!isLoading && !error) {
-        <div class="competitions-grid">
+        <div class="page-grid">
           @for (comp of filteredCompetitions; track comp) {
             <div
               class="competition-card"
@@ -104,7 +97,7 @@
                   <span>{{ comp.sportType }}</span>
                 </div>
               </div>
-              <button class="competition-details-btn" (click)="onViewDetails(comp.idCompetition)">
+              <button class="details-btn" (click)="onViewDetails(comp.idCompetition)">
                 Подробнее
               </button>
             </div>
@@ -120,8 +113,6 @@
     </section>
 
     <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
-    <aside class="competitions-decor">
-      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
-    </aside>
+    <app-page-decor />
   </div>
 </main>

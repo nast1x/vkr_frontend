@@ -187,3 +187,31 @@
   animation: spin 1s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.role-select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(103, 58, 183, 0.2);
+  background: rgba(103, 58, 183, 0.05);
+  color: #673ab7;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(103, 58, 183, 0.1);
+  }
+
+  &:focus {
+    border-color: #673ab7;
+    box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.1);
+  }
+
+  option {
+    background: white;
+    color: #333;
+  }
+}

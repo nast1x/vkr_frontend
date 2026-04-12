@@ -1,7 +1,7 @@
 @use '../../../styles.scss' as *;
 @use '../header-page-styles.scss' as *;
 
-.team-member-card {
+.achievements-member-card {
   @extend %base-card;
   padding: 20px;
   display: flex;
@@ -30,12 +30,13 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 2px; // Уменьшили отступ, чтобы вуз и город стояли плотнее
+  gap: 2px;
 }
 
 .member-name {
   @extend %card-title;
-  margin-bottom: 6px; // Компенсируем уменьшенный gap, чтобы отделить имя
+  // Специфичные стили для ограничения в 3 строки оставляем
+  margin-bottom: 6px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -44,14 +45,11 @@
   word-break: break-word;
 }
 
+// Объединяем город и универ (иконка + текст)
 .member-university,
 .member-city {
   @extend %icon-text-row;
-  justify-content: center; // Выравниваем по центру для карточки команды
-}
-
-.member-university {
-  margin-top: auto;
+  justify-content: center; // Переопределяем выравнивание по центру
 }
 
 .member-type {
@@ -62,7 +60,7 @@
   border-top: 1px solid #f0f0f0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin: 10px 0 10px 0; // Отталкиваем разделительную линию от города
+  margin: 10px 0 0 0;
 
   &.athlete {
     color: #4CAF50;
@@ -71,4 +69,10 @@
   &.coach {
     color: #FF9800;
   }
+}
+
+.member-date {
+  font-size: 12px;
+  color: #888;
+  margin: 4px 0 0 0;
 }

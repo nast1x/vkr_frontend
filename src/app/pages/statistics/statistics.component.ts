@@ -4,6 +4,7 @@ import { HeaderComponent } from "../header/header.component";
 
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
+import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
 
 interface GeneralStats {
   totalAthletes: number;
@@ -58,7 +59,7 @@ interface Statistics {
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, PageDecorComponent],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.scss'
 })

@@ -21,6 +21,7 @@ import { SportsFacilitiesDetailComponent } from './pages/sports-facilities-detai
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { FavoriteComponent } from './pages/favorite/favorite.component';
 import {AdminPanelComponent} from "./pages/admin-panel/admin-panel.component";
+import {AchievementsComponent} from "./pages/achievements/achievements.component";
 
 
 export const routes: Routes = [
@@ -43,6 +44,7 @@ export const routes: Routes = [
   { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
   { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] },
   { path: 'admin-panel', component: AdminPanelComponent, canActivate: [authGuard] },
+  { path: 'achievements', component: AchievementsComponent, canActivate: [authGuard] },
 
   // Редирект для неизвестных путей
   { path: '**', redirectTo: '' }

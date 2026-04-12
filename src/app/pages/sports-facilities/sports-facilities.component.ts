@@ -5,6 +5,10 @@ import { FormsModule } from "@angular/forms";
 
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
+import {NgOptimizedImage} from "@angular/common";
+import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
 
 interface SportsFacility {
   idSportFacility: number;
@@ -19,7 +23,7 @@ interface SportsFacility {
 @Component({
   selector: 'app-sports-facilities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule],
+  imports: [HeaderComponent, FormsModule, NgOptimizedImage, PageDecorComponent, LoaderComponent, ErrorStateComponent],
   templateUrl: './sports-facilities.component.html',
   styleUrl: './sports-facilities.component.scss'
 })

@@ -5,6 +5,9 @@ import { HeaderComponent } from "../header/header.component";
 import { Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
+import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
 
 interface Competition {
   idCompetition: number;
@@ -21,8 +24,11 @@ interface Competition {
   standalone: true,
   imports: [
     FormsModule,
-    HeaderComponent
-],
+    HeaderComponent,
+    LoaderComponent,
+    ErrorStateComponent,
+    PageDecorComponent
+  ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
 })

@@ -1,7 +1,7 @@
 <app-header></app-header>
 
-<main class="universities-content">
-  <div class="universities-container">
+<main class="page-content">
+  <div class="page-container">
 
     <aside class="general-sidebar">
       <div class="filter-block">
@@ -21,25 +21,19 @@
       </div>
     </aside>
 
-    <section class="universities-list-section">
-      <h1 class="universities-title">Участвующие вузы</h1>
+    <section class="page-list-section">
+      <h1 class="page-title">Участвующие вузы</h1>
 
       @if (isLoading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Загрузка данных...</p>
-        </div>
+        <app-loader />
       }
 
       @if (error) {
-        <div class="error-state">
-          <p>{{ error }}</p>
-          <button class="retry-btn" (click)="loadUniversities()">Попробовать снова</button>
-        </div>
+        <app-error-state [message]="error" (retry)="loadUniversities()" />
       }
 
       @if (!isLoading && !error) {
-        <div class="universities-grid">
+        <div class="page-grid">
           @for (uni of filteredUniversities; track uni.idUniversity) {
             <div class="university-card">
               <div class="university-header">
@@ -69,7 +63,7 @@
                   <span>{{ uni.coachesCount }} тренеров</span>
                 </div>
               </div>
-              <button class="university-details-btn" (click)="onViewDetails(uni.idUniversity)">
+              <button class="details-btn" (click)="onViewDetails(uni.idUniversity)">
                 Подробнее
               </button>
             </div>
@@ -82,8 +76,7 @@
       }
     </section>
 
-    <aside class="universities-decor">
-      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
-    </aside>
+    <app-page-decor />
+
   </div>
-</main>x
+</main>

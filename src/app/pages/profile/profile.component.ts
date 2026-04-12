@@ -22,6 +22,12 @@ interface Trainee {
   sport: string;
 }
 
+interface UserSport {
+  sportName: string;
+  rankName: string;
+  dateReceived: Date;
+}
+
 interface UserProfile {
   id: number;
   fullName: string;
@@ -37,8 +43,7 @@ interface UserProfile {
   course: number;
   coachId: number | null;
   coachName: string | null;
-  sport: string | null;
-  category: string | null;
+  sport: UserSport[];
   records: Record[];
   trainees: Trainee[];
 }

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from "@angular/forms";
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormsModule} from "@angular/forms";
+import {Router} from '@angular/router';
 
-import { HeaderComponent } from "../header/header.component";
-import { HttpClient } from "@angular/common/http";
+import {HeaderComponent} from "../header/header.component";
+import {HttpClient} from "@angular/common/http";
 import {API_CONFIG, API_URLS} from '../../config/api.config';
+import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
+import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
 
 interface TeamMember {
   userId: number;
@@ -18,7 +21,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent, PageDecorComponent, ErrorStateComponent, LoaderComponent],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss'
 })
@@ -37,7 +40,8 @@ export class TeamComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadTeamData();

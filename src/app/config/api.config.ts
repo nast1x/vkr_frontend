@@ -26,6 +26,7 @@ export const API_CONFIG = {
     SPORT_TYPE: '/api/ref/sport-type',
     USERS: '/api/users',
     EDUCATION_PLACE: '/api/education-places',
+    ACHIEVEMENT: '/api/achievements',
     SPORT_RANK: '/api/ref/sport-rank',
   }
 };
@@ -57,4 +58,6 @@ export const API_URLS = {
   SPORT_TYPE: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SPORT_TYPE}`,
   SPORT_RANK: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SPORT_RANK}`,
   EDUCATION_PLACE: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.EDUCATION_PLACE}`,
+  ACHIEVEMENT: `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.ACHIEVEMENT}`,
+  USER_ROLE: (userId: number | string) => `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.USERS}/${userId}/role`,
 };

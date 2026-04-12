@@ -1,7 +1,7 @@
 <app-header></app-header>
 
-<main class="team-content">
-  <div class="team-container">
+<main class="page-content">
+  <div class="page-container">
 
     <aside class="general-sidebar">
       <div class="filter-block">
@@ -36,26 +36,20 @@
       </div>
     </aside>
 
-    
-    <section class="team-list-section">
-      <h1 class="team-title">Наш коллектив</h1>
+
+    <section class="page-list-section">
+      <h1 class="page-title">Наш коллектив</h1>
 
       @if (isLoading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Загрузка данных...</p>
-        </div>
+        <app-loader />
       }
 
       @if (error) {
-        <div class="error-state">
-          <p>{{ error }}</p>
-          <button class="retry-btn" (click)="loadTeamData()">Попробовать снова</button>
-        </div>
+        <app-error-state [message]="error" (retry)="loadTeamData()" />
       }
 
       @if (!isLoading && !error) {
-        <div class="team-grid">
+        <div class="page-grid">
           @for (member of filteredMembers; track member.userId) {
             <div class="team-member-card">
               <div class="member-avatar">
@@ -85,7 +79,7 @@
                    [class.coach]="member.roleName === 'Coach'">
                   {{ member.roleName === 'Athlete' ? 'Спортсмен' : 'Тренер' }}
                 </p>
-                <button class="member-details-btn" (click)="onViewProfile(member.userId)">
+                <button class="details-btn" (click)="onViewProfile(member.userId)">
                   Подробнее
                 </button>
               </div>
@@ -99,8 +93,6 @@
       }
     </section>
 
-    <aside class="team-decor">
-      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
-    </aside>
+    <app-page-decor />
   </div>
 </main>

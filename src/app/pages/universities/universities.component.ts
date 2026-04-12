@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FormsModule } from "@angular/forms";
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { ErrorStateComponent } from '../../shared/components/error-state/error-state.component';
+import { PageDecorComponent } from '../../shared/components/page-decor/page-decor.component';
 
 import { HttpClient } from "@angular/common/http";
 import { API_URLS } from '../../config/api.config';
+import {NgOptimizedImage} from "@angular/common";
 
 interface University {
   idUniversity: number;
@@ -17,7 +21,7 @@ interface University {
 @Component({
   selector: 'app-universities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule],
+  imports: [HeaderComponent, FormsModule, NgOptimizedImage, LoaderComponent, ErrorStateComponent, PageDecorComponent],
   templateUrl: './universities.component.html',
   styleUrl: './universities.component.scss'
 })

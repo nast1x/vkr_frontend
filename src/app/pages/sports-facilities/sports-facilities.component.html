@@ -2,8 +2,8 @@
 <app-header></app-header>
 
 <!-- Основной контент -->
-<main class="sports-facilities-content">
-  <div class="sports-facilities-container">
+<main class="page-content">
+  <div class="page-container">
     <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
 
     <aside class="general-sidebar">
@@ -25,28 +25,21 @@
     </aside>
 
     <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список объектов -->
-    <section class="sports-facilities-list-section">
-      <h1 class="sports-facilities-title">Спортивные объекты</h1>
+    <section class="page-list-section">
+      <h1 class="page-title">Спортивные объекты</h1>
 
       <!-- Индикатор загрузки -->
       @if (isLoading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Загрузка данных...</p>
-        </div>
+        <app-loader />
       }
 
-      <!-- Сообщение об ошибке -->
       @if (error) {
-        <div class="error-state">
-          <p>{{ error }}</p>
-          <button class="retry-btn" (click)="loadFacilities()">Попробовать снова</button>
-        </div>
+        <app-error-state [message]="error" (retry)="loadFacilities()" />
       }
 
       <!-- Сетка объектов -->
       @if (!isLoading && !error) {
-        <div class="sports-facilities-grid">
+        <div class="page-grid">
           @for (facility of filteredFacilities; track facility) {
             <div
               class="facility-card"
@@ -75,7 +68,7 @@
                   }
                 </div>
                 <p class="facility-description">{{ facility.description }}</p>
-                <button class="facility-details-btn" (click)="onViewDetails(facility.idSportFacility)">
+                <button class="details-btn" (click)="onViewDetails(facility.idSportFacility)">
                   Подробнее
                 </button>
               </div>
@@ -92,8 +85,6 @@
     </section>
 
     <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
-    <aside class="sports-facilities-decor">
-      <img src="/assets/images/mountain-biking.png" alt="Mountain Biking" class="decor-image">
-    </aside>
+    <app-page-decor />
   </div>
 </main>
