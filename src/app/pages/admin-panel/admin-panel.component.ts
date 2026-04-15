@@ -1,25 +1,24 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { HeaderComponent } from "../header/header.component";
-import { API_URLS } from '../../config/api.config';
-import { NotificationService } from '../../services/notification.service';
-import { DynamicFormComponent } from "../dynamic-form/dynamic-form.component";
-import { FormField } from '../../models/form.model';
-import { University } from '../../models/university.model';
-import { Major, EducationPlace } from '../../models/education.model';
-import { SportType, SportRank } from '../../models/sport.model';
-import { Achievement } from '../../models/achievement.model';
-import { AdminService } from '../../services/admin.service';
-import {
-  MAJOR_FORM_FIELDS, UNIVERSITY_FORM_FIELDS, SPORT_TYPE_FORM_FIELDS,
-  SPORT_RANK_FORM_FIELDS, EDUCATION_PLACE_FORM_FIELDS, ACHIEVEMENT_FORM_FIELDS
-} from './admin-panel.config';
+import {Component, inject, OnInit} from '@angular/core';
+import {HeaderComponent} from "../header/header.component";
+import {NotificationService} from '../../services/notification.service';
+import {DynamicFormComponent} from "../dynamic-form/dynamic-form.component";
+import {FormField} from '../../models/form.model';
+import {University} from '../../models/university.model';
+import {EducationPlace, Major} from '../../models/education.model';
+import {SportRank, SportType} from '../../models/sport.model';
+import {Achievement} from '../../models/achievement.model';
+import {AdminService} from '../../services/admin.service';
+
+
+import {ADMIN_TABS_CONFIG, AdminTabConfig} from './admin-panel.config';
+import {NgOptimizedImage} from "@angular/common";
 
 export type AdminTab = 'majors' | 'universities' | 'sport-types' | 'sport-ranks' | 'education-places' | 'achievements';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [HeaderComponent, DynamicFormComponent],
+  imports: [HeaderComponent, DynamicFormComponent, NgOptimizedImage],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.scss'
 })
@@ -29,7 +28,7 @@ export class AdminPanelComponent implements OnInit {
 
   activeTab: AdminTab = 'majors';
 
-  // Данные
+
   majors: Major[] = [];
   universities: University[] = [];
   sportTypes: SportType[] = [];
@@ -40,58 +39,17 @@ export class AdminPanelComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
   showForm: boolean = false;
-  editingData: any = null;
 
-  // Единый словарь конфигурации для всех вкладок (заменяет все if/else)
-  get tabConfig() {
-    return {
-      'majors': {
-        titleName: 'специальность',
-        idKey: 'idMajor',
-        apiUrl: API_URLS.MAJOR,
-        fields: MAJOR_FORM_FIELDS,
-        setData: (data: Major[]) => this.majors = data
-      },
-      'universities': {
-        titleName: 'ВУЗ',
-        idKey: 'idUniversity',
-        apiUrl: API_URLS.UNIVERSITY,
-        fields: UNIVERSITY_FORM_FIELDS,
-        setData: (data: University[]) => this.universities = data
-      },
-      'sport-types': {
-        titleName: 'вид спорта',
-        idKey: 'idSportType',
-        apiUrl: API_URLS.SPORT_TYPE,
-        fields: SPORT_TYPE_FORM_FIELDS,
-        setData: (data: SportType[]) => this.sportTypes = data
-      },
-      'sport-ranks': {
-        titleName: 'разряд',
-        idKey: 'idSportRank',
-        apiUrl: API_URLS.SPORT_RANK,
-        fields: SPORT_RANK_FORM_FIELDS,
-        setData: (data: SportRank[]) => this.sportRanks = data
-      },
-      'education-places': {
-        titleName: 'место обучения',
-        idKey: 'idEducationPlace',
-        apiUrl: API_URLS.EDUCATION_PLACE,
-        fields: EDUCATION_PLACE_FORM_FIELDS,
-        setData: (data: EducationPlace[]) => this.educationPlaces = data
-      },
-      'achievements': {
-        titleName: 'достижение',
-        idKey: 'idAchievement',
-        apiUrl: API_URLS.ACHIEVEMENT,
-        fields: ACHIEVEMENT_FORM_FIELDS,
-        setData: (data: Achievement[]) => this.achievements = data
-      }
-    };
-  }
+
+  editingData: Record<string, any> | null = null;
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+
+  get currentConfig(): AdminTabConfig {
+    return ADMIN_TABS_CONFIG[this.activeTab];
   }
 
   switchTab(tab: AdminTab): void {
@@ -101,21 +59,19 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  // Динамически отдаем нужные поля
   get currentFormFields(): FormField[] {
-    return this.tabConfig[this.activeTab].fields;
+    return this.currentConfig.fields;
   }
 
-  // Динамически формируем заголовок
   get currentFormTitle(): string {
-    const config = this.tabConfig[this.activeTab];
-    const id = this.editingData ? this.editingData[config.idKey] : null;
+    const config = this.currentConfig;
+
+    const id = this.editingData ? (this.editingData as Record<string, any>)[config.idKey] : null;
     const isEdit = !!id;
 
     if (this.activeTab === 'education-places') {
-      return isEdit
-        ? `Редактировать обучение: ${this.editingData?.userName}`
-        : `Добавить место обучения: ${this.editingData?.userName || ''}`;
+      const userName = (this.editingData as any)?.userName || '';
+      return isEdit ? `Редактировать обучение: ${userName}` : `Добавить место обучения: ${userName}`;
     }
     return isEdit ? `Редактировать ${config.titleName}` : `Новый/ая ${config.titleName}`;
   }
@@ -123,11 +79,11 @@ export class AdminPanelComponent implements OnInit {
   loadData(): void {
     this.isLoading = true;
     this.error = null;
-    const config = this.tabConfig[this.activeTab];
+    const config = this.currentConfig;
 
     this.adminService.getAll(config.apiUrl).subscribe({
-      next: (data: any) => {
-        config.setData(data);
+      next: (data: any[]) => {
+        (this as any)[config.dataKey] = data;
         this.isLoading = false;
       },
       error: () => {
@@ -142,13 +98,13 @@ export class AdminPanelComponent implements OnInit {
     this.showForm = true;
   }
 
-  openEditForm(item: any): void {
+  openEditForm(item: Record<string, any>): void {
     this.editingData = item;
     this.showForm = true;
   }
 
   onDelete(id: number): void {
-    const config = this.tabConfig[this.activeTab];
+    const config = this.currentConfig;
 
     if (!id && this.activeTab === 'education-places') {
       this.notification.showError('У этого пользователя еще нет места обучения.');
@@ -166,19 +122,17 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  onFormSubmit(formData: any): void {
-    const config = this.tabConfig[this.activeTab];
-    const id = this.editingData ? this.editingData[config.idKey] : null;
+  onFormSubmit(formData: Record<string, any>): void {
+    const config = this.currentConfig;
+    const id = this.editingData ? (this.editingData as Record<string, any>)[config.idKey] : null;
     const isEdit = !!id;
 
-    // Обновление роли пользователя (специфика вкладки места обучения)
-    if (this.activeTab === 'education-places' && formData.roleId) {
-      this.adminService.updateUserRole(formData.userId, formData.roleId).subscribe({
+    if (this.activeTab === 'education-places' && formData['roleId']) {
+      this.adminService.updateUserRole(formData['userId'], formData['roleId']).subscribe({
         error: () => this.notification.showError('Не удалось обновить роль пользователя.')
       });
     }
 
-    // Выбираем метод (PUT или POST)
     const request$ = isEdit
       ? this.adminService.update(config.apiUrl, id, formData)
       : this.adminService.create(config.apiUrl, formData);

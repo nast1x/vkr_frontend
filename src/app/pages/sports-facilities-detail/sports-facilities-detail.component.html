@@ -1,4 +1,4 @@
-<!-- Шапка сайта -->
+
 <app-header></app-header>
 
 @if (showEditForm) {
@@ -15,16 +15,15 @@
   </div>
 }
 
-<!-- Основной контент -->
+
 <main class="facility-details-content">
   <div class="facility-details-container">
 
-    <!-- Кнопка "Назад" и "Редактировать" -->
-    <div class="top-actions-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+
+    <div class="top-actions-bar"
+         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
       <button class="back-btn" (click)="onBack()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <img ngSrc="assets/images/icons/left-arrow.svg" alt="Город" width="14" height="14" >
         Назад к списку
       </button>
 
@@ -35,7 +34,7 @@
       }
     </div>
 
-    <!-- Индикатор загрузки -->
+
     @if (isLoading) {
       <div class="loading-state">
         <div class="spinner"></div>
@@ -43,7 +42,7 @@
       </div>
     }
 
-    <!-- Сообщение об ошибке -->
+
     @if (error) {
       <div class="error-state">
         <p>{{ error }}</p>
@@ -51,32 +50,26 @@
       </div>
     }
 
-    <!-- Карточка объекта -->
+
     @if (!isLoading && !error && facility) {
       <div class="facility-details-card">
-        <!-- Заголовок и основная информация -->
+
         <div class="facility-header">
           <div class="facility-title-section">
             <h1 class="facility-name">{{ facility.name }}</h1>
             <div class="facility-meta">
               <span class="facility-meta-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
-                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-                </svg>
+                  <img ngSrc="assets/images/icons/Location.svg" alt="Город" width="20" height="20" class="meta-icon">
                 {{ facility.city }}
               </span>
               <span class="facility-meta-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                  <img ngSrc="assets/images/icons/home-smile-svgrepo-com.svg" alt="Город" width="20" height="20" class="meta-icon">
                 Спортивный объект
               </span>
             </div>
           </div>
         </div>
-        <!-- Фото и описание -->
+
         <div class="facility-description-section">
           <div class="facility-image-container">
             <img [src]="facility.imageLink" [alt]="facility.name" class="facility-main-photo">
@@ -85,24 +78,17 @@
             <h2 class="facility-description-title">Описание</h2>
             <p class="facility-description-text">{{ facility.description }}</p>
             <div class="facility-address">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
-                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-              </svg>
-              <span>{{ facility.address}}</span>
+              <img ngSrc="assets/images/icons/Location.svg" alt="Город" width="20" height="20" class="meta-icon">
+              <span>{{ facility.address }}</span>
             </div>
           </div>
         </div>
-        <!-- Детальная информация -->
+
         <div class="facility-details">
-          <!-- Виды спорта -->
+
           <div class="facility-detail-item">
             <div class="facility-detail-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                <path d="M2 12H22" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="2"/>
-              </svg>
+              <img ngSrc="assets/images/icons/game.svg" alt="Город" width="30" height="30" class="meta-icon">
             </div>
             <div class="facility-detail-content">
               <span class="facility-detail-label">Виды спорта</span>
@@ -114,23 +100,24 @@
             </div>
           </div>
         </div>
-        <!-- Проведённые соревнования -->
+
         @if (facility.competitions && facility.competitions.length > 0) {
           <div class="facility-competitions">
-            <h2 class="facility-section-title">🏆 Соревнования на объекте</h2>
+            <h2 class="facility-section-title">Соревнования на объекте</h2>
             <div class="competitions-list">
               @for (comp of facility.competitions; track comp) {
                 <div
                   class="competition-link-item"
                   (click)="onCompetitionClick(comp.id)"
-                  >
+                >
                   <div class="competition-link-info">
                     <h3 class="competition-link-name">{{ comp.name }}</h3>
                     <p class="competition-link-date">{{ comp.date }}</p>
                   </div>
                   <div class="competition-link-arrow">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
                     </svg>
                   </div>
                 </div>
@@ -138,18 +125,15 @@
             </div>
           </div>
         }
-        <!-- Лучшие результаты на объекте -->
+
         @if (facility.records && facility.records.length > 0) {
           <div class="facility-records">
-            <h2 class="facility-section-title">⏱️ Лучшие результаты на объекте</h2>
+            <h2 class="facility-section-title">Лучшие результаты на объекте</h2>
             <div class="facility-records-list">
               @for (record of facility.records; track record) {
                 <div class="facility-record-item">
                   <div class="record-discipline">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M6 9C6 5 9 2 12 2C15 2 18 5 18 9V11C18 13 17 15 15 16V20C15 20.5304 14.7893 21.0391 14.4142 21.4142C14.0391 21.7893 13.5304 22 13 22H11C10.4696 22 9.96086 21.7893 9.58579 21.4142C9.21071 21.0391 9 20.5304 9 20V16C7 15 6 13 6 11V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M9 11H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
+                    <img ngSrc="assets/images/icons/podium-silhouette-svgrepo-com.svg" alt="Город" width="30" height="30" class="meta-icon">
                     <div class="record-discipline-info">
                       <span class="record-discipline-name">{{ record.discipline }}</span>
                       <span class="record-discipline-date">{{ record.date }}</span>

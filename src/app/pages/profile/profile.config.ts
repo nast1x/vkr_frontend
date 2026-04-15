@@ -18,3 +18,9 @@ export const PROFILE_PASSWORD_FIELDS: FormField[] = [
   {name: 'password', label: 'Новый пароль', type: 'password', required: true},
   {name: 'confirmPassword', label: 'Повторите новый пароль', type: 'password', required: true}
 ];
+
+export const RANK_ASSIGNMENT_FIELDS: FormField[] = [
+  { name: 'sportTypeId', label: 'Вид спорта', type: 'select', options: [], required: true },
+  { name: 'rankId', label: 'Разряд', type: 'select', options: [], required: true },
+  { name: 'dateReceived', label: 'Дата присвоения', type: 'date', required: true }
+];

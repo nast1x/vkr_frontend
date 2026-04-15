@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
 
 @Component({
@@ -12,10 +12,7 @@ import {HeaderComponent} from "../header/header.component";
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
-  constructor(private router: Router) {}
-
-  onProfile(): void {
-    this.router.navigate(['/profile']);
+  constructor(private router: Router) {
   }
 
   onViewAllNews(): void {

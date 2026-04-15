@@ -7,8 +7,9 @@
       <div class="filter-block">
         <h3 class="filter-title">Фильтры</h3>
 
+
         <div class="filter-group">
-          <label class="filter-label">Роль</label>
+          <label class="filter-labxel">Роль</label>
           <select class="filter-select" [(ngModel)]="selectedRole" (change)="applyFilters()">
             <option value="">Все роли</option>
             <option value="Athlete">Спортсмены</option>
@@ -44,43 +45,58 @@
       <h1 class="page-title">Спортивные достижения</h1>
 
       @if (isLoading) {
-        <app-loader />
+        <app-loader/>
       }
 
       @if (error) {
-        <app-error-state [message]="error" (retry)="loadAchievements()" />
+        <app-error-state [message]="error" (retry)="loadAchievements()"/>
       }
 
       @if (!isLoading && !error) {
         <div class="page-grid">
           @for (item of filteredAchievements; track item.idAchievement) {
-            <div class="achievements-member-card">
+            <div class="achievements-member-card" style="padding: 20px; display: flex; flex-direction: column; height: 100%;">
+
               <div class="member-avatar">
-                <img [src]="getMemberAvatar(item.avatar)"
+                <img [ngSrc]="getMemberAvatar(item.avatar)"
+                     [alt]="item.userName"
                      (error)="handleImageError($event)"
                      [title]="item.userName"
+                     width="100"
+                     height="100"
                      class="member-avatar-img">
               </div>
-              <div class="member-info">
-                <h3 class="member-name" [title]="item.userName">{{ item.userName }}</h3>
-                <p class="member-university">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ item.sportTypeName }}
-                </p>
-                <p class="member-city">
-                  🏆 {{ item.sportRankName }}
-                </p>
-                <p class="member-type"
-                   [class.athlete]="item.userRole === 'Athlete'"
-                   [class.coach]="item.userRole === 'Coach'">
-                  {{ getRoleLabel(item.userRole) }}
-                </p>
-                <p class="member-date">Присвоено: {{ item.dateReceived }}</p>
-                <button class="details-btn" (click)="openDetails(item.userId)">Подробнее</button>
+
+
+              <div class="universal-card-info">
+                <h3 class="card-title" [title]="item.userName">{{ item.userName }}</h3>
+                <div class="card-body">
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/whistle.svg" alt="Кубок" height="14" width="14" class="meta-icon">
+                    {{ item.sportTypeName }}
+                  </p>
+
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/кубок.svg" alt="Кубок" height="14" width="14" class="meta-icon">
+                    <span style="font-weight: 600;">{{ item.sportRankName }}</span>
+                  </p>
+
+                  <p class="card-meta" style="font-size: 12px; margin-top: 4px;">
+                    Присвоено: {{ item.dateReceived }}
+                  </p>
+
+                  <p class="card-badge"
+                     [class.badge-blue]="item.userRole === 'Athlete'"
+                     [class.badge-orange]="item.userRole === 'Coach'">
+                    {{ getRoleLabel(item.userRole) }}
+                  </p>
+
+                  <button class="card-btn" (click)="openDetails(item.userId)">
+                    Подробнее
+                  </button>
+                </div>
               </div>
+
             </div>
           } @empty {
             <div class="no-results">
@@ -91,7 +107,7 @@
       }
     </section>
 
-    <app-page-decor />
+    <app-page-decor/>
 
   </div>
 </main>

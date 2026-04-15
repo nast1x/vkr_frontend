@@ -1,10 +1,10 @@
 @use '../../../styles.scss' as *;
+@use '../header-page-styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== HOST =====
+
 :host {
   display: block;
   width: 100vw;
@@ -18,7 +18,7 @@ $main-border: #E0E0E0;
   overflow-y: auto;
 }
 
-// ===== КОНТЕНТ =====
+
 .facility-details-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -31,30 +31,9 @@ $main-border: #E0E0E0;
   padding: 40px 24px;
 }
 
-// ===== КНОПКА "НАЗАД" =====
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-secondary;
-  cursor: pointer;
-  @include transition;
-  margin-bottom: 24px;
 
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    background: rgba($primary-color, 0.05);
-  }
-}
 
-// ===== КАРТОЧКА ОБЪЕКТА =====
+
 .facility-details-card {
   background: $white;
   border-radius: 20px;
@@ -63,7 +42,7 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА ОБЪЕКТА =====
+
 .facility-header {
   display: flex;
   justify-content: space-between;
@@ -105,7 +84,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ФОТО И ОПИСАНИЕ =====
+
 .facility-description-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -162,7 +141,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
+
 .facility-details {
   display: flex;
   flex-direction: column;
@@ -223,7 +202,7 @@ $main-border: #E0E0E0;
   border-radius: 20px;
 }
 
-// ===== СОРЕВНОВАНИЯ =====
+
 .facility-competitions {
   margin-bottom: 40px;
   padding-bottom: 40px;
@@ -294,7 +273,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+
 .facility-records {
   margin-bottom: 40px;
 }
@@ -394,7 +373,7 @@ $main-border: #E0E0E0;
   text-align: right;
 }
 
-// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+
 .loading-state,
 .error-state {
   text-align: center;
@@ -457,7 +436,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;

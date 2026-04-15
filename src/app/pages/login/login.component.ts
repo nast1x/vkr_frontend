@@ -1,13 +1,13 @@
-
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormsModule } from "@angular/forms";
-import { AuthService } from '../../services/auth.service';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from "@angular/forms";
+import {AuthService} from '../../services/auth.service';
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -22,7 +22,8 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   goBack(): void {
     this.router.navigate(['/register']);
@@ -32,12 +33,12 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  // Валидация формы
+
   isFormValid(): boolean {
     return this.email.trim() !== '' && this.password.trim() !== '';
   }
 
-  // Отправка формы входа
+
   onSubmit(): void {
     if (!this.isFormValid()) {
       this.errorMessage = 'Пожалуйста, введите email и пароль';
@@ -60,7 +61,7 @@ export class LoginComponent {
         if (currentUser) {
           this.router.navigate([returnUrl]);
         } else {
-          // Если профиль ещё не загрузился — пробуем получить его
+
           this.authService.getCurrentProfile().subscribe({
             next: (user) => {
               this.router.navigate([returnUrl]);
@@ -72,7 +73,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        // Ошибка уже обработана в AuthService
+
         this.errorMessage = err.message;
         this.isLoading = false;
       }

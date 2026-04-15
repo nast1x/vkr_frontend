@@ -1,20 +1,14 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {catchError, Observable, throwError} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {} // ✅ Убрали AuthService
+  constructor(private router: Router) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Добавляем credentials: 'include' только для /api/* запросов
     if (req.url.includes('/api/')) {
       const authReq = req.clone({
         withCredentials: true
@@ -33,10 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Если 401 и это не запрос на логин/регистрацию/рефреш/логаут
     if (error.status === 401 && !this.isAuthEndpoint(request.url)) {
-      // ❌ НЕ делаем рефреш здесь — это задача AuthService
-      // Просто редиректим на логин
       this.router.navigate(['/login']);
       return throwError(() => error);
     }

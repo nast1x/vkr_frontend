@@ -1,24 +1,10 @@
 @use '../../../styles.scss' as *;
+@use '../header-page-styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== HOST =====
-:host {
-  display: block;
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: $font-family-base;
-  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 
-// ===== КОНТЕНТ =====
 .university-details-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -31,30 +17,9 @@ $main-border: #E0E0E0;
   padding: 40px 24px;
 }
 
-// ===== КНОПКА "НАЗАД" =====
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-secondary;
-  cursor: pointer;
-  @include transition;
-  margin-bottom: 24px;
 
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    background: rgba($primary-color, 0.05);
-  }
-}
 
-// ===== КАРТОЧКА УНИВЕРСИТЕТА =====
+
 .university-details-card {
   background: $white;
   border-radius: 20px;
@@ -63,7 +28,7 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА УНИВЕРСИТЕТА =====
+
 .university-header {
   display: flex;
   justify-content: space-between;
@@ -129,7 +94,7 @@ $main-border: #E0E0E0;
   letter-spacing: 0.5px;
 }
 
-// ===== ФОТО И ОПИСАНИЕ =====
+
 .university-description-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -212,7 +177,7 @@ $main-border: #E0E0E0;
   background: $main-border;
 }
 
-// ===== СЕКЦИИ =====
+
 .university-section-title {
   font-size: 24px;
   font-weight: 700;
@@ -220,7 +185,7 @@ $main-border: #E0E0E0;
   margin-bottom: 24px;
 }
 
-// ===== ТРЕНЕРЫ С РАСКРЫВАЮЩИМИСЯ СПИСКАМИ =====
+
 .university-coaches {
   margin-bottom: 40px;
 }
@@ -256,17 +221,9 @@ $main-border: #E0E0E0;
   }
 }
 
-.coach-avatar-container {
-  flex-shrink: 0;
-}
 
-.coach-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid $primary-color;
-}
+
+
 
 .coach-info {
   flex: 1;
@@ -320,7 +277,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== СПИСОК СПОРТСМЕНОВ ВНУТРИ ТРЕНЕРА =====
+
 .coach-athletes-list {
   padding: 16px 20px;
   border-top: 1px solid $main-border;
@@ -404,7 +361,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== КНОПКА "ПОДРОБНЕЕ О ТРЕНЕРЕ" =====
+
 .coach-details-btn {
   width: 100%;
   padding: 12px 20px;
@@ -423,7 +380,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== СООБЩЕНИЯ О ПУСТЫХ СПИСКАХ =====
+
 .no-coaches,
 .no-athletes {
   text-align: center;
@@ -435,7 +392,7 @@ $main-border: #E0E0E0;
   border: 2px dashed $main-border;
 }
 
-// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+
 .loading-state,
 .error-state {
   text-align: center;
@@ -498,7 +455,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
 
 
@@ -31,12 +31,13 @@ interface Favorites {
   competitions: FavoriteCompetition[];
   facilities: FavoriteFacility[];
 }
+
 @Component({
   selector: 'app-favorite',
   standalone: true,
   imports: [
     HeaderComponent
-],
+  ],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.scss'
 })
@@ -49,7 +50,7 @@ export class FavoriteComponent {
   }
 
   loadMockData(): void {
-    // Заглушка данных - в реальности будет загрузка из БД по userId
+
     this.favorites = {
       athletes: [
         {
@@ -114,12 +115,8 @@ export class FavoriteComponent {
     };
   }
 
-  setTab(tab: 'all' | 'athletes' | 'competitions' | 'facilities'): void {
-    this.activeTab = tab;
-  }
-
   removeFavorite(type: 'athlete' | 'competition' | 'facility', id: number): void {
-    // В реальности будет API запрос на удаление из избранного
+
     console.log(`Remove ${type} ${id} from favorites`);
 
     if (type === 'athlete') {

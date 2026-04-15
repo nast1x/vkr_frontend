@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, RouterLinkActive, RouterModule} from "@angular/router";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    RouterLinkActive, RouterModule
+    RouterLinkActive, RouterModule, NgOptimizedImage
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   onProfile(): void {
     this.router.navigate(['/profile/me']);

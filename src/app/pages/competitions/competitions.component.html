@@ -4,12 +4,12 @@
 <!-- Основной контент -->
 <main class="page-content">
   <div class="page-container">
-    <!-- ЛЕВАЯ КОЛОНКА: Фильтрация -->
+
 
     <aside class="general-sidebar">
       <div class="filter-block">
         <h3 class="filter-title">Фильтры</h3>
-        <!-- Город проведения -->
+
         <div class="filter-group">
           <label class="filter-label">Город проведения</label>
           <select class="filter-select" [(ngModel)]="selectedCity" (change)="applyFilters()">
@@ -19,7 +19,7 @@
             }
           </select>
         </div>
-        <!-- Тип соревнований -->
+
         <div class="filter-group">
           <label class="filter-label">Тип соревнований</label>
           <select class="filter-select" [(ngModel)]="selectedType" (change)="applyFilters()">
@@ -29,7 +29,7 @@
             }
           </select>
         </div>
-        <!-- Статус (опционально) -->
+
         <div class="filter-group">
           <label class="filter-label">Статус</label>
           <select class="filter-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
@@ -39,71 +39,71 @@
             <option value="completed">Завершённые</option>
           </select>
         </div>
-        <!-- Кнопка сброса -->
+
         <button class="filter-reset-btn" (click)="resetFilters()">
           Сбросить фильтры
         </button>
       </div>
     </aside>
 
-    <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Список соревнований -->
+
     <section class="page-list-section">
       <h1 class="page-title">Соревнования</h1>
 
-      <!-- Индикатор загрузки -->
+
       @if (isLoading) {
-        <app-loader />
+        <app-loader/>
       }
 
       @if (error) {
-        <app-error-state [message]="error" (retry)="loadCompetitions()" />
+        <app-error-state [message]="error" (retry)="loadCompetitions()"/>
       }
 
-      <!-- Сетка соревнований -->
+
       @if (!isLoading && !error) {
         <div class="page-grid">
           @for (comp of filteredCompetitions; track comp) {
-            <div
-              class="competition-card"
-              >
-              <div class="competition-header">
-                <span class="competition-type-badge" [class]="getLevelValue(comp.competitionLevel)">
-                  {{ getLevelLabel(comp.competitionLevel) }}
-                </span>
-                <span class="competition-status-badge" [class]="getStatusValue(comp)">
-                  {{ getStatusLabel(getStatusValue(comp)) }}
-                </span>
+            <div class="competition-card">
+
+              <div class="universal-card-info">
+
+                <div class="competition-status-badge">
+                    <span class="card-badge" [class]="getLevelValue(comp.competitionLevel)">
+                      {{ getLevelLabel(comp.competitionLevel) }}
+                    </span>
+                  <span class="card-badge" [class]="getStatusValue(comp)">
+                      {{ getStatusLabel(getStatusValue(comp)) }}
+                    </span>
+                </div>
+
+                <h3 class="card-title" [title]="comp.name">{{ comp.name }}</h3>
+
+                <div class="card-body">
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/Location.svg" alt="Город" width="16" height="16" class="meta-icon">
+                    {{ comp.city }}
+                  </p>
+
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/проведение%20соревнований.svg" alt="Часы" width="16" height="16" class="meta-icon">
+                    {{ formatDate(comp.startDate) }} — {{ comp.endDate ? formatDate(comp.endDate) : 'ТД' }}
+                  </p>
+
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/whistle.svg" alt="Часы" width="16" height="16" class="meta-icon">
+                    {{ comp.sportType }}
+                  </p>
+
+
+
+                  <button class="card-btn" (click)="onViewDetails(comp.idCompetition)">
+                    Подробнее
+                  </button>
+                </div>
               </div>
-              <h2 class="competition-name">{{ comp.name }}</h2>
-              <div class="competition-info">
-                <div class="info-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  <span>{{ comp.city }}</span>
-                </div>
-                <div class="info-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                  <span>{{ formatDate(comp.startDate) }} — {{ comp.endDate ? formatDate(comp.endDate) : 'ТД' }}</span>
-                </div>
-                <div class="info-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M14.5 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V7.5L14.5 2Z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  <span>{{ comp.sportType }}</span>
-                </div>
-              </div>
-              <button class="details-btn" (click)="onViewDetails(comp.idCompetition)">
-                Подробнее
-              </button>
+
             </div>
-          }
-          <!-- Сообщение, если ничего не найдено -->
-          @if (filteredCompetitions.length === 0) {
+          } @empty {
             <div class="no-results">
               <p>По выбранным фильтрам соревнования не найдены.</p>
             </div>
@@ -112,7 +112,7 @@
       }
     </section>
 
-    <!-- ПРАВАЯ КОЛОНКА: Декоративная картинка -->
-    <app-page-decor />
+
+    <app-page-decor/>
   </div>
 </main>

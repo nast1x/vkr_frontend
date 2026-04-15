@@ -1,94 +1,13 @@
 @use '../../../styles.scss' as *;
+@use '../header-page-styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-secondary;
-  cursor: pointer;
-  @include transition;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    background: rgba($primary-color, 0.05);
-  }
-}
-
-// ===== ОБНОВИТЬ .loading-state И .error-state =====
-.loading-state,
-.error-state {
-  text-align: center;
-  padding: 60px 20px;
-  background: $white;
-  border-radius: 16px;
-  border: 2px solid $main-border;
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-// ===== ДОБАВИТЬ СТИЛЬ ДЛЯ ДИСЦИПЛИНЫ В ЛУЧШИХ РЕЗУЛЬТАТАХ =====
 .result-discipline {
   font-size: 12px;
   color: $primary-color;
   font-weight: 500;
-}
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-secondary;
-  cursor: pointer;
-  @include transition;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    background: rgba($primary-color, 0.05);
-  }
-}
-
-// ===== ОБНОВИТЬ .loading-state И .error-state =====
-.loading-state,
-.error-state {
-  text-align: center;
-  padding: 60px 20px;
-  background: $white;
-  border-radius: 16px;
-  border: 2px solid $main-border;
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .loading-state {
@@ -108,51 +27,6 @@ $main-border: #E0E0E0;
   }
 }
 
-.error-state {
-  p {
-    font-size: 16px;
-    color: #d32f2f;
-    margin-bottom: 20px;
-  }
-
-  .retry-btn {
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
-    color: $white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    @include transition;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba($primary-color, 0.4);
-    }
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-// ===== HOST =====
-:host {
-  display: block;
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: $font-family-base;
-  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-// ===== КОНТЕНТ =====
 .competition-details-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -165,7 +39,7 @@ $main-border: #E0E0E0;
   padding: 40px 24px;
 }
 
-// ===== КАРТОЧКА СОРЕВНОВАНИЯ =====
+
 .competition-details-card {
   background: $white;
   border-radius: 20px;
@@ -174,7 +48,7 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА СОРЕВНОВАНИЯ =====
+
 .competition-header {
   display: flex;
   justify-content: space-between;
@@ -225,23 +99,14 @@ $main-border: #E0E0E0;
   letter-spacing: 0.5px;
   flex-shrink: 0;
 
-  &.upcoming {
-    background: rgba(#2196F3, 0.1);
-    color: #2196F3;
-  }
 
-  &.ongoing {
-    background: rgba(#4CAF50, 0.1);
-    color: #4CAF50;
-  }
 
-  &.completed {
-    background: rgba($text-secondary, 0.1);
-    color: $text-secondary;
-  }
+
+
+
 }
 
-// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
+
 .competition-details {
   display: flex;
   flex-direction: column;
@@ -310,17 +175,9 @@ $main-border: #E0E0E0;
   margin: 0;
 }
 
-.competition-detail-image {
-  flex-shrink: 0;
-}
 
-.venue-photo {
-  width: 100px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid $main-border;
-}
+
+
 
 .competition-detail-arrow {
   display: flex;
@@ -332,7 +189,7 @@ $main-border: #E0E0E0;
   flex-shrink: 0;
 }
 
-// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+
 .competition-results {
   margin-bottom: 40px;
 }
@@ -353,7 +210,7 @@ $main-border: #E0E0E0;
 
 .competition-result-item {
   display: grid;
-  grid-template-columns: 50px 1fr 180px 100px;  // Добавлена колонка для дисциплины
+  grid-template-columns: 50px 1fr 180px 100px;
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
@@ -424,7 +281,7 @@ $main-border: #E0E0E0;
   color: $text-secondary;
 }
 
-// ===== НОВЫЙ СТИЛЬ ДЛЯ ДИСЦИПЛИНЫ =====
+
 .result-discipline {
   display: flex;
   flex-direction: column;
@@ -458,7 +315,7 @@ $main-border: #E0E0E0;
   text-align: right;
 }
 
-// ===== ПРОТОКОЛЫ =====
+
 .competition-protocols {
   margin-bottom: 40px;
 }
@@ -559,7 +416,7 @@ $main-border: #E0E0E0;
   text-align: right;
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;
@@ -581,3 +438,4 @@ $main-border: #E0E0E0;
   pointer-events: none;
   transform: translateX(25%) scaleX(-1);
 }
+

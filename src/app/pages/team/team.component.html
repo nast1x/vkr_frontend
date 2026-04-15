@@ -41,48 +41,56 @@
       <h1 class="page-title">Наш коллектив</h1>
 
       @if (isLoading) {
-        <app-loader />
+        <app-loader/>
       }
 
       @if (error) {
-        <app-error-state [message]="error" (retry)="loadTeamData()" />
+        <app-error-state [message]="error" (retry)="loadTeamData()"/>
       }
 
       @if (!isLoading && !error) {
         <div class="page-grid">
           @for (member of filteredMembers; track member.userId) {
             <div class="team-member-card">
+
               <div class="member-avatar">
                 <img [src]="getMemberAvatar(member.imageLink)"
-                     (error)="handleImageError($event)"
+                     [alt]="member.fullName"
                      [title]="member.fullName"
+                     (error)="handleImageError($event)"
+                     width="100"
+                     height="100"
                      class="member-avatar-img">
               </div>
-              <div class="member-info">
-                <h3 class="member-name" [title]="member.fullName">{{ member.fullName }}</h3>
-                <p class="member-university">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 21V7L12 3L19 7V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ member.universityName }}
-                </p>
-                <p class="member-city">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                  {{ member.universityCity }}
-                </p>
-                <p class="member-type"
-                   [class.athlete]="member.roleName === 'Athlete'"
-                   [class.coach]="member.roleName === 'Coach'">
-                  {{ member.roleName === 'Athlete' ? 'Спортсмен' : 'Тренер' }}
-                </p>
-                <button class="details-btn" (click)="onViewProfile(member.userId)">
-                  Подробнее
-                </button>
+
+              <div class="universal-card-info">
+                <h3 class="card-title" [title]="member.fullName">
+                  {{ member.fullName }}
+                </h3>
+
+                <div class="card-body">
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/university-location.svg" alt="Вуз" width="16" height="16" class="meta-icon">
+                    {{ member.universityName }}
+                  </p>
+
+                  <p class="card-meta">
+                    <img ngSrc="assets/images/icons/Location.svg" alt="Место учёбы" width="16" height="16" class="meta-icon">
+                    {{ member.universityCity }}
+                  </p>
+
+                  <p class="card-badge"
+                     [class.badge-blue]="member.roleName === 'Athlete'"
+                     [class.badge-orange]="member.roleName === 'Coach'">
+                    {{ member.roleName === 'Athlete' ? 'Спортсмен' : 'Тренер' }}
+                  </p>
+
+                  <button class="card-btn" (click)="onViewProfile(member.userId)">
+                    Подробнее
+                  </button>
+                </div>
               </div>
+
             </div>
           } @empty {
             <div class="no-results">
@@ -93,6 +101,6 @@
       }
     </section>
 
-    <app-page-decor />
+    <app-page-decor/>
   </div>
 </main>

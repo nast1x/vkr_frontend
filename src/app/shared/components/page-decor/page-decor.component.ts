@@ -12,7 +12,6 @@ import { NgOptimizedImage } from '@angular/common';
   `
 })
 export class PageDecorComponent {
-  // Можно будет легко поменять картинку для конкретной страницы, если захочется
   @Input() imagePath = '/assets/images/mountain-biking.png';
   @Input() altText = 'Decoration';
 }

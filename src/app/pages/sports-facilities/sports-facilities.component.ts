@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HeaderComponent } from "../header/header.component";
-import { FormsModule } from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {HeaderComponent} from "../header/header.component";
+import {FormsModule} from "@angular/forms";
 
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
-import {NgOptimizedImage} from "@angular/common";
+import {HttpClient} from "@angular/common/http";
+import {API_URLS} from '../../config/api.config';
 import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
+import {NgOptimizedImage} from "@angular/common";
 
 interface SportsFacility {
   idSportFacility: number;
@@ -23,7 +23,7 @@ interface SportsFacility {
 @Component({
   selector: 'app-sports-facilities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, NgOptimizedImage, PageDecorComponent, LoaderComponent, ErrorStateComponent],
+  imports: [HeaderComponent, FormsModule, PageDecorComponent, LoaderComponent, ErrorStateComponent, NgOptimizedImage],
   templateUrl: './sports-facilities.component.html',
   styleUrl: './sports-facilities.component.scss'
 })
@@ -38,7 +38,8 @@ export class SportsFacilitiesComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadFacilities();

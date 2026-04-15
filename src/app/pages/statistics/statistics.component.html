@@ -6,8 +6,6 @@
 
     <section class="statistics-list-section">
       <h1 class="statistics-title">Статистика платформы</h1>
-      <p class="statistics-subtitle">Актуальные данные на {{ currentDate }}</p>
-
       @if (isLoading) {
         <div class="loading-state">
           <div class="spinner"></div>
@@ -27,14 +25,20 @@
           <div class="statistics-overview">
             <div class="overview-column">
               <div class="overview-item">
-                <div class="overview-icon">...</div>
+                <div class="overview-icon">
+                  <img ngSrc="assets/images/icons/athlete-svgrepo-com.svg" alt="manager" width="40" height="40"
+                       class="meta-icon">
+                </div>
                 <div class="overview-content">
                   <span class="overview-value">{{ stats.generalStats.totalAthletes }}</span>
                   <span class="overview-label">Спортсменов</span>
                 </div>
               </div>
               <div class="overview-item">
-                <div class="overview-icon">...</div>
+                <div class="overview-icon">
+                  <img ngSrc="assets/images/icons/secretary-svgrepo-com.svg" alt="manager" width="40" height="40"
+                       class="meta-icon">
+                </div>
                 <div class="overview-content">
                   <span class="overview-value">{{ stats.generalStats.totalCoaches }}</span>
                   <span class="overview-label">Тренеров</span>
@@ -44,14 +48,20 @@
             <div class="overview-divider-vertical"></div>
             <div class="overview-column">
               <div class="overview-item">
-                <div class="overview-icon">...</div>
+                <div class="overview-icon">
+                  <img ngSrc="assets/images/icons/student-housing.svg" alt="manager" width="45" height="45"
+                       class="meta-icon">
+                </div>
                 <div class="overview-content">
                   <span class="overview-value">{{ stats.generalStats.totalUniversities }}</span>
                   <span class="overview-label">Вузов</span>
                 </div>
               </div>
               <div class="overview-item">
-                <div class="overview-icon">...</div>
+                <div class="overview-icon">
+                  <img ngSrc="assets/images/icons/podium-silhouette-svgrepo-com.svg" alt="manager" width="40"
+                       height="40" class="meta-icon">
+                </div>
                 <div class="overview-content">
                   <span class="overview-value">{{ stats.generalStats.totalCompetitions }}</span>
                   <span class="overview-label">Соревнований</span>
@@ -61,7 +71,7 @@
           </div>
 
           <div class="statistics-section">
-            <h2 class="section-title">🏆 Лучшие вузы по медалям</h2>
+            <h2 class="section-title">Лучшие вузы по медалям</h2>
             <div class="universities-ranking">
               @for (uni of stats.topUniversities; track uni.id; let i = $index) {
                 <div class="ranking-item">
@@ -90,7 +100,7 @@
           </div>
 
           <div class="statistics-section">
-            <h2 class="section-title">⭐ Лучшие спортсмены сезона</h2>
+            <h2 class="section-title">Лучшие спортсмены сезона</h2>
             <div class="athletes-ranking">
               @for (athlete of stats.topAthletes; track athlete.id; let i = $index) {
                 <div class="athlete-item">
@@ -98,7 +108,11 @@
                     {{ i + 1 }}
                   </div>
                   <div class="athlete-avatar-container" (click)="onAthleteClick(athlete.id)">
-                    <img [src]="athlete.avatar" [alt]="athlete.name" class="athlete-avatar">
+                    <img
+                      [src]="athlete.avatar || 'assets/images/avatar-placeholder.png'"
+                      (error)="$any($event.target).src = 'assets/images/avatar-placeholder.png'"
+                      [alt]="athlete.name"
+                      class="athlete-avatar">
                   </div>
                   <div class="athlete-info" (click)="onAthleteClick(athlete.id)">
                     <h3 class="athlete-name">{{ athlete.name }}</h3>
@@ -122,7 +136,7 @@
           </div>
 
           <div class="statistics-section">
-            <h2 class="section-title">📊 Статистика по видам спорта</h2>
+            <h2 class="section-title">Статистика по видам спорта</h2>
             <div class="sports-stats">
               @for (sport of stats.sportsStatistics; track sport.name) {
                 <div class="sport-stat-item">
@@ -134,8 +148,17 @@
                     <div class="sport-stat-fill" [style.width.%]="sport.percentage"></div>
                   </div>
                   <div class="sport-stat-details">
-                    <span class="stat-detail">🏆 {{ sport.competitions }} соревнований</span>
-                    <span class="stat-detail">📍 {{ sport.facilities }} объектов</span>
+
+                    <p class="card-meta">
+                      <img ngSrc="assets/images/icons/кубок.svg" alt="manager" width="15" height="15" class="meta-icon">
+                      {{ sport.competitions }} соревнований
+                    </p>
+
+                    <p class="card-meta">
+                      <img ngSrc="assets/images/icons/Location Pin.svg" alt="manager" width="15" height="15"
+                           class="meta-icon">
+                      {{ sport.facilities }} объектов
+                    </p>
                   </div>
                 </div>
               }
@@ -143,14 +166,27 @@
           </div>
 
           <div class="statistics-section">
-            <h2 class="section-title">🌍 Активность по городам</h2>
+            <h2 class="section-title">Активность по городам</h2>
             <div class="cities-stats">
               @for (city of stats.cityStatistics; track city.name) {
                 <div class="city-stat-item">
                   <div class="city-stat-info">
                     <h3 class="city-name">{{ city.name }}</h3>
-                    <p class="city-details">{{ city.athletes }} спортсменов • {{ city.competitions }} соревнований</p>
+
+                    <div class="sport-stat-details">
+                      <p class="card-meta">
+                        <img ngSrc="assets/images/icons/account.svg" alt="Атлеты" height="14" width="14"
+                             class="meta-icon">
+                        {{ city.athletes }} спортсменов
+                      </p>
+                      <p class="card-meta">
+                        <img ngSrc="assets/images/icons/users.svg" alt="Атлеты" height="14" width="14"
+                             class="meta-icon">
+                        {{ city.competitions }} соревнований
+                      </p>
+                    </div>
                   </div>
+
                   <div class="city-stat-value">
                     <span class="value-number">{{ city.total }}</span>
                     <span class="value-label">участников</span>
@@ -163,6 +199,6 @@
       }
     </section>
 
-    <app-page-decor />
+    <app-page-decor/>
   </div>
 </main>

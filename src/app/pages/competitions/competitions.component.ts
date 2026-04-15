@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {FormsModule} from "@angular/forms";
 
-import { HeaderComponent } from "../header/header.component";
-import { Router } from '@angular/router';
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
+import {HeaderComponent} from "../header/header.component";
+import {Router} from '@angular/router';
+import {HttpClient} from "@angular/common/http";
+import {API_URLS} from '../../config/api.config';
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
 import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
+import {NgOptimizedImage} from "@angular/common";
 
 interface Competition {
   idCompetition: number;
@@ -27,7 +28,8 @@ interface Competition {
     HeaderComponent,
     LoaderComponent,
     ErrorStateComponent,
-    PageDecorComponent
+    PageDecorComponent,
+    NgOptimizedImage
   ],
   templateUrl: './competitions.component.html',
   styleUrl: './competitions.component.scss'
@@ -39,11 +41,11 @@ export class CompetitionsComponent implements OnInit {
   activeTab: 'all' | 'upcoming' | 'ongoing' | 'completed' = 'all';
   cities: string[] = [];
   competitionTypes = [
-    { value: 'University Level', label: 'Вузовские' },
-    { value: 'City Level', label: 'Городские' },
-    { value: 'Regional Level', label: 'Региональные' },
-    { value: 'All-Russian Level', label: 'Российские' },
-    { value: 'International Level', label: 'Международный' }
+    {value: 'University Level', label: 'Вузовские'},
+    {value: 'City Level', label: 'Городские'},
+    {value: 'Regional Level', label: 'Региональные'},
+    {value: 'All-Russian Level', label: 'Российские'},
+    {value: 'International Level', label: 'Международный'}
   ];
   competitions: Competition[] = [];
   filteredCompetitions: Competition[] = [];
@@ -53,24 +55,25 @@ export class CompetitionsComponent implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadCompetitions();
   }
 
-  // Загрузка данных с бэкенда
+
   loadCompetitions(): void {
     this.isLoading = true;
     this.error = null;
 
-    this.http.get<Competition[]>(API_URLS.COMPETITIONS)
+    this.http.get<Competition[]>(API_URLS.COMPETITIONS_LIST)
       .subscribe({
         next: (data) => {
           this.competitions = data;
-          // Извлекаем уникальные города для фильтра
+
           this.cities = Array.from(new Set(this.competitions.map(c => c.city))).sort();
-          // Инициализируем отфильтрованный список всеми соревнованиями
+
           this.filteredCompetitions = this.competitions;
           this.isLoading = false;
         },
@@ -84,14 +87,14 @@ export class CompetitionsComponent implements OnInit {
 
   applyFilters(): void {
     this.filteredCompetitions = this.competitions.filter(comp => {
-      // Фильтр по городу
+
       const cityMatch = !this.selectedCity || comp.city === this.selectedCity;
 
-      // Фильтр по типу
+
       const typeMatch = !this.selectedType ||
         this.getLevelValue(comp.competitionLevel) === this.selectedType;
 
-      // Фильтр по статусу
+
       let statusMatch = true;
       if (this.activeTab !== 'all') {
         statusMatch = this.getStatusValue(comp) === this.activeTab;
@@ -103,7 +106,7 @@ export class CompetitionsComponent implements OnInit {
     });
   }
 
-  // Преобразование уровня соревнования в значение фильтра
+
   getLevelValue(level: string): string {
     const mapping: { [key: string]: string } = {
       'University Level': 'university',
@@ -114,7 +117,7 @@ export class CompetitionsComponent implements OnInit {
     return mapping[level] || '';
   }
 
-  // Определение статуса соревнования
+
   getStatusValue(comp: Competition): 'upcoming' | 'ongoing' | 'completed' {
     const today = new Date();
     const startDate = new Date(comp.startDate);
@@ -129,23 +132,12 @@ export class CompetitionsComponent implements OnInit {
     }
   }
 
-  setTab(tab: 'all' | 'upcoming' | 'ongoing' | 'completed'): void {
-    this.activeTab = tab;
-    this.selectedStatus = '';
-    this.applyFilters();
-  }
-
   resetFilters(): void {
     this.selectedCity = '';
     this.selectedType = '';
     this.selectedStatus = '';
     this.activeTab = 'all';
     this.applyFilters();
-  }
-
-  getTypeLabel(type: string): string {
-    const typeObj = this.competitionTypes.find(t => t.value === type);
-    return typeObj ? typeObj.label : type;
   }
 
   getStatusLabel(status: string): string {
@@ -177,7 +169,7 @@ export class CompetitionsComponent implements OnInit {
   }
 
   onViewDetails(id: number): void {
-    // Переход на страницу конкретного соревнования
+
     this.router.navigate(['/competition-details', id]);
   }
 }

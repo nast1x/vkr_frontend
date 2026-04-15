@@ -1,26 +1,11 @@
 @use '../../../styles.scss' as *;
+@use '../header-page-styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 $sidebar-width: 280px;
 $decor-width: 300px;
 
-// ===== HOST =====
-:host {
-  display: block;
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: $font-family-base;
-  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-// ===== КОНТЕНТ =====
 .statistics-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -37,13 +22,13 @@ $decor-width: 300px;
   align-items: start;
 }
 
-// ===== САЙДБАР (пустой для единообразия) =====
+
 .statistics-sidebar {
   position: sticky;
   top: $main-header-height + 24px;
 }
 
-// ===== СПИСОК СТАТИСТИКИ =====
+
 .statistics-list-section {
   display: flex;
   flex-direction: column;
@@ -58,15 +43,9 @@ $decor-width: 300px;
   text-align: center;
 }
 
-.statistics-subtitle {
-  font-size: 15px;
-  color: $text-secondary;
-  margin: 0;
-  text-align: center;
-  margin-top: 8px;
-}
 
-// ===== КАРТОЧКА СТАТИСТИКИ =====
+
+
 .statistics-card {
   background: $white;
   border-radius: 20px;
@@ -75,7 +54,7 @@ $decor-width: 300px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ОБЩАЯ СТАТИСТИКА - 2 КОЛОНКИ =====
+
 .statistics-overview {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -138,7 +117,7 @@ $decor-width: 300px;
   align-self: center;
 }
 
-// ===== СЕКЦИИ =====
+
 .statistics-section {
   margin-bottom: 40px;
   padding-bottom: 40px;
@@ -159,7 +138,7 @@ $decor-width: 300px;
   text-align: center;
 }
 
-// ===== РЕЙТИНГ ВУЗОВ =====
+
 .universities-ranking {
   display: flex;
   flex-direction: column;
@@ -177,10 +156,10 @@ $decor-width: 300px;
   border: 2px solid $main-border;
   @include transition;
 
-  &:hover {
-    border-color: $primary-color;
-    transform: translateX(4px);
-  }
+  //&:hover {
+  //  border-color: $primary-color;
+  //  transform: translateX(4px);
+  //}
 }
 
 .ranking-rank {
@@ -243,9 +222,17 @@ $decor-width: 300px;
   font-size: 14px;
   font-weight: 600;
 
-  &.gold { color: #FFD700; }
-  &.silver { color: #C0C0C0; }
-  &.bronze { color: #CD7F32; }
+  &.gold {
+    color: #FFD700;
+  }
+
+  &.silver {
+    color: #C0C0C0;
+  }
+
+  &.bronze {
+    color: #CD7F32;
+  }
 }
 
 .ranking-total {
@@ -267,7 +254,7 @@ $decor-width: 300px;
   text-transform: uppercase;
 }
 
-// ===== КНОПКА "ПОДРОБНЕЕ" ДЛЯ ВУЗОВ =====
+
 .ranking-details-btn {
   padding: 10px 20px;
   font-size: 14px;
@@ -280,13 +267,13 @@ $decor-width: 300px;
   @include transition;
   white-space: nowrap;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba($primary-color, 0.4);
-  }
+  //&:hover {
+  //  transform: translateY(-2px);
+  //  box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+  //}
 }
 
-// ===== РЕЙТИНГ СПОРТСМЕНОВ =====
+
 .athletes-ranking {
   display: flex;
   flex-direction: column;
@@ -304,10 +291,10 @@ $decor-width: 300px;
   border: 2px solid $main-border;
   @include transition;
 
-  &:hover {
-    border-color: $primary-color;
-    transform: translateX(4px);
-  }
+  //&:hover {
+  //  border-color: $primary-color;
+  //  transform: translateX(4px);
+  //}
 }
 
 .athlete-rank {
@@ -360,11 +347,11 @@ $decor-width: 300px;
   flex-direction: column;
   gap: 4px;
 
-  &:hover {
-    .athlete-name {
-      color: $primary-color;
-    }
-  }
+  //&:hover {
+  //  .athlete-name {
+  //    color: $primary-color;
+  //  }
+  //}
 }
 
 .athlete-name {
@@ -406,7 +393,7 @@ $decor-width: 300px;
   }
 }
 
-// ===== КНОПКА "ПОДРОБНЕЕ" ДЛЯ СПОРТСМЕНОВ =====
+
 .athlete-details-btn {
   padding: 10px 20px;
   font-size: 14px;
@@ -419,13 +406,13 @@ $decor-width: 300px;
   @include transition;
   white-space: nowrap;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba($primary-color, 0.4);
-  }
+  //&:hover {
+  //  transform: translateY(-2px);
+  //  box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+  //}
 }
 
-// ===== СТАТИСТИКА ПО ВИДАМ СПОРТА =====
+
 .sports-stats {
   display: flex;
   flex-direction: column;
@@ -478,12 +465,7 @@ $decor-width: 300px;
   gap: 24px;
 }
 
-.stat-detail {
-  font-size: 13px;
-  color: $text-secondary;
-}
 
-// ===== СТАТИСТИКА ПО ГОРОДАМ =====
 .cities-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -500,10 +482,10 @@ $decor-width: 300px;
   border: 2px solid $main-border;
   @include transition;
 
-  &:hover {
-    border-color: $primary-color;
-    transform: translateY(-2px);
-  }
+  //&:hover {
+  //  border-color: $primary-color;
+  //  transform: translateY(-2px);
+  //}
 }
 
 .city-stat-info {
@@ -519,15 +501,11 @@ $decor-width: 300px;
   margin: 0;
 }
 
-.city-details {
-  font-size: 13px;
-  color: $text-secondary;
-  margin: 0;
-}
+//noinspection CssUnusedSymbol
 
 .city-stat-value {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
 }
 
@@ -543,23 +521,18 @@ $decor-width: 300px;
   text-transform: uppercase;
 }
 
-// ===== ДЕКОР СПРАВА =====
-.statistics-decor {
-  position: sticky;
-  top: $main-header-height + 24px;
-  display: flex;
-  justify-content: center;
-}
+
+//noinspection CssUnusedSymbol
 
 .decor-image {
   max-width: 100%;
   height: auto;
   max-height: 600px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
 }
 
-// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+
 .loading-state,
 .error-state {
   text-align: center;
@@ -610,10 +583,10 @@ $decor-width: 300px;
     cursor: pointer;
     @include transition;
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba($primary-color, 0.4);
-    }
+    //&:hover {
+    //  transform: translateY(-2px);
+    //  box-shadow: 0 6px 16px rgba($primary-color, 0.4);
+    //}
   }
 }
 
@@ -623,7 +596,7 @@ $decor-width: 300px;
   }
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;

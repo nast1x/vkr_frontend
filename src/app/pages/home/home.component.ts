@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { RouterModule } from '@angular/router';
+import {RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  // Статистика
+
   stats = {
     athletes: 0,
     sports: 0,
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
     competitions: 0
   };
 
-  // Целевые значения
+
   targetStats = {
     athletes: 150,
     sports: 25,
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   animateStats(): void {
-    // Анимируем каждое значение
+
     this.animateValue('athletes', 0, this.targetStats.athletes, 2000);
     this.animateValue('sports', 0, this.targetStats.sports, 2000);
     this.animateValue('results', 0, this.targetStats.results, 2000);
@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Эффект easing
+
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const currentValue = Math.floor(easeOutQuart * (end - start) + start);
 

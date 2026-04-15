@@ -7,14 +7,14 @@ import {ErrorStateComponent} from '../../shared/components/error-state/error-sta
 import {PageDecorComponent} from '../../shared/components/page-decor/page-decor.component';
 
 import {HttpClient} from "@angular/common/http";
-import {API_URLS} from '../../config/api.config';
 import {University} from "../../models/university.model";
 import {UniversityService} from "../../services/university.service";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-universities',
   standalone: true,
-  imports: [HeaderComponent, FormsModule, LoaderComponent, ErrorStateComponent, PageDecorComponent],
+  imports: [HeaderComponent, FormsModule, LoaderComponent, ErrorStateComponent, PageDecorComponent, NgOptimizedImage],
   templateUrl: './universities.component.html',
   styleUrl: './universities.component.scss'
 })

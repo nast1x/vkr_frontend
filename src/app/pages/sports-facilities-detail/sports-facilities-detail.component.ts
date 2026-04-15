@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from "../header/header.component";
+import {Component, OnInit} from '@angular/core';
+import {HeaderComponent} from "../header/header.component";
 
-import { ActivatedRoute, Router } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
-import { DynamicFormComponent } from "../dynamic-form/dynamic-form.component";
-import { AuthService } from "../../services/auth.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {API_URLS} from '../../config/api.config';
+import {DynamicFormComponent} from "../dynamic-form/dynamic-form.component";
+import {AuthService} from "../../services/auth.service";
 import {FormField} from "../../models/form.model";
+import {NgOptimizedImage} from "@angular/common";
 
 interface Competition {
   id: number;
@@ -39,7 +40,7 @@ interface SportsFacility {
 @Component({
   selector: 'app-sports-facilities-detail',
   standalone: true,
-  imports: [HeaderComponent, DynamicFormComponent],
+  imports: [HeaderComponent, DynamicFormComponent, NgOptimizedImage],
   templateUrl: './sports-facilities-detail.component.html',
   styleUrl: './sports-facilities-detail.component.scss'
 })
@@ -50,17 +51,17 @@ export class SportsFacilitiesDetailComponent implements OnInit {
   isAdmin: boolean = false;
   showEditForm: boolean = false;
 
-  // Объект для передачи начальных данных в форму
+
   editData: any = {};
 
-  // Заменяем address на street и streetNumber
+
   editFields: FormField[] = [
-    { name: 'name', label: 'Название объекта', type: 'text', required: true },
-    { name: 'city', label: 'Город', type: 'text', required: true },
-    { name: 'street', label: 'Улица', type: 'text', required: true },
-    { name: 'streetNumber', label: 'Номер дома/строения', type: 'text', required: true },
-    { name: 'description', label: 'Описание', type: 'textarea' },
-    { name: 'imageLink', label: 'Ссылка на фото', type: 'text' }
+    {name: 'name', label: 'Название объекта', type: 'text', required: true},
+    {name: 'city', label: 'Город', type: 'text', required: true},
+    {name: 'street', label: 'Улица', type: 'text', required: true},
+    {name: 'streetNumber', label: 'Номер дома/строения', type: 'text', required: true},
+    {name: 'description', label: 'Описание', type: 'textarea'},
+    {name: 'imageLink', label: 'Ссылка на фото', type: 'text'}
   ];
 
   constructor(
@@ -68,7 +69,8 @@ export class SportsFacilitiesDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -103,19 +105,19 @@ export class SportsFacilitiesDetailComponent implements OnInit {
       });
   }
 
-  // Новый метод для подготовки данных и открытия формы
+
   openEditForm(): void {
     let parsedStreet = '';
     let parsedStreetNumber = '';
 
-    // Разделяем строку "Улица, д. Номер" по разделителю ", д. "
+
     if (this.facility?.address) {
       const parts = this.facility.address.split(', д. ');
       parsedStreet = parts[0] || '';
       parsedStreetNumber = parts[1] || '';
     }
 
-    // Собираем объект, который идеально ляжет в поля DynamicFormComponent
+
     this.editData = {
       ...this.facility,
       street: parsedStreet,
@@ -131,7 +133,7 @@ export class SportsFacilitiesDetailComponent implements OnInit {
     this.http.put(`${API_URLS.SPORT_FACILITIES}/${facilityId}`, formData).subscribe({
       next: () => {
         this.showEditForm = false;
-        // Перезагружаем объект, бэкенд снова вернет нам красиво склеенный address
+
         this.loadFacility();
       },
       error: (err) => alert('Ошибка при сохранении: ' + err.message)

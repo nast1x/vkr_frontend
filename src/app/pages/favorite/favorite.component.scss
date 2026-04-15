@@ -1,24 +1,11 @@
 @use '../../../styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
+
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== HOST =====
-:host {
-  display: block;
-  width: 100vw;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: $font-family-base;
-  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 
-// ===== КОНТЕНТ =====
+
 .favorite-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -31,7 +18,7 @@ $main-border: #E0E0E0;
   padding: 40px 24px;
 }
 
-// ===== КАРТОЧКА ИЗБРАННОГО =====
+
 .favorite-card {
   background: $white;
   border-radius: 20px;
@@ -40,7 +27,7 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА =====
+
 .favorite-header {
   text-align: center;
   margin-bottom: 32px;
@@ -61,39 +48,12 @@ $main-border: #E0E0E0;
   margin: 0;
 }
 
-// ===== ВКЛАДКИ =====
-.favorite-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
-}
 
-.favorite-tab {
-  padding: 10px 28px;
-  font-size: 15px;
-  font-weight: 500;
-  background: $white;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-primary;
-  cursor: pointer;
-  @include transition;
 
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-  }
 
-  &.active {
-    background: linear-gradient(135deg, #2196F3 0%, $primary-color 100%);
-    border-color: transparent;
-    color: $white;
-  }
-}
 
-// ===== СЕКЦИИ =====
+
+
 .favorite-section {
   margin-bottom: 40px;
   padding-bottom: 40px;
@@ -134,14 +94,14 @@ $main-border: #E0E0E0;
   border-radius: 20px;
 }
 
-// ===== СЕТКА ИЗБРАННОГО =====
+
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
 }
 
-// ===== КАРТОЧКА СПОРТСМЕНА =====
+
 .favorite-athlete-card {
   display: flex;
   align-items: center;
@@ -205,7 +165,7 @@ $main-border: #E0E0E0;
   margin: 0;
 }
 
-// ===== КАРТОЧКА СОРЕВНОВАНИЯ =====
+
 .favorite-competition-card {
   display: flex;
   align-items: center;
@@ -261,7 +221,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== КАРТОЧКА ОБЪЕКТА =====
+
 .favorite-facility-card {
   display: flex;
   align-items: center;
@@ -325,7 +285,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== КНОПКА УДАЛЕНИЯ =====
+
 .remove-favorite-btn {
   display: flex;
   align-items: center;
@@ -348,7 +308,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== НЕТ ИЗБРАННОГО =====
+
 .no-favorites {
   display: flex;
   flex-direction: column;
@@ -372,7 +332,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;

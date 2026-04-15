@@ -23,12 +23,20 @@
 
   &.error {
     border-left-color: #f44336;
-    .notification-icon { color: #f44336; background: rgba(#f44336, 0.1); }
+
+    .notification-icon {
+      color: #f44336;
+      background: rgba(#f44336, 0.1);
+    }
   }
 
   &.success {
     border-left-color: #4caf50;
-    .notification-icon { color: #4caf50; background: rgba(#4caf50, 0.1); }
+
+    .notification-icon {
+      color: #4caf50;
+      background: rgba(#4caf50, 0.1);
+    }
   }
 }
 
@@ -75,6 +83,12 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

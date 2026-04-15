@@ -11,6 +11,5 @@ import { Component, Input } from '@angular/core';
   `
 })
 export class LoaderComponent {
-  // Позволяет передавать свой текст загрузки, но по умолчанию будет этот
   @Input() message = 'Загрузка данных...';
 }

@@ -25,50 +25,12 @@
   border: 3px solid $primary-color;
 }
 
-.member-info {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 2px; // Уменьшили отступ, чтобы вуз и город стояли плотнее
-}
 
-.member-name {
-  @extend %card-title;
-  margin-bottom: 6px; // Компенсируем уменьшенный gap, чтобы отделить имя
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-}
 
-.member-university,
-.member-city {
-  @extend %icon-text-row;
-  justify-content: center; // Выравниваем по центру для карточки команды
-}
 
-.member-university {
-  margin-top: auto;
-}
 
-.member-type {
-  font-size: 13px;
-  font-weight: 600;
-  color: $primary-color;
-  padding: 12px 0 0 0;
-  border-top: 1px solid #f0f0f0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 10px 0 10px 0; // Отталкиваем разделительную линию от города
 
-  &.athlete {
-    color: #4CAF50;
-  }
 
-  &.coach {
-    color: #FF9800;
-  }
-}
+
+
+

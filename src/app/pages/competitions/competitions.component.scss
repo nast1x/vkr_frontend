@@ -18,33 +18,35 @@
   gap: 8px;
 }
 
-.competition-type-badge {
-  padding: 6px 12px;
-  font-size: 12px;
+.card-badge {
+  padding: 4px 12px;
+  font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border-radius: 12px;
+  margin: 4px 0;
+  background-color: #f8f9fa;
+  color: #495057;
+  gap: 2px;
 
-  &.university {
-    background: rgba(#2196F3, 0.1);
-    color: #2196F3;
-  }
+  /* Роли (уже были) */
 
-  &.city {
-    background: rgba(#4CAF50, 0.1);
-    color: #4CAF50;
-  }
 
-  &.regional {
-    background: rgba(#FF9800, 0.1);
-    color: #FF9800;
-  }
 
-  &.russian {
-    background: rgba(#9C27B0, 0.1);
-    color: #9C27B0;
-  }
+
+  /* УРОВНИ СОРЕВНОВАНИЙ (согласно вашей логике getLevelValue) */
+  &.university { background: rgba(33, 150, 243, 0.1) !important; color: #2196F3 !important; }
+  &.city       { background: rgba(76, 175, 80, 0.1) !important; color: #4CAF50 !important; }
+
+
+
+
+
+  /* СТАТУСЫ СОРЕВНОВАНИЙ (согласно вашей логике getStatusValue) */
+
+
+
+
+
 }
 
 .competition-status-badge {
@@ -53,34 +55,14 @@
   font-weight: 700;
   border-radius: 20px;
   text-transform: uppercase;
-
-  &.upcoming {
-    background: rgba(#2196F3, 0.1);
-    color: #2196F3;
-  }
-
-  &.ongoing {
-    background: rgba(#4CAF50, 0.1);
-    color: #4CAF50;
-  }
-
-  &.completed {
-    background: rgba($text-secondary, 0.1);
-    color: $text-secondary;
-  }
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
 .competition-name {
   @extend %card-title;
-  flex: 1; // Специфичное правило оставляем
-}
-
-.competition-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
+  flex: 1;
 }
 
 .info-item {

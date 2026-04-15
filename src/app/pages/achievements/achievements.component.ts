@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../header/header.component';
-import { API_CONFIG, API_URLS } from '../../config/api.config';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {HeaderComponent} from '../header/header.component';
+import {API_CONFIG, API_URLS} from '../../config/api.config';
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
 import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
@@ -23,7 +23,7 @@ interface Achievement {
 @Component({
   selector: 'app-achievements',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FormsModule, NgOptimizedImage, LoaderComponent, ErrorStateComponent, PageDecorComponent],
+  imports: [CommonModule, HeaderComponent, FormsModule, LoaderComponent, ErrorStateComponent, PageDecorComponent, NgOptimizedImage],
   templateUrl: './achievements.component.html',
   styleUrl: './achievements.component.scss'
 })
@@ -40,7 +40,8 @@ export class AchievementsComponent implements OnInit {
   selectedSport: string = '';
   selectedRank: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.loadAchievements();
@@ -105,7 +106,7 @@ export class AchievementsComponent implements OnInit {
     event.target.src = this.DEFAULT_AVATAR;
   }
 
-  // Метод для формирования URL аватарки (как в компоненте команды)
+
   getMemberAvatar(avatar: string | null | undefined): string {
     if (!avatar) {
       return this.DEFAULT_AVATAR;

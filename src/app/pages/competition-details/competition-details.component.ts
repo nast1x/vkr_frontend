@@ -3,11 +3,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
 import {Competition} from "../../models/competition.model";
 import {CompetitionService} from "../../services/competition.service";
+import {COMPETITION_LEVEL_LABELS, COMPETITION_STATUS_LABELS} from "../../config/app.constants";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-competition-details',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, NgOptimizedImage],
   templateUrl: './competition-details.component.html',
   styleUrl: './competition-details.component.scss'
 })
@@ -69,23 +71,11 @@ export class CompetitionDetailsComponent implements OnInit {
   }
 
   getStatusLabel(status: string): string {
-    const labels: { [key: string]: string } = {
-      'upcoming': 'Ожидаемое',
-      'ongoing': 'Текущее',
-      'completed': 'Завершено'
-    };
-    return labels[status] || status;
+    return COMPETITION_STATUS_LABELS[status] || status;
   }
 
   getLevelLabel(level: string): string {
-    const mapping: { [key: string]: string } = {
-      'University Level': 'Вузовские',
-      'City Level': 'Городские',
-      'Regional Level': 'Региональные',
-      'All-Russian Level': 'Российские',
-      'International Level': 'Международные'
-    };
-    return mapping[level] || level;
+    return COMPETITION_LEVEL_LABELS[level] || level;
   }
 
   formatDate(dateString: string): string {

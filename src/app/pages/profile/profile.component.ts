@@ -1,70 +1,122 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HeaderComponent} from "../header/header.component";
-import {HttpClient} from "@angular/common/http";
 import {API_CONFIG, API_URLS} from '../../config/api.config';
 import {AuthService} from "../../services/auth.service";
 import {DynamicFormComponent} from "../dynamic-form/dynamic-form.component";
 import {NotificationService} from '../../services/notification.service';
-import {UserProfile} from "../../models/user.model";
+import {PasswordChangeDto, ProfileUpdateDto, SportRankAssignmentDto, UserProfile} from "../../models/user.model";
 import {UserService} from "../../services/user.service";
-import { PROFILE_EDIT_FIELDS, PROFILE_PASSWORD_FIELDS } from './profile.config';
+import {PROFILE_EDIT_FIELDS, PROFILE_PASSWORD_FIELDS, RANK_ASSIGNMENT_FIELDS} from './profile.config';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {GENDER_LABELS, ROLE_LABELS} from "../../config/app.constants";
+import {forkJoin, switchMap} from "rxjs";
+import {NgOptimizedImage} from "@angular/common";
+import {filter, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [HeaderComponent, DynamicFormComponent],
+  imports: [HeaderComponent, DynamicFormComponent, NgOptimizedImage],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  private destroyRef = inject(DestroyRef);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private notification = inject(NotificationService);
 
   readonly editFields = PROFILE_EDIT_FIELDS;
   readonly passwordFields = PROFILE_PASSWORD_FIELDS;
+  rankFields = JSON.parse(JSON.stringify(RANK_ASSIGNMENT_FIELDS));
 
   user!: UserProfile;
   isLoading: boolean = true;
   error: string | null = null;
-  placeholderAvatar = '/assets/images/avatar-placeholder.png';
 
-  // --- Переменные для прав доступа и редактирования ---
+
+  editData: Partial<ProfileUpdateDto> = {};
+  showEditForm = false;
+  showPasswordForm = false;
+  showRankForm = false;
+
   currentUserId: number | null = null;
-  isAdmin: boolean = false;
-  isOwnProfile: boolean = false;
-  showPasswordForm: boolean = false;
-  showEditForm: boolean = false;
-  editData: any = {};
+  isAdmin = false;
+  isOwnProfile = false;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private http: HttpClient,
-    private notification: NotificationService
-  ) {
-  }
 
   ngOnInit(): void {
-    // Подписываемся на текущего юзера, чтобы знать кто мы
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.currentUserId = user.id;
-        this.isAdmin = user.role === 'Admin';
-      } else {
-        this.currentUserId = null;
-        this.isAdmin = false;
-      }
-      this.checkOwnership();
-    });
+    this.authService.currentUser$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(user => {
+        if (user) {
+          this.currentUserId = user.id;
+          this.isAdmin = user.role === 'Admin';
+        } else {
+          this.currentUserId = null;
+          this.isAdmin = false;
+        }
+        this.checkOwnership();
+      });
 
-    this.loadProfile();
+    this.route.paramMap.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      map(params => params.get('id')),
+      filter(id => !!id),
+      switchMap(id => this.userService.getProfile(id!))
+    ).subscribe({
+      next: (data) => {
+        this.user = data;
+        this.checkOwnership();
+        this.isLoading = false;
+      },
+      error: () => {  }
+    });
+  }
+  openRankForm(): void {
+    forkJoin({
+      sports: this.userService.getSportTypes(),
+      ranks: this.userService.getSportRanks()
+    }).subscribe({
+      next: (result) => {
+
+        const sportField = this.rankFields.find((f: any) => f.name === 'sportTypeId');
+        if (sportField) {
+
+          sportField.options = result.sports.map((s: any) => ({
+            value: s.idSportType,
+            label: s.name
+          }));
+        }
+
+        const rankField = this.rankFields.find((f: any) => f.name === 'rankId');
+        if (rankField) {
+
+          rankField.options = result.ranks.map((r: any) => ({
+            value: r.idSportRank,
+            label: r.name
+          }));
+        }
+
+
+        this.rankFields = [...this.rankFields];
+        this.isLoading = false;
+        this.showRankForm = true;
+      },
+      error: (err) => {
+        console.error('Ошибка при загрузке справочников:', err);
+      }
+    });
   }
 
-  loadProfile(): void {
-    const userId = this.route.snapshot.paramMap.get('id');
+  loadProfile(id?: string | null): void {
+    const userId = id || this.route.snapshot.paramMap.get('id');
     if (!userId) return;
 
+    this.isLoading = true;
     this.userService.getProfile(userId).subscribe({
       next: (data) => {
         this.user = data;
@@ -78,7 +130,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // Метод для определения, находимся ли мы в своем профиле
+
   checkOwnership(): void {
     if (this.user && this.currentUserId) {
       this.isOwnProfile = this.user.id === this.currentUserId;
@@ -87,9 +139,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  // Открытие формы: подготавливаем данные
+
   openEditForm(): void {
-    // Бэкенд отдает ФИО вместе, для формы мы их разделяем
+
     const names = this.user.fullName.split(' ');
 
     this.editData = {
@@ -103,8 +155,8 @@ export class ProfileComponent implements OnInit {
     this.showEditForm = true;
   }
 
-  // Отправка данных
-  onEditSubmit(formData: any): void {
+
+  onEditSubmit(formData: ProfileUpdateDto): void {
     this.userService.updateProfile(this.user.id, formData).subscribe({
       next: () => {
         this.showEditForm = false;
@@ -114,8 +166,6 @@ export class ProfileComponent implements OnInit {
       error: (err) => this.notification.showError('Ошибка: ' + err.message)
     });
   }
-
-  // ... (Остальные методы: getRoleLabel, getGenderLabel, formatDate, onLogout и т.д. остаются без изменений) ...
 
   onLogout(): void {
     this.authService.logout().subscribe({
@@ -129,7 +179,7 @@ export class ProfileComponent implements OnInit {
 
   onUniversityClick(): void {
     if (this.user.universityId) {
-      this.router.navigate(['/university-details', this.user.universityId]); // Поправлен роут
+      this.router.navigate(['/universities-details', this.user.universityId]);
     }
   }
 
@@ -141,6 +191,12 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/profile', traineeId]);
   }
 
+  onCoachClick(): void {
+    if (this.user.coachId) {
+      this.router.navigate(['/profile', this.user.coachId]);
+    }
+  }
+
   onBack(): void {
     window.history.back();
   }
@@ -150,7 +206,7 @@ export class ProfileComponent implements OnInit {
     this.showPasswordForm = true;
   }
 
-  onPasswordSubmit(formData: any): void {
+  onPasswordSubmit(formData: PasswordChangeDto): void {
     if (formData.password !== formData.confirmPassword) {
       this.notification.showError('Пароли не совпадают!');
       return;
@@ -168,7 +224,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // Метод для обработки выбора фотографии
+
   onPhotoSelected(event: any): void {
     const file = event.target.files[0];
     if (!file) return;
@@ -191,27 +247,46 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  onRankSubmit(formData: any): void {
+
+    const payload: SportRankAssignmentDto = {
+      ...formData,
+      userId: this.user.id
+    };
+    console.log('Отправляем на бэкенд:', payload);
+
+
+    this.userService.assignSportRank(payload).subscribe({
+      next: () => {
+
+        this.showRankForm = false;
+        this.notification.showSuccess('Спортивный разряд успешно назначен!');
+
+
+        this.loadProfile(this.user.id.toString());
+      },
+      error: (err) => {
+        console.error(err);
+        this.notification.showError('Ошибка при назначении разряда: ' + (err.error?.message || err.message));
+      }
+    });
+  }
+
   handleImageError(event: any) {
     event.target.src = this.DEFAULT_AVATAR;
   }
 
   getRoleLabel(role: string): string {
-    if (role === 'Athlete') {
-      return 'Спортсмен';
-    } else if (role === 'Coach') {
-      return 'Тренер';
-    } else {
-      return 'Пользователь';
-    }
+    return ROLE_LABELS[role] || 'Пользователь';
   }
 
   getGenderLabel(gender: string): string {
-    return gender === 'Male' ? 'Мужской' : 'Женский';
+    return GENDER_LABELS[gender] || gender;
   }
 
   getMemberAvatar(imageLink: string | null): string {
     if (!imageLink) return this.DEFAULT_AVATAR;
-    if (imageLink.startsWith('http')) return imageLink; // Если ссылка внешняя
+    if (imageLink.startsWith('http')) return imageLink;
     return this.API_CONFIG.BASE_URL + imageLink;
   }
 

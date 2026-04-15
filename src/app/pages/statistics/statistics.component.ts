@@ -1,84 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HeaderComponent } from "../header/header.component";
-
-import { HttpClient } from "@angular/common/http";
-import { API_URLS } from '../../config/api.config';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {HeaderComponent} from "../header/header.component";
 import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
+import {Statistics} from "../../models/statistics.model";
+import {StatisticsService} from "../../services/statistics.service";
+import {NotificationService} from "../../services/notification.service";
+import {NgOptimizedImage} from "@angular/common";
 
-interface GeneralStats {
-  totalAthletes: number;
-  totalCoaches: number;
-  totalUniversities: number;
-  totalCompetitions: number;
-}
-
-interface UniversityRanking {
-  id?: number;
-  name: string;
-  city: string;
-  gold: number;
-  silver: number;
-  bronze: number;
-  total: number;
-}
-
-interface AthleteRanking {
-  id: number;
-  name: string;
-  avatar: string;
-  university: string;
-  sport: string;
-  medals: number;
-  competitions: number;
-}
-
-interface SportStatistics {
-  name: string;
-  athletes: number;
-  competitions: number;
-  facilities: number;
-  percentage: number;
-}
-
-interface CityStatistics {
-  name: string;
-  athletes: number;
-  competitions: number;
-  total: number;
-}
-
-interface Statistics {
-  generalStats: GeneralStats;
-  topUniversities: UniversityRanking[];
-  topAthletes: AthleteRanking[];
-  sportsStatistics: SportStatistics[];
-  cityStatistics: CityStatistics[];
-}
 
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [HeaderComponent, PageDecorComponent],
+  imports: [HeaderComponent, PageDecorComponent, NgOptimizedImage],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent implements OnInit {
-  currentDate: string;
+  private router = inject(Router);
+  private statisticsService = inject(StatisticsService);
+  private notification = inject(NotificationService)
+
   stats!: Statistics;
   isLoading: boolean = true;
   error: string | null = null;
-
-  constructor(
-    private router: Router,
-    private http: HttpClient
-  ) {
-    this.currentDate = new Date().toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  }
 
   ngOnInit(): void {
     this.loadStatistics();
@@ -88,18 +32,18 @@ export class StatisticsComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.http.get<Statistics>(API_URLS.STATISTICS)
-      .subscribe({
-        next: (data) => {
-          this.stats = data;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Ошибка загрузки данных:', err);
-          this.error = 'Не удалось загрузить данные. Проверьте подключение к серверу.';
-          this.isLoading = false;
-        }
-      });
+    this.statisticsService.getStatistics().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки данных:', err);
+        this.notification.showError('Ошибка загрузки данных:' + err)
+        this.error = 'Не удалось загрузить данные. Проверьте подключение к серверу.';
+        this.isLoading = false;
+      }
+    });
   }
 
   onAthleteClick(athleteId: number): void {

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormsModule } from "@angular/forms";
-import { AuthService } from '../../services/auth.service';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from "@angular/forms";
+import {AuthService} from '../../services/auth.service';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  // Данные формы
+
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -22,23 +22,24 @@ export class RegisterComponent {
   gender: 'Male' | 'Female' = 'Male';
   roleName: 'Athlete' | 'Coach' = 'Athlete';
 
-  // UI состояния
+
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
   errorMessage: string | null = null;
   isLoading: boolean = false;
 
-  // ✅ Опции для выбора пола
+
   genderOptions = [
-    { value: 'Male', label: 'Мужской' },
-    { value: 'Female', label: 'Женский' }
+    {value: 'Male', label: 'Мужской'},
+    {value: 'Female', label: 'Женский'}
   ];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   goBack(): void {
     this.router.navigate(['/']);
@@ -52,7 +53,7 @@ export class RegisterComponent {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  // Валидация формы
+
   isFormValid(): boolean {
     return (
       this.email.trim() !== '' &&
@@ -65,7 +66,7 @@ export class RegisterComponent {
     );
   }
 
-  // Отправка формы регистрации
+
   onSubmit(): void {
     if (!this.isFormValid()) {
       this.errorMessage = 'Пожалуйста, заполните все поля корректно';
@@ -75,14 +76,14 @@ export class RegisterComponent {
     this.isLoading = true;
     this.errorMessage = null;
 
-    // Формируем запрос согласно документации бэкенда
+
     const registerData = {
       email: this.email,
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
       middleName: this.middleName,
-      gender: this.gender, // ✅ Добавлен пол
+      gender: this.gender,
       roleName: this.roleName
     };
 

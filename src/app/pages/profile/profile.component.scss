@@ -1,10 +1,10 @@
 @use '../../../styles.scss' as *;
+@use '../header-page-styles.scss' as *;
 
-// ===== ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== HOST =====
+
 :host {
   display: block;
   width: 100vw;
@@ -18,7 +18,7 @@ $main-border: #E0E0E0;
   overflow-y: auto;
 }
 
-// ===== КОНТЕНТ =====
+
 .profile-content {
   padding-top: $main-header-height;
   min-height: 100vh;
@@ -31,30 +31,10 @@ $main-border: #E0E0E0;
   padding: 40px 24px;
 }
 
-// ===== КНОПКА "НАЗАД" =====
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: transparent;
-  border: 2px solid $main-border;
-  border-radius: 10px;
-  color: $text-secondary;
-  cursor: pointer;
-  @include transition;
-  margin-bottom: 24px;
 
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    background: rgba($primary-color, 0.05);
-  }
-}
 
-// ===== КАРТОЧКА ПРОФИЛЯ =====
+
+
 .profile-card {
   background: $white;
   border-radius: 20px;
@@ -63,8 +43,6 @@ $main-border: #E0E0E0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
-// ===== ШАПКА ПРОФИЛЯ =====
-// ===== ДОБАВИТЬ ПОСЛЕ .profile-edit-btn =====
 
 .profile-admin-btn {
   display: inline-flex;
@@ -86,17 +64,17 @@ $main-border: #E0E0E0;
   }
 }
 
-// Контейнер для кнопок действий
+
 .profile-actions {
   display: flex;
-  flex-direction: column; // Кнопки будут идти друг под другом
+  flex-direction: column;
   gap: 10px;
-  margin-left: auto; // Прижмет блок с кнопками к правому краю
+  margin-left: auto;
 
   @media (max-width: 768px) {
     margin-left: 0;
     width: 100%;
-    flex-direction: row; // На телефоне выстроятся в ряд
+    flex-direction: row;
     flex-wrap: wrap;
 
     button {
@@ -107,10 +85,10 @@ $main-border: #E0E0E0;
 }
 
 .profile-edit-btn {
-  // ... существующие стили ...
+
 }
 
-// ===== НОВАЯ КНОПКА: ВЫЙТИ =====
+
 .profile-logout-btn {
   display: flex;
   align-items: center;
@@ -143,8 +121,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== АДАПТИВ ДЛЯ ШАПКИ ПРОФИЛЯ =====
-// Обновите .profile-header для правильного отображения кнопок
+
 .profile-header {
   display: flex;
   align-items: center;
@@ -154,7 +131,7 @@ $main-border: #E0E0E0;
   margin-bottom: 32px;
   flex-wrap: wrap;
 
-  // На мобильных устройствах кнопки будут под аватаром
+
   @media (max-width: 768px) {
     .profile-actions {
       width: 100%;
@@ -174,13 +151,13 @@ $main-border: #E0E0E0;
 .profile-avatar {
   position: relative;
   flex-shrink: 0;
-  width: 140px; // Настройте размер под ваш дизайн
+  width: 140px;
   height: 140px;
   border-radius: 50%;
-  // Убеждаемся, что оверлей не выходит за границы круга
+
   overflow: hidden;
 
-  // Базовые стили для изображения
+
   &-img {
     width: 100%;
     height: 100%;
@@ -188,55 +165,54 @@ $main-border: #E0E0E0;
     object-fit: cover;
     border: 4px solid $primary-color;
     box-shadow: 0 4px 16px rgba($primary-color, 0.2);
-    // Плавный переход для фильтра при наведении
+
     transition: filter 0.3s ease, transform 0.3s ease;
   }
 
-  // Стили оверлея (фон и центрирование)
+
   .avatar-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); // Затемнение фона
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
 
-    // ПО УМОЛЧАНИЮ СКРЫТ
+
     opacity: 0;
-    // Плавное появление
+
     transition: opacity 0.3s ease;
-    // Чтобы клик проходил сквозь оверлей на input (если нужно)
+
     pointer-events: none;
   }
 
-  // Стили спиннера
+
   .avatar-spinner {
     width: 40px;
     height: 40px;
-    border: 4px solid rgba(255, 255, 255, 0.3); // Светлая подложка
-    border-top-color: #fff; // Белая вращающаяся часть
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
     border-radius: 50%;
-    // Анимация вращения
+
     animation: avatar-spin 0.8s linear infinite;
   }
 
-  // --- ЭФФЕКТ ПРИ НАВЕДЕНИИ (CSS-only) ---
-  // Работает только если добавлен класс .editable (isOwnProfile == true)
+
   &.editable {
     cursor: pointer;
 
     &:hover {
-      // 1. Затемняем изображение
+
       .profile-avatar-img {
         filter: brightness(0.6);
-        transform: scale(1.02); // Легкий зум для интерактивности
+        transform: scale(1.02);
       }
 
-      // 2. Показываем оверлей со спиннером
+
       .avatar-overlay {
         opacity: 1;
       }
@@ -244,7 +220,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// Ключевые кадры для анимации спиннера
+
 @keyframes avatar-spin {
   to {
     transform: rotate(360deg);
@@ -325,7 +301,7 @@ $main-border: #E0E0E0;
   flex-shrink: 0;
 }
 
-// ===== НОВАЯ КНОПКА: ВЫЙТИ =====
+
 .profile-logout-btn {
   display: flex;
   align-items: center;
@@ -358,7 +334,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ДЕТАЛЬНАЯ ИНФОРМАЦИЯ =====
+
 .profile-details {
   display: flex;
   flex-direction: column;
@@ -453,7 +429,7 @@ $main-border: #E0E0E0;
   margin: 0;
 }
 
-// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+
 .profile-results {
   margin-bottom: 40px;
 }
@@ -535,7 +511,7 @@ $main-border: #E0E0E0;
   margin-left: 24px;
 }
 
-// ===== ПОДОПЕЧНЫЕ ТРЕНЕРА =====
+
 .profile-trainees {
   margin-bottom: 40px;
 }
@@ -606,7 +582,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== СОСТОЯНИЯ ЗАГРУЗКИ И ОШИБКИ =====
+
 .loading-state,
 .error-state {
   text-align: center;
@@ -669,7 +645,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ПЛАВАЮЩИЕ ЛОГОТИПЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;
@@ -692,30 +668,4 @@ $main-border: #E0E0E0;
   transform: translateX(25%) scaleX(-1);
 }
 
-.profile-password-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  // Бирюзово-синий градиент (Teal/Cyan) для акцента на безопасности
-  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
 
-  &:hover {
-    background: linear-gradient(135deg, $primary-color 0%, #1565C0 100%);
-    color: $white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
-  }
-
-  svg {
-    flex-shrink: 0;
-  }
-}

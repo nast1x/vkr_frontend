@@ -1,10 +1,9 @@
-@use '../../../styles.scss' as *; // Убедитесь, что путь правильный
+@use '../../../styles.scss' as *;
 
-// ===== ЛОКАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== СТИЛИ ШАПКИ =====
+
 .main-header {
   position: fixed;
   top: 0;
@@ -85,11 +84,18 @@ $main-border: #E0E0E0;
   &:hover {
     background: linear-gradient(135deg, $primary-color 0%, #1565C0 100%);
     color: $white;
-    transform: translateY(-2px);
+
     box-shadow: 0 4px 12px rgba($primary-color, 0.4);
   }
+}
 
-  svg {
-    flex-shrink: 0;
-  }
+.meta-icon {
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(21%) sepia(81%) saturate(2522%) hue-rotate(197deg) brightness(95%) contrast(104%) !important;
+
+}
+
+.hover-white-icon:hover .meta-icon {
+  filter: brightness(0) invert(100%) !important;
 }

@@ -1,8 +1,8 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { API_URLS } from '../config/api.config';
-import { University } from '../models/university.model';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {API_URLS} from '../config/api.config';
+import {University} from '../models/university.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,9 @@ import { University } from '../models/university.model';
 export class UniversityService {
   private http = inject(HttpClient);
 
+  /**
+   * Базовая информация о ВУЗах
+   * */
   getUniversities(): Observable<University[]> {
     return this.http.get<University[]>(API_URLS.UNIVERSITY_STATS);
   }

@@ -46,18 +46,22 @@
     <div class="admin-card">
       <div class="card-header">
         <h2>
-          {{ activeTab === 'majors' ? 'Список специальностей' :
-          activeTab === 'universities' ? 'Список ВУЗов' :
-            activeTab === 'sport-types' ? 'Справочник видов спорта' :
-              activeTab === 'sport-ranks' ? 'Спортивные разряды' :
-                activeTab === 'education-places' ? 'Места обучения пользователей' : 'Управление спортивными разрядами' }}
+          {{
+            activeTab === 'majors' ? 'Список специальностей' :
+              activeTab === 'universities' ? 'Список ВУЗов' :
+                activeTab === 'sport-types' ? 'Справочник видов спорта' :
+                  activeTab === 'sport-ranks' ? 'Спортивные разряды' :
+                    activeTab === 'education-places' ? 'Места обучения пользователей' : 'Управление спортивными разрядами'
+          }}
         </h2>
         <button class="btn-create" (click)="openCreateForm()">
-          + Добавить {{ activeTab === 'majors' ? 'специальность' :
-          activeTab === 'universities' ? 'ВУЗ' :
-            activeTab === 'sport-types' ? 'вид спорта' :
-              activeTab === 'sport-ranks' ? 'разряд' :
-                activeTab === 'education-places' ? 'запись об обучении' : 'достижение' }}
+          + Добавить {{
+            activeTab === 'majors' ? 'специальность' :
+              activeTab === 'universities' ? 'ВУЗ' :
+                activeTab === 'sport-types' ? 'вид спорта' :
+                  activeTab === 'sport-ranks' ? 'разряд' :
+                    activeTab === 'education-places' ? 'запись об обучении' : 'достижение'
+          }}
         </button>
       </div>
 
@@ -98,13 +102,19 @@
                     <td class="secondary-text">{{ major.description || 'Нет описания' }}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn-icon edit" (click)="openEditForm(major)" title="Редактировать">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(major.idMajor)" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit" (click)="openEditForm(major)" title="Редактировать">
+                          <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                        </button>
+                        <button class="btn-icon delete" (click)="onDelete(major.idMajor)" title="Удалить">
+                          <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                        </button>
                       </div>
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td colspan="4" class="empty-state">Специальности не найдены</td></tr>
+                  <tr>
+                    <td colspan="4" class="empty-state">Специальности не найдены</td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -130,13 +140,19 @@
                     <td class="secondary-text">{{ univ.city }}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn-icon edit" (click)="openEditForm(univ)" title="Редактировать">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(univ.idUniversity!)" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit" (click)="openEditForm(univ)" title="Редактировать">
+                          <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                        </button>
+                        <button class="btn-icon delete" (click)="onDelete(univ.idUniversity!)" title="Удалить">
+                          <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                        </button>
                       </div>
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td colspan="4" class="empty-state">ВУЗы не найдены</td></tr>
+                  <tr>
+                    <td colspan="4" class="empty-state">ВУЗы не найдены</td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -160,13 +176,19 @@
                     <td class="secondary-text">{{ sport.description || 'Нет описания' }}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn-icon edit" (click)="openEditForm(sport)" title="Редактировать">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(sport.idSportType)" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit" (click)="openEditForm(sport)" title="Редактировать">
+                          <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                        </button>
+                        <button class="btn-icon delete" (click)="onDelete(sport.idSportType)" title="Удалить">
+                          <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                        </button>
                       </div>
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td colspan="3" class="empty-state">Виды спорта не найдены</td></tr>
+                  <tr>
+                    <td colspan="3" class="empty-state">Виды спорта не найдены</td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -190,13 +212,19 @@
                     <td class="secondary-text">{{ rank.description || 'Нет описания' }}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn-icon edit" (click)="openEditForm(rank)" title="Редактировать">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(rank.idSportRank)" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit" (click)="openEditForm(rank)" title="Редактировать">
+                          <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                        </button>
+                        <button class="btn-icon delete" (click)="onDelete(rank.idSportRank)" title="Удалить">
+                          <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                        </button>
                       </div>
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td colspan="3" class="empty-state">Спортивные разряды не найдены</td></tr>
+                  <tr>
+                    <td colspan="3" class="empty-state">Спортивные разряды не найдены</td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -207,63 +235,74 @@
               <thead>
               <tr>
                 <th>Пользователь</th>
-                <th>Роль</th> <th>ВУЗ</th>
+                <th>Роль</th>
+                <th>ВУЗ</th>
                 <th>Специальность</th>
                 <th>Курс</th>
                 <th>Действия</th>
               </tr>
               </thead>
               <tbody>
-                @for (edu of educationPlaces; track edu.userId) { <tr [class.no-data-row]="!edu.idEducationPlace"> <td>
-                  <div class="primary-text">{{ edu.userName }}</div>
-                  <span class="badge-code" style="font-size: 10px;">ID: {{ edu.userId }}</span>
-                </td>
+                @for (edu of educationPlaces; track edu.userId) {
+                  <tr [class.no-data-row]="!edu.idEducationPlace">
+                    <td>
+                      <div class="primary-text">{{ edu.userName }}</div>
+                      <span class="badge-code" style="font-size: 10px;">ID: {{ edu.userId }}</span>
+                    </td>
 
-                  <td>
+                    <td>
                       <span class="badge-code" style="background: rgba(103, 58, 183, 0.1); color: #673ab7;">
                         {{ edu.userRole }}
                       </span>
-                  </td>
+                    </td>
 
-                  <td>
-                    @if (edu.idEducationPlace) {
-                      <div class="primary-text">{{ edu.universityShortName }}</div>
-                      <div class="secondary-text" style="font-size: 11px; max-width: 200px;">
-                        {{ edu.universityName }}
-                      </div>
-                    } @else {
-                      <span class="secondary-text" style="font-style: italic;">Не указано</span>
-                    }
-                  </td>
-
-                  <td>
-                    @if (edu.idEducationPlace) {
-                      <span class="badge-code">{{ edu.majorCode }}</span>
-                      <div class="secondary-text" style="margin-top: 4px;">{{ edu.majorName }}</div>
-                    } @else {
-                      <span>—</span>
-                    }
-                  </td>
-
-                  <td class="primary-text">
-                    {{ edu.courseYear != null ? edu.courseYear + ' курс' : '—' }}
-                  </td>
-
-                  <td>
-                    <div class="action-buttons">
+                    <td>
                       @if (edu.idEducationPlace) {
-                        <button class="btn-icon edit" (click)="openEditForm(edu)" title="Редактировать">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(edu.idEducationPlace)" title="Удалить">🗑️</button>
+                        <div class="primary-text">{{ edu.universityShortName }}</div>
+                        <div class="secondary-text" style="font-size: 11px; max-width: 200px;">
+                          {{ edu.universityName }}
+                        </div>
                       } @else {
-                        <button class="btn-icon create-small" (click)="openEditForm({userId: edu.userId, userName: edu.userName})" title="Добавить место обучения">
-                          ➕
-                        </button>
+                        <span class="secondary-text" style="font-style: italic;">Не указано</span>
                       }
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+
+                    <td>
+                      @if (edu.idEducationPlace) {
+                        <span class="badge-code">{{ edu.majorCode }}</span>
+                        <div class="secondary-text" style="margin-top: 4px;">{{ edu.majorName }}</div>
+                      } @else {
+                        <span>—</span>
+                      }
+                    </td>
+
+                    <td class="primary-text">
+                      {{ edu.courseYear != null ? edu.courseYear + ' курс' : '—' }}
+                    </td>
+
+                    <td>
+                      <div class="action-buttons">
+                        @if (edu.idEducationPlace) {
+                          <button class="btn-icon edit" (click)="openEditForm(edu)" title="Редактировать">
+                            <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                          </button>
+                          <button class="btn-icon delete" (click)="onDelete(edu.idEducationPlace)" title="Удалить">
+                            <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                          </button>
+                        } @else {
+                          <button class="btn-icon create-small"
+                                  (click)="openEditForm({userId: edu.userId, userName: edu.userName})"
+                                  title="Добавить место обучения">
+                            ➕
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
                 } @empty {
-                  <tr><td colspan="6" class="empty-state">Пользователи не найдены</td></tr>
+                  <tr>
+                    <td colspan="6" class="empty-state">Пользователи не найдены</td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -304,13 +343,19 @@
                     <td class="secondary-text">{{ ach.dateReceived }}</td>
                     <td>
                       <div class="action-buttons">
-                        <button class="btn-icon edit" (click)="openEditForm(ach)" title="Изменить разряд">✏️</button>
-                        <button class="btn-icon delete" (click)="onDelete(ach.idAchievement!)" title="Удалить">🗑️</button>
+                        <button class="btn-icon edit" (click)="openEditForm(ach)" title="Изменить разряд">
+                          <img ngSrc="assets/images/icons/edit.svg" alt="Город" width="25" height="25" class="meta-icon">
+                        </button>
+                        <button class="btn-icon delete" (click)="onDelete(ach.idAchievement!)" title="Удалить">
+                          <img ngSrc="assets/images/icons/trash.svg" alt="Город" width="30" height="30" class="meta-icon">
+                        </button>
                       </div>
                     </td>
                   </tr>
                 } @empty {
-                  <tr><td colspan="6" class="empty-state">Достижений пока нет. Назначьте первый разряд!</td></tr>
+                  <tr>
+                    <td colspan="6" class="empty-state">Достижений пока нет. Назначьте первый разряд!</td>
+                  </tr>
                 }
               </tbody>
             </table>

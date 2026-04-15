@@ -26,7 +26,16 @@
   height: 48px;
   background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 100%);
   border-radius: 12px;
-  color: $primary-color;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: $primary-hover;
+    -webkit-mask: url('/assets/images/icons/student-housing.svg') no-repeat center / contain;
+    mask: url('/assets/images/icons/student-housing.svg') no-repeat center / contain;
+  }
 }
 
 .university-city {
@@ -42,17 +51,8 @@
   flex: 1;
 }
 
-.university-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
-}
 
-.stat-item {
-  @extend %icon-text-row;
-  color: $text-primary; // Переопределяем цвет, если нужно, чтобы он отличался от secondary
-}
+
+
 
 

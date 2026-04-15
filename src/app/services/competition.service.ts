@@ -1,8 +1,8 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { API_URLS } from '../config/api.config';
-import { Competition } from '../models/competition.model';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {API_URLS} from '../config/api.config';
+import {Competition} from '../models/competition.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,9 @@ import { Competition } from '../models/competition.model';
 export class CompetitionService {
   private http = inject(HttpClient);
 
+  /**
+   * Получение сведений о соревновании по его ID
+   * */
   getCompetitionById(id: string): Observable<Competition> {
     return this.http.get<Competition>(`${API_URLS.COMPETITIONS}/${id}`);
   }

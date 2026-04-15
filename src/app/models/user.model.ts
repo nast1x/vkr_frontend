@@ -3,7 +3,7 @@ export interface User {
   fullName: string;
   email: string;
   avatar: string | null;
-  role: 'Athlete' | 'Coach';
+  role: 'Athlete' | 'Coach' | 'Admin';
   age: number;
   birthDate: string;
   gender: 'Male' | 'Female';
@@ -34,12 +34,6 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string;
   password: string;
-}
-
-export interface ApiError {
-  status: number;
-  message: string;
-  timestamp: string;
 }
 
 export interface UserRecord {
@@ -76,9 +70,38 @@ export interface UserProfile {
   universityId: number;
   faculty: string;
   course: number;
-  coachId: number | null;
-  coachName: string | null;
+  coachId?: number | null;
+  coachAvatar: string | null;
+  coachName?: string | null;
   sport: UserSport[];
   records: UserRecord[];
   trainees: Trainee[];
 }
+
+export interface ProfileUpdateDto {
+  lastName: string;
+  firstName: string;
+  middleName?: string;
+  birthDate: string;
+  gender: string;
+}
+
+export interface PasswordChangeDto {
+  oldPassword: string;
+  password: string;
+  confirmPassword?: string;
+}
+
+export interface SportRankAssignmentDto {
+  sportTypeId: number;
+  rankId: number;
+  dateReceived: string;
+}
+
+export interface SportRankAssignmentDto {
+  userId: number;
+  sportTypeId: number;
+  rankId: number;
+  dateReceived: string;
+}
+

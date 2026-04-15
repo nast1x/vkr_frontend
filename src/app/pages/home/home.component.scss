@@ -1,6 +1,6 @@
-@use '../../../styles.scss' as *; // Импорт глобальных переменных и миксинов
+@use '../../../styles.scss' as *;
 
-// Сброс для host-элемента компонента
+
 :host {
   display: block;
   width: 100vw;
@@ -22,14 +22,7 @@
   text-align: center;
 }
 
-.content-wrapper {
-  max-width: 800px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
+
 
 .hero-title {
   font-size: 72pt;
@@ -70,7 +63,7 @@
 }
 
 .hero-btn {
-  @include button-base; // Используем глобальный миксин
+  @include button-base;
   margin-top: 20px;
 }
 

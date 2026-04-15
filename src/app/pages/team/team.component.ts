@@ -8,6 +8,7 @@ import {API_CONFIG, API_URLS} from '../../config/api.config';
 import {PageDecorComponent} from "../../shared/components/page-decor/page-decor.component";
 import {ErrorStateComponent} from "../../shared/components/error-state/error-state.component";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {NgOptimizedImage} from "@angular/common";
 
 interface TeamMember {
   userId: number;
@@ -21,7 +22,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [FormsModule, HeaderComponent, PageDecorComponent, ErrorStateComponent, LoaderComponent],
+  imports: [FormsModule, HeaderComponent, PageDecorComponent, ErrorStateComponent, LoaderComponent, NgOptimizedImage],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss'
 })
@@ -47,7 +48,7 @@ export class TeamComponent implements OnInit {
     this.loadTeamData();
   }
 
-// Загрузка данных с бэкенда
+
   loadTeamData(): void {
     this.isLoading = true;
     this.error = null;
@@ -86,21 +87,6 @@ export class TeamComponent implements OnInit {
     });
   }
 
-  setTab(tab: 'all' | 'athletes' | 'coaches'): void {
-    this.activeTab = tab;
-    if (tab === 'athletes') {
-      this.showAthletes = true;
-      this.showCoaches = false;
-    } else if (tab === 'coaches') {
-      this.showAthletes = false;
-      this.showCoaches = true;
-    } else {
-      this.showAthletes = true;
-      this.showCoaches = true;
-    }
-    this.applyFilters();
-  }
-
   resetFilters(): void {
     this.selectedCity = '';
     this.showAthletes = true;
@@ -113,16 +99,17 @@ export class TeamComponent implements OnInit {
     this.router.navigate(['/profile', id]);
   }
 
-// Метод для обработки ошибки
+
   handleImageError(event: any) {
     event.target.src = this.DEFAULT_AVATAR;
   }
 
-// Метод для формирования URL
+
   getMemberAvatar(imageLink: string | null): string {
     if (!imageLink) {
       return this.DEFAULT_AVATAR;
     }
+    console.log('Avatar URL:', imageLink);
     return this.API_CONFIG.BASE_URL + imageLink;
   }
 

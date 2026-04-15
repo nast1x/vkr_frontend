@@ -1,10 +1,10 @@
 @use '../../../styles.scss' as *;
 
-// ===== ЛОКАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+
 $main-header-height: 70px;
 $main-border: #E0E0E0;
 
-// ===== СТИЛИ КОМПОНЕНТА =====
+
 :host {
   display: block;
   width: 100vw;
@@ -18,13 +18,13 @@ $main-border: #E0E0E0;
   overflow-y: auto;
 }
 
-// ===== ОСНОВНОЙ КОНТЕНТ =====
+
 .main-content {
   padding-top: $main-header-height;
   min-height: 100vh;
 }
 
-// ===== ГЕРОЙ-СЕКЦИЯ =====
+
 .main-hero {
   padding: 60px 24px 40px;
 
@@ -98,7 +98,7 @@ $main-border: #E0E0E0;
   line-height: 1.6;
 }
 
-// ===== ИНФОРМАЦИОННЫЙ БЛОК =====
+
 .main-info {
   padding: 40px 24px 80px;
 
@@ -126,7 +126,7 @@ $main-border: #E0E0E0;
   text-align: center;
 }
 
-// ===== НОВОСТИ =====
+
 .main-news-list {
   display: flex;
   flex-direction: column;
@@ -188,7 +188,7 @@ $main-border: #E0E0E0;
   margin: 0;
 }
 
-// ===== ЛУЧШИЕ РЕЗУЛЬТАТЫ =====
+
 .main-best-results {
   display: flex;
   flex-direction: column;
@@ -246,7 +246,7 @@ $main-border: #E0E0E0;
   margin: 0 20px;
 }
 
-// ===== КНОПКА "ВСЕ" =====
+
 .main-info-all-btn {
   display: block;
   width: 100%;
@@ -266,7 +266,7 @@ $main-border: #E0E0E0;
   }
 }
 
-// ===== ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ =====
+
 .fixed-logo-left {
   position: fixed;
   bottom: 0;

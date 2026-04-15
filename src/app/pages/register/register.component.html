@@ -1,24 +1,25 @@
-<!-- Плавающие логотипы -->
+
 <img src="/assets/images/boy-swimming.png" alt="" class="fixed-logo-left">
 <img src="/assets/images/boy-swimming.png" alt="" class="fixed-logo-right">
 
-<!-- Основной контейнер -->
+
 <div class="register-container">
 
-  <!-- Заголовок с кнопкой назад -->
+
   <div class="register-header">
     <button class="register-back" (click)="goBack()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round"/>
       </svg>
     </button>
     <h1 class="register-title">Регистрация</h1>
   </div>
 
-  <!-- Форма -->
+
   <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
 
-    <!-- Фамилия -->
+
     <div class="register-input-group">
       <label class="register-label">Фамилия</label>
       <input
@@ -28,157 +29,163 @@
         name="lastName"
         placeholder="Введите фамилию"
         required
-        >
-      </div>
+      >
+    </div>
 
-      <!-- Имя -->
-      <div class="register-input-group">
-        <label class="register-label">Имя</label>
+
+    <div class="register-input-group">
+      <label class="register-label">Имя</label>
+      <input
+        type="text"
+        class="register-input"
+        [(ngModel)]="firstName"
+        name="firstName"
+        placeholder="Введите имя"
+        required
+      >
+    </div>
+
+
+    <div class="register-input-group">
+      <label class="register-label">Отчество</label>
+      <input
+        type="text"
+        class="register-input"
+        [(ngModel)]="middleName"
+        name="middleName"
+        placeholder="Введите отчество"
+      >
+    </div>
+
+
+    <div class="register-input-group">
+      <label class="register-label">Пол</label>
+      <select class="register-input" [(ngModel)]="gender" name="gender" required>
+        @for (option of genderOptions; track option) {
+          <option [value]="option.value">
+            {{ option.label }}
+          </option>
+        }
+      </select>
+    </div>
+
+
+    <div class="register-input-group">
+      <label class="register-label">Почта</label>
+      <input
+        type="email"
+        class="register-input"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="example@email.com"
+        required
+        email
+      >
+    </div>
+
+
+    <div class="register-input-group">
+      <label class="register-label">Пароль</label>
+      <div class="register-password-wrapper">
         <input
-          type="text"
+          [type]="showPassword ? 'text' : 'password'"
           class="register-input"
-          [(ngModel)]="firstName"
-          name="firstName"
-          placeholder="Введите имя"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
           required
-          >
-        </div>
+          minlength="6"
+        >
+        <button
+          type="button"
+          class="register-password-toggle"
+          (click)="togglePassword()"
+          tabindex="-1"
+        >
+          @if (!showPassword) {
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          }
+          @if (showPassword) {
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12A18.45 18.45 0 0 1 5.06 6.06M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12A18.5 18.5 0 0 1 19.73 16.76M14.12 14.12A3 3 0 1 1 9.88 9.88"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
 
-        <!-- Отчество -->
-        <div class="register-input-group">
-          <label class="register-label">Отчество</label>
-          <input
-            type="text"
-            class="register-input"
-            [(ngModel)]="middleName"
-            name="middleName"
-            placeholder="Введите отчество"
-            >
-          </div>
 
-          <!-- ✅ ПОЛ -->
-          <div class="register-input-group">
-            <label class="register-label">Пол</label>
-            <select class="register-input" [(ngModel)]="gender" name="gender" required>
-              @for (option of genderOptions; track option) {
-                <option [value]="option.value">
-                  {{ option.label }}
-                </option>
-              }
-            </select>
-          </div>
+    <div class="register-input-group">
+      <label class="register-label">Подтвердите пароль</label>
+      <div class="register-password-wrapper">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          class="register-input"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="••••••••"
+          required
+          minlength="6"
+        >
+        <button
+          type="button"
+          class="register-password-toggle"
+          (click)="toggleConfirmPassword()"
+          tabindex="-1"
+        >
+          @if (!showConfirmPassword) {
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          }
+          @if (showConfirmPassword) {
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12A18.45 18.45 0 0 1 5.06 6.06M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12A18.5 18.5 0 0 1 19.73 16.76M14.12 14.12A3 3 0 1 1 9.88 9.88"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
 
-          <!-- Почта -->
-          <div class="register-input-group">
-            <label class="register-label">Почта</label>
-            <input
-              type="email"
-              class="register-input"
-              [(ngModel)]="email"
-              name="email"
-              placeholder="example@email.com"
-              required
-              email
-              >
-            </div>
 
-            <!-- Пароль -->
-            <div class="register-input-group">
-              <label class="register-label">Пароль</label>
-              <div class="register-password-wrapper">
-                <input
-                  [type]="showPassword ? 'text' : 'password'"
-                  class="register-input"
-                  [(ngModel)]="password"
-                  name="password"
-                  placeholder="••••••••"
-                  required
-                  minlength="6"
-                  >
-                  <button
-                    type="button"
-                    class="register-password-toggle"
-                    (click)="togglePassword()"
-                    tabindex="-1"
-                    >
-                    @if (!showPassword) {
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                        <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                    }
-                    @if (showPassword) {
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12A18.45 18.45 0 0 1 5.06 6.06M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12A18.5 18.5 0 0 1 19.73 16.76M14.12 14.12A3 3 0 1 1 9.88 9.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                      </svg>
-                    }
-                  </button>
-                </div>
-              </div>
+    @if (errorMessage) {
+      <div class="register-error">
+        {{ errorMessage }}
+      </div>
+    }
 
-              <!-- Подтверждение пароля -->
-              <div class="register-input-group">
-                <label class="register-label">Подтвердите пароль</label>
-                <div class="register-password-wrapper">
-                  <input
-                    [type]="showConfirmPassword ? 'text' : 'password'"
-                    class="register-input"
-                    [(ngModel)]="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="••••••••"
-                    required
-                    minlength="6"
-                    >
-                    <button
-                      type="button"
-                      class="register-password-toggle"
-                      (click)="toggleConfirmPassword()"
-                      tabindex="-1"
-                      >
-                      @if (!showConfirmPassword) {
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                          <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                      }
-                      @if (showConfirmPassword) {
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12A18.45 18.45 0 0 1 5.06 6.06M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12A18.5 18.5 0 0 1 19.73 16.76M14.12 14.12A3 3 0 1 1 9.88 9.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                      }
-                    </button>
-                  </div>
-                </div>
 
-                <!-- Сообщение об ошибке -->
-                @if (errorMessage) {
-                  <div class="register-error">
-                    {{ errorMessage }}
-                  </div>
-                }
+    <button
+      type="submit"
+      class="register-btn-primary"
+      [disabled]="!isFormValid() || isLoading"
+    >
+      @if (isLoading) {
+        <span class="register-loading-spinner"></span>
+      }
+      {{ isLoading ? 'Регистрация...' : 'Зарегистрироваться' }}
+    </button>
 
-                <!-- Кнопка регистрации -->
-                <button
-                  type="submit"
-                  class="register-btn-primary"
-                  [disabled]="!isFormValid() || isLoading"
-                  >
-                  @if (isLoading) {
-                    <span class="register-loading-spinner"></span>
-                  }
-                  {{ isLoading ? 'Регистрация...' : 'Зарегистрироваться' }}
-                </button>
+  </form>
 
-              </form>
 
-              <!-- Ссылка на вход -->
-              <p class="register-login-text">
-                Уже есть аккаунт?
-                <button type="button" class="register-btn-secondary" (click)="onGoToLogin()">
-                  Авторизоваться
-                </button>
-              </p>
+  <p class="register-login-text">
+    Уже есть аккаунт?
+    <button type="button" class="register-btn-secondary" (click)="onGoToLogin()">
+      Авторизоваться
+    </button>
+  </p>
 
-            </div>
+</div>

@@ -1,55 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError, catchError, tap } from 'rxjs';
-import { API_URLS } from '../config/api.config';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
+import {API_URLS} from '../config/api.config';
+import {AuthResponse, LoginRequest, RegisterRequest, User} from "../models/user.model";
 
-// ===== МОДЕЛИ =====
-export interface User {
-  id: number;
-  fullName: string;
-  email: string;
-  avatar: string | null;
-  role: 'Athlete' | 'Coach' | 'Admin';
-  age: number;
-  birthDate: string;
-  gender: 'Male' | 'Female';
-  university: string;
-  faculty: string;
-  course: number;
-  coachId: number | null;
-  coachName: string | null;
-  sport: string | null;
-  category: string | null;
-  trainees?: any[];
-  records?: any[];
-}
 
-export interface AuthResponse {
-  message: string;
-  email: string;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  roleName: 'Athlete' | 'Coach';
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-// ===== СЕРВИС =====
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
 
@@ -60,7 +22,7 @@ export class AuthService {
   checkAuthStatus(): void {
     this.loadingSubject.next(true);
 
-    this.http.get<User>(API_URLS.PROFILE_ME, { withCredentials: true })
+    this.http.get<User>(API_URLS.PROFILE_ME, {withCredentials: true})
       .pipe(
         catchError((error) => {
           this.currentUserSubject.next(null);
@@ -80,13 +42,16 @@ export class AuthService {
       });
   }
 
+  /**
+   * Регистрация
+   * */
   register(data: RegisterRequest): Observable<AuthResponse> {
     this.loadingSubject.next(true);
 
     return this.http.post<AuthResponse>(
       API_URLS.AUTH_REGISTER,
       data,
-      { withCredentials: true }
+      {withCredentials: true}
     ).pipe(
       tap(() => {
         this.checkAuthStatus();
@@ -96,13 +61,16 @@ export class AuthService {
     );
   }
 
+  /**
+   * Авторизация
+   * */
   login(data: LoginRequest): Observable<AuthResponse> {
     this.loadingSubject.next(true);
 
     return this.http.post<AuthResponse>(
       API_URLS.AUTH_LOGIN,
       data,
-      { withCredentials: true }
+      {withCredentials: true}
     ).pipe(
       tap(() => {
         this.checkAuthStatus();
@@ -112,11 +80,14 @@ export class AuthService {
     );
   }
 
+  /**
+   * Выход
+   * */
   logout(): Observable<void> {
     return this.http.post<void>(
       API_URLS.AUTH_LOGOUT,
       {},
-      { withCredentials: true }
+      {withCredentials: true}
     ).pipe(
       tap(() => {
         this.currentUserSubject.next(null);
@@ -125,35 +96,41 @@ export class AuthService {
     );
   }
 
+  /**
+   * Получить профиль пользователя
+   * */
   getCurrentProfile(): Observable<User> {
-    return this.http.get<User>(API_URLS.PROFILE_ME, { withCredentials: true })
+    return this.http.get<User>(API_URLS.PROFILE_ME, {withCredentials: true})
       .pipe(
         tap(user => this.currentUserSubject.next(user)),
         catchError(this.handleError)
       );
   }
 
-  getProfileById(id: number): Observable<User> {
-    return this.http.get<User>(`${API_URLS.PROFILE_BY_ID}/${id}`, { withCredentials: true })
-      .pipe(catchError(this.handleError));
-  }
-
+  /**
+   * Проверка на авторизацию
+   * */
   isAuthenticated(): boolean {
     return this.currentUserSubject.value !== null;
   }
 
+  /**
+   * Польчуить информацию о пользователе
+   * */
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
-  getCurrentUser$(): Observable<User | null> {
-    return this.currentUserSubject.asObservable();
-  }
-
+  /**
+   * Перегазрузить профиль
+   * */
   refreshUserProfile(): void {
     this.getCurrentProfile().subscribe();
   }
 
+  /**
+   * Ошибки
+   * */
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMsg = 'Произошла ошибка. Попробуйте позже.';
 
@@ -172,7 +149,6 @@ export class AuthService {
     } else if (error.status >= 500) {
       errorMsg = 'Ошибка сервера. Попробуйте позже.';
     }
-
     console.error('Auth error:', error);
     return throwError(() => new Error(errorMsg));
   }

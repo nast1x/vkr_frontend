@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FormField} from "../../models/form.model";
-
 
 
 @Component({
@@ -22,7 +21,8 @@ export class DynamicFormComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     const group: any = {};
@@ -31,13 +31,12 @@ export class DynamicFormComponent implements OnInit {
       const value = this.initialData ? this.initialData[field.name] : '';
       const validators = field.required ? [Validators.required] : [];
 
-      // Создаем обычный массив для FormBuilder
+
       group[field.name] = [value, validators];
     });
 
-    // Применяем updateOn: 'blur' ко всей FormGroup разом.
-    // Теперь форма будет реагировать и перерисовываться только при потере фокуса с инпута.
-    this.form = this.fb.group(group, { updateOn: 'blur' });
+
+    this.form = this.fb.group(group, {updateOn: 'blur'});
   }
 
   onSubmit() {

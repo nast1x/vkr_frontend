@@ -6,6 +6,7 @@ import {API_URLS} from '../../config/api.config';
 import {DynamicFormComponent} from "../dynamic-form/dynamic-form.component";
 import {AuthService} from "../../services/auth.service";
 import {FormField} from "../../models/form.model";
+import {NgOptimizedImage} from "@angular/common";
 
 interface Athlete {
   id: number;
@@ -38,7 +39,7 @@ interface UniversityDetail {
 @Component({
   selector: 'app-university-detail',
   standalone: true,
-  imports: [HeaderComponent, DynamicFormComponent],
+  imports: [HeaderComponent, DynamicFormComponent, NgOptimizedImage],
   templateUrl: './university-detail.component.html',
   styleUrl: './university-detail.component.scss'
 })
@@ -54,7 +55,7 @@ export class UniversityDetailComponent implements OnInit {
     {name: 'shortName', label: 'Аббревиатура', type: 'text', required: true},
     {name: 'city', label: 'Город', type: 'text', required: true},
     {name: 'description', label: 'Описание', type: 'textarea'},
-    { name: 'imageLink', label: 'Ссылка на фото', type: 'text' }
+    {name: 'imageLink', label: 'Ссылка на фото', type: 'text'}
   ];
   placeholderAvatar = '/assets/images/avatar-placeholder.png';
   placeholderPhoto = 'https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1000';
@@ -121,10 +122,6 @@ export class UniversityDetailComponent implements OnInit {
     this.router.navigate(['/universities']);
   }
 
-  getAvatar(avatar: string | null): string {
-    return avatar || this.placeholderAvatar;
-  }
-
   getPhoto(photo: string | null): string {
     return photo || this.placeholderPhoto;
   }
@@ -134,7 +131,7 @@ export class UniversityDetailComponent implements OnInit {
     this.http.put(`${API_URLS.UNIVERSITY}/${universityId}`, formData).subscribe({
       next: () => {
         this.showEditForm = false;
-        this.loadUniversity(); // Перезагружаем данные
+        this.loadUniversity();
       },
       error: (err) => alert('Ошибка при сохранении: ' + err.message)
     });
